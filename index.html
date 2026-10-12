@@ -1,0 +1,1434 @@
+<!doctype html>
+<html lang="ja" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>えきよみ 역읽기</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Noto+Sans+JP:wght@400;700;900&family=Noto+Sans+KR:wght@400;700;900&family=Shippori+Mincho:wght@700&family=Zen+Maru+Gothic:wght@700&family=Klee+One:wght@600&family=Noto+Serif+KR:wght@700&family=Gowun+Dodum&family=Nanum+Pen+Script&display=swap">
+<style>
+/* Layout: one column like a platform — status bar, then a station sign as the hero of each question.
+   Default is black on white; the dark theme is a setting (white on black). */
+:root{
+  --bg:#FFFFFF;
+  --panel:#F3F4F2;
+  --sign:#FFFFFF;
+  --ink:#111417;
+  --muted:#5E676D;
+  --rule:#D5D9D6;
+  --accent:#1D4F8F;
+  --ok:#1E8A4C; --close:#B26F12; --ng:#C0392B;
+  --okbg:#E6F4EB; --closebg:#FBF0DC; --ngbg:#F9E5E2;
+  --lv0:#D5D9D6; --lv1:#9DB8DA; --lv2:#1D4F8F;
+  --shadow:0 1px 0 rgba(0,0,0,.05),0 6px 18px -10px rgba(20,30,40,.3);
+  --f-ja:"Noto Sans JP","Hiragino Sans","Yu Gothic",sans-serif;
+  --f-ko:"Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  --f-num:"Barlow Condensed","Arial Narrow",sans-serif;
+  --gf-ja:var(--f-ja); --gf-ko:var(--f-ko);
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0E1113;--panel:#191E21;--sign:#151A1D;--ink:#FFFFFF;--muted:#A3ADB3;--rule:#323A3F;--accent:#8DB4EA;
+  --ok:#5BC98A;--close:#E7B25A;--ng:#F07A6B;--okbg:#14301F;--closebg:#352A14;--ngbg:#3A1E1A;
+  --lv0:#323A3F;--lv1:#3E5878;--lv2:#8DB4EA;
+  --shadow:0 1px 0 rgba(0,0,0,.4),0 8px 22px -10px rgba(0,0,0,.8);color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0E1113;--panel:#191E21;--sign:#151A1D;--ink:#FFFFFF;--muted:#A3ADB3;--rule:#323A3F;--accent:#8DB4EA;
+  --ok:#5BC98A;--close:#E7B25A;--ng:#F07A6B;--okbg:#14301F;--closebg:#352A14;--ngbg:#3A1E1A;
+  --lv0:#323A3F;--lv1:#3E5878;--lv2:#8DB4EA;
+  --shadow:0 1px 0 rgba(0,0,0,.4),0 8px 22px -10px rgba(0,0,0,.8);color-scheme:dark}
+
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-ja);line-height:1.6;font-size:15px}
+:lang(ko){font-family:var(--f-ko)}
+.glyph:lang(ja){font-family:var(--gf-ja)}
+.glyph:lang(ko){font-family:var(--gf-ko)}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.wrap{max-width:720px;margin:0 auto;padding-inline:16px;padding-block:0 48px}
+
+/* header */
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-bottom:1px solid var(--rule)}
+.bar-in{max-width:720px;margin:0 auto;padding:10px 16px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.logo{display:flex;align-items:baseline;gap:8px;font-weight:900;font-size:1.15rem;letter-spacing:.02em;background:none;border:0;padding:0}
+.logo small{font-family:var(--f-ko);font-weight:700;color:var(--muted);font-size:.85rem}
+.bar-btns{margin-left:auto;display:flex;gap:6px;flex-wrap:wrap}
+.tbtn{border:1px solid var(--rule);background:var(--panel);border-radius:999px;padding:4px 12px;font-size:.85rem;font-weight:700}
+.tbtn:hover{border-color:var(--accent)}
+
+/* start */
+.hero{padding-block:28px 8px;display:grid;gap:6px}
+.hero h1{margin:0;font-size:clamp(1.45rem,5vw,2.1rem);font-weight:900;line-height:1.3;text-wrap:balance}
+.hero .sub1{margin:0;font-weight:700;color:var(--accent);font-size:clamp(.95rem,3.2vw,1.2rem);line-height:1.4}
+.hero p{margin:0;color:var(--muted)}
+.pick{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin-top:18px}
+.pick button{text-align:left;border:1px solid var(--rule);background:var(--panel);border-radius:10px;padding:16px;display:grid;gap:12px}
+.pick button:hover:not(:disabled){border-color:var(--accent)}
+.pick button:disabled{opacity:.45;cursor:not-allowed;filter:grayscale(1)}
+.pick .pnote{font-size:.8rem;font-weight:700;color:var(--ink)}
+.pick .who{font-weight:900;font-size:1.15rem}
+.pick .what{color:var(--muted);font-size:.9rem}
+.mini{display:flex;align-items:center;gap:10px;font-weight:900}
+.mini .ms{background:var(--sign);border:1px solid var(--rule);border-top:5px solid var(--c);border-radius:4px;padding:4px 12px;font-size:1.4rem}
+.mini .arrow{color:var(--muted);font-weight:400}
+.mini .ans{font-size:1.1rem;color:var(--accent)}
+.how{margin-top:26px;display:grid;gap:10px;color:var(--muted);font-size:.9rem;max-width:62ch}
+.how b{color:var(--ink)}
+
+/* line select */
+.stage{margin-top:24px}
+.stage h2{margin:0 0 10px;font-size:.8rem;letter-spacing:.12em;color:var(--muted);display:flex;gap:10px;align-items:center}
+.stage h2::after{content:"";flex:1;border-top:1px solid var(--rule)}
+.lines{display:grid;gap:10px}
+.lcard{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;text-align:left;border:1px solid var(--rule);background:var(--panel);border-radius:10px;padding:12px 14px}
+.lcard:hover:not(:disabled){border-color:var(--c)}
+.lcard:disabled{opacity:.5;cursor:not-allowed}
+.sym{width:44px;height:44px;border-radius:50%;border:5px solid var(--c);background:var(--sign);display:grid;place-items:center;font-family:var(--f-num);font-weight:700;font-size:1.35rem;line-height:1}
+.lname{font-weight:900;font-size:1.05rem}
+.lsub{font-size:.8rem;color:var(--muted)}
+.meter{display:block;height:5px;border-radius:3px;background:var(--rule);margin-top:6px;overflow:hidden}
+.meter i{display:block;height:100%;background:var(--c)}
+.sym.two{font-size:1.05rem;letter-spacing:-.02em}
+.lstat{text-align:right;font-family:var(--f-num);font-size:1.1rem;font-variant-numeric:tabular-nums;min-width:5em}
+.lstat small{display:block;font-family:var(--f-ja);font-size:.72rem;color:var(--muted)}
+.lock{font-size:.85rem;color:var(--muted);margin:0 0 8px}
+.done-badge{color:var(--ok);font-weight:900}
+
+/* play */
+.ptop{display:flex;align-items:center;gap:10px;padding-block:12px 8px;flex-wrap:wrap}
+.back{border:0;background:none;color:var(--accent);font-weight:700;padding:0}
+.pline{font-weight:900;display:flex;align-items:center;gap:8px}
+.pline .sym{width:28px;height:28px;border-width:3px;font-size:.9rem}
+.quit{margin-left:auto;border:1px solid var(--rule);background:var(--panel);border-radius:999px;padding:3px 12px;font-size:.82rem;font-weight:700}
+.hud{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin-bottom:10px}
+.hud div{background:var(--panel);border-radius:8px;padding:4px 8px;display:grid}
+.hud small{font-size:.68rem;color:var(--muted)}
+.hud b{font-family:var(--f-num);font-size:1.45rem;line-height:1.1;font-variant-numeric:tabular-nums}
+.hud .low b{color:var(--ng)}
+.strip{display:grid;gap:6px;margin-bottom:12px}
+.strip-sec{display:flex;flex-wrap:wrap;align-items:center;gap:4px}
+.strip-sec .lbl{font-size:.7rem;color:var(--muted);margin-right:4px}
+.dot{width:14px;height:14px;border-radius:50%;border:2px solid var(--c);background:var(--sign)}
+.dot.lit{background:var(--c)}
+.dot.now{box-shadow:0 0 0 3px var(--bg),0 0 0 5px var(--ink)}
+@media (prefers-reduced-motion:no-preference){.dot.now{animation:pop .6s ease}@keyframes pop{0%{transform:scale(.4)}60%{transform:scale(1.5)}100%{transform:none}}}
+
+.sign{background:var(--sign);border:1px solid var(--rule);border-radius:6px;box-shadow:var(--shadow);overflow:hidden}
+.sign-band{height:12px;background:var(--c)}
+.sign-body{display:grid;grid-template-columns:auto minmax(0,1fr);gap:14px;align-items:center;padding:18px 18px 14px}
+.code{width:68px;height:68px;border:8px solid var(--c);border-radius:50%;flex:none;display:grid;place-items:center;align-content:center;text-align:center;font-family:var(--f-num);font-weight:700;line-height:.95;background:var(--sign)}
+.code.kr{border-radius:50%}
+.code .cl{font-size:1rem}
+.code .cn{font-size:1.45rem}
+.code.kr .cn{font-size:1.15rem}
+.code .hide{color:var(--muted)}
+.q{font-weight:900;font-size:clamp(2.2rem,10vw,4.4rem);line-height:1.2;text-align:center;overflow-wrap:anywhere;word-break:keep-all;letter-spacing:.02em}
+.q.long{font-size:clamp(1.6rem,7vw,3rem)}
+.q.xlong{font-size:clamp(1.3rem,5.4vw,2.4rem)}
+.sign-foot{border-top:1px solid var(--rule);padding:10px 18px;display:flex;flex-wrap:wrap;gap:6px 18px;justify-content:center;align-items:baseline;min-height:46px}
+.sign-foot .k{font-weight:900;font-size:1.25rem}
+.sign-foot .r{font-family:var(--f-num);font-weight:600;font-size:1.15rem;letter-spacing:.03em}
+.sign-foot .s{color:var(--muted)}
+.sign-foot .hidden{color:var(--muted);letter-spacing:.3em}
+
+.act{margin-top:12px;display:grid;gap:8px}
+.ansrow{display:flex;gap:8px}
+.ansrow input{flex:1;min-width:0;font:inherit;font-size:1.25rem;padding:10px 14px;border:2px solid var(--rule);border-radius:8px;background:var(--sign);color:var(--ink)}
+.ansrow input:focus{border-color:var(--accent);outline:none}
+.go{border:0;border-radius:8px;background:var(--accent);color:var(--sign);font-weight:900;padding:0 20px}
+.choices{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.choices button{border:2px solid var(--rule);background:var(--sign);border-radius:8px;padding:12px 8px;font-size:1.25rem;font-weight:700;overflow-wrap:anywhere}
+.choices button:hover:not(:disabled){border-color:var(--accent)}
+.choices button.gone{opacity:.25;text-decoration:line-through}
+.choices button.right{border-color:var(--ok);background:var(--okbg)}
+.choices button.wrong{border-color:var(--ng);background:var(--ngbg)}
+.prompt{text-align:center;color:var(--muted);margin:0;font-size:.88rem}
+.subrow{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.sbtn{border:1px solid var(--rule);background:var(--panel);border-radius:999px;padding:6px 16px;font-size:.88rem;font-weight:700}
+.sbtn[aria-pressed="true"]{border-color:var(--accent);color:var(--accent)}
+.sbtn:disabled{opacity:.45;cursor:default}
+
+.fb{border-radius:8px;padding:12px 14px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 12px;align-items:center;border:1px solid}
+.fb.ok{background:var(--okbg);border-color:var(--ok)}
+.fb.close{background:var(--closebg);border-color:var(--close)}
+.fb.ng{background:var(--ngbg);border-color:var(--ng)}
+.fb .v{font-weight:900;font-size:1.2rem}
+.fb .v small{font-family:var(--f-num);font-size:1.05rem;margin-left:8px}
+.fb.ok .v{color:var(--ok)}.fb.close .v{color:var(--close)}.fb.ng .v{color:var(--ng)}
+.fb .msg{font-size:.9rem;grid-column:1}
+.fb .next{grid-column:2;grid-row:1 / span 2;border:0;border-radius:8px;background:var(--ink);color:var(--bg);font-weight:900;padding:12px 22px;font-size:1.05rem}
+.fb .kbd{font-size:.68rem;opacity:.7;display:block;font-weight:400}
+
+/* hint blocks */
+.hint{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.blk{background:var(--panel);border:1px solid var(--rule);border-radius:8px;padding:8px 10px;display:grid;justify-items:center;gap:4px;min-width:64px}
+.blk .g{font-size:2.1rem;font-weight:900;line-height:1.15}
+.blk .parts{display:flex;gap:3px;flex-wrap:wrap;justify-content:center}
+.jm{display:grid;justify-items:center;border-radius:5px;padding:2px 6px;font-size:1.05rem;font-weight:700;line-height:1.2}
+.jm small{font-size:.66rem;font-weight:400;color:var(--muted);font-family:var(--f-ja)}
+.jm.L{background:color-mix(in srgb,var(--accent) 16%,transparent)}
+.jm.V{background:color-mix(in srgb,var(--ok) 16%,transparent)}
+.jm.T{background:color-mix(in srgb,var(--close) 20%,transparent)}
+.jm.known small{color:var(--ok);font-weight:700}
+.blk .shape{font-size:.66rem;color:var(--muted)}
+.blk .kk{font-size:.9rem;font-weight:700}
+.hint-note{flex-basis:100%;text-align:center;font-size:.8rem;color:var(--muted)}
+
+/* overlays */
+.ov{position:fixed;inset:0;background:rgba(10,14,18,.5);z-index:20;display:grid;place-items:end center;padding:16px}
+@media (min-width:640px){.ov{place-items:center}}
+.ov[hidden]{display:none}
+.sheet{background:var(--bg);color:var(--ink);border:1px solid var(--rule);border-radius:12px;width:min(600px,100%);max-height:86vh;overflow:auto;padding:18px;box-shadow:var(--shadow);display:grid;gap:14px;align-content:start}
+.sheet h3{margin:0;font-size:1.1rem;display:flex;align-items:center;gap:8px}
+.sheet h3 .tbtn{margin-left:auto}
+.opt{display:grid;gap:6px}
+.opt .ol{font-size:.8rem;color:var(--muted);font-weight:700}
+.seg{display:flex;flex-wrap:wrap;border:1px solid var(--rule);border-radius:8px;overflow:hidden}
+.seg button{flex:1 1 auto;border:0;background:var(--sign);padding:8px 10px;font-weight:700;min-width:5em}
+.seg button+button{border-left:1px solid var(--rule)}
+.seg button[aria-pressed="true"]{background:var(--accent);color:var(--sign)}
+.fontprev{font-size:1.4rem;font-weight:700;text-align:center;padding:4px;color:var(--muted)}
+.danger{border:1px solid var(--ng);color:var(--ng);background:none;border-radius:8px;padding:8px;font-weight:700}
+.tabs{display:flex;gap:6px;flex-wrap:wrap}
+.tabs button{border:1px solid var(--rule);background:var(--panel);border-radius:999px;padding:5px 14px;font-weight:700;font-size:.88rem}
+.tabs button[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.coll h4{margin:6px 0 4px;font-size:.8rem;color:var(--muted);display:flex;gap:8px;align-items:baseline}
+.coll h4 span{margin-left:auto;font-family:var(--f-num);font-size:1rem;color:var(--ink)}
+.legend{display:flex;gap:12px;flex-wrap:wrap;font-size:.75rem;color:var(--muted)}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:3px;vertical-align:-2px;margin-right:4px;border:1px solid var(--rule)}
+.cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(54px,1fr));gap:5px}
+.cell{background:var(--sign);border:2px solid var(--lv0);border-radius:6px;padding:4px 2px;text-align:center;display:grid;line-height:1.2}
+.cell b{font-size:1.35rem}
+.cell span{font-size:.68rem;color:var(--muted)}
+.cell.l1{border-color:var(--lv1);background:color-mix(in srgb,var(--lv1) 22%,var(--sign))}
+.cell.l2{border-color:var(--lv2);background:color-mix(in srgb,var(--lv2) 22%,var(--sign))}
+.cell.void{border-style:dashed;opacity:.5}
+.stgrid{display:flex;flex-wrap:wrap;gap:5px}
+.badge{border:2px solid var(--c);border-radius:999px;padding:2px 10px;font-size:.88rem;font-weight:700;background:var(--sign)}
+.badge.got{background:var(--c);color:#fff}
+.badge.no{border-style:dashed;color:var(--muted);opacity:.6}
+.result{text-align:center;justify-items:center}
+.result .big{font-size:1.6rem;font-weight:900;line-height:1.2}
+.result .score{font-family:var(--f-num);font-size:3.4rem;font-variant-numeric:tabular-nums;line-height:1}
+.result .sub{color:var(--muted);font-size:.9rem}
+.result .stats{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;font-size:.9rem}
+.result .stats b{font-family:var(--f-num);font-size:1.3rem}
+.cert{border:3px double var(--accent);border-radius:10px;padding:14px;width:100%}
+.cert .ttl{font-size:1.4rem;font-weight:900}
+.rowbtns{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.pbtn{border:0;border-radius:8px;background:var(--accent);color:var(--sign);font-weight:900;padding:10px 20px}
+.gbtn{border:1px solid var(--rule);border-radius:8px;background:var(--sign);font-weight:700;padding:10px 20px}
+/* developer page */
+.wrap.wide{max-width:1400px}
+.muted{color:var(--muted)}
+.devbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:10px}
+.devsel,.devin{font:inherit;padding:7px 10px;border:1px solid var(--rule);border-radius:8px;background:var(--sign);color:var(--ink);min-width:0}
+.devin{flex:1 1 200px}
+.devchk{font-size:.88rem;white-space:nowrap}
+.devsum{font-weight:700;margin-right:auto}
+.devmsg{font-size:.82rem;color:var(--ok)}
+.devta,.devmemo,.devnote{width:100%;font:inherit;font-size:.9rem;background:var(--sign);color:var(--ink);border:1px solid var(--rule);border-radius:8px;padding:8px 10px}
+.devta{height:140px;font:12px/1.4 ui-monospace,monospace;margin-bottom:10px}
+.devmemo{margin-bottom:10px;resize:vertical}
+.devnote{resize:vertical;border-color:var(--close)}
+.devgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:10px}
+.dtile{background:var(--sign);border:1px solid var(--rule);border-top:5px solid var(--c);border-radius:8px;padding:10px 12px;display:grid;gap:6px;align-content:start;min-width:0}
+.dtile.hit-ok{background:var(--okbg);border-color:var(--ok);border-top-color:var(--c)}
+.dtile.hit-close{background:var(--closebg);border-color:var(--close);border-top-color:var(--c)}
+.dtile.noted{box-shadow:inset 0 0 0 2px color-mix(in srgb,var(--close) 60%,transparent)}
+.dthead{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+.dthead .num{font-family:var(--f-num);font-weight:700;font-size:1.05rem}
+.dtname{font-weight:900;font-size:1.25rem;min-width:0;overflow-wrap:anywhere}
+.dtline{font-size:.72rem;color:var(--muted)}
+.nbtn{margin-left:auto;border:1px solid var(--rule);background:var(--panel);border-radius:999px;padding:1px 10px;font-size:.78rem}
+.nbtn.has{border-color:var(--close);color:var(--close);font-weight:700}
+.dtforms{display:grid;grid-template-columns:auto minmax(0,1fr);gap:2px 10px;margin:0;font-size:.92rem}
+.dtforms dt{font-size:.7rem;color:var(--muted);padding-top:.2em}
+.dtforms dd{margin:0;overflow-wrap:anywhere}
+.dtforms dd.num{font-family:var(--f-num);font-size:1rem}
+.dtex{display:flex;flex-wrap:wrap;gap:3px;align-items:center}
+.dtlbl{font-size:.68rem;font-weight:700;margin-right:4px}
+.dtlbl.ok{color:var(--ok)}.dtlbl.close{color:var(--close)}
+.dex{display:inline-block;border-radius:4px;padding:0 5px;font-size:.82rem}
+.dex.ok{background:var(--okbg);border:1px solid color-mix(in srgb,var(--ok) 40%,transparent)}
+.dex.close{background:var(--closebg);border:1px solid color-mix(in srgb,var(--close) 40%,transparent)}
+.dchip{display:inline-block;border-radius:999px;padding:0 8px;font-size:.75rem;font-weight:700;margin:1px}
+.dchip.ok{background:var(--ok);color:var(--bg)}
+.dchip.close{background:var(--close);color:var(--bg)}
+@media (prefers-reduced-motion:no-preference){
+  .sign.flip{animation:flip .3s ease}
+  @keyframes flip{from{transform:translateY(6px);opacity:.4}to{transform:none;opacity:1}}
+}
+</style>
+</head>
+<body>
+
+<header class="bar"><div class="bar-in">
+  <button class="logo" id="logo" type="button">えきよみ <small lang="ko">역읽기</small></button>
+  <div class="bar-btns">
+    <button class="tbtn" id="bColl" type="button" hidden></button>
+    <button class="tbtn" id="bSet" type="button"></button>
+  </div>
+</div></header>
+<main class="wrap" id="main"></main>
+<div class="ov" id="ov" hidden><div class="sheet" id="sheet" role="dialog" aria-modal="true"></div></div>
+
+<script>
+/* ===== えきよみ core: data + transliteration + judging ===== */
+(function (G) {
+'use strict';
+
+/* ---------- kana utils ---------- */
+const toHira = s => s.replace(/[ァ-ヶ]/g, c => String.fromCharCode(c.charCodeAt(0) - 0x60));
+const toKata = s => s.replace(/[ぁ-ゖ]/g, c => String.fromCharCode(c.charCodeAt(0) + 0x60));
+const SMALL_Y = 'ゃゅょ';
+
+const ROMA = {
+  あ:'a',い:'i',う:'u',え:'e',お:'o',か:'ka',き:'ki',く:'ku',け:'ke',こ:'ko',が:'ga',ぎ:'gi',ぐ:'gu',げ:'ge',ご:'go',
+  さ:'sa',し:'shi',す:'su',せ:'se',そ:'so',ざ:'za',じ:'ji',ず:'zu',ぜ:'ze',ぞ:'zo',
+  た:'ta',ち:'chi',つ:'tsu',て:'te',と:'to',だ:'da',ぢ:'ji',づ:'zu',で:'de',ど:'do',
+  な:'na',に:'ni',ぬ:'nu',ね:'ne',の:'no',は:'ha',ひ:'hi',ふ:'fu',へ:'he',ほ:'ho',
+  ば:'ba',び:'bi',ぶ:'bu',べ:'be',ぼ:'bo',ぱ:'pa',ぴ:'pi',ぷ:'pu',ぺ:'pe',ぽ:'po',
+  ま:'ma',み:'mi',む:'mu',め:'me',も:'mo',や:'ya',ゆ:'yu',よ:'yo',
+  ら:'ra',り:'ri',る:'ru',れ:'re',ろ:'ro',わ:'wa',を:'o',ん:'n'
+};
+
+/* split hiragana into morae (keeps ん, っ, ー as their own tokens) */
+function morae(h) {
+  const out = [];
+  for (let i = 0; i < h.length; i++) {
+    const c = h[i];
+    if (SMALL_Y.includes(h[i + 1])) { out.push(c + h[i + 1]); i++; }
+    else out.push(c);
+  }
+  return out;
+}
+function moraRoma(m) {
+  if (m.length === 2) {
+    const base = ROMA[m[0]] || '';
+    const v = { ゃ:'a', ゅ:'u', ょ:'o' }[m[1]];
+    if (base === 'shi') return 'sh' + v;
+    if (base === 'chi') return 'ch' + v;
+    if (base === 'ji') return 'j' + v;
+    return base.slice(0, -1) + 'y' + v;
+  }
+  return ROMA[m] || '';
+}
+const vowelOf = m => { const r = moraRoma(m); return r ? r[r.length - 1] : ''; };
+
+/* Hepburn, long vowels folded for display (Tokyo, Otemachi) */
+function hepburn(h) {
+  const ms = morae(toHira(h));
+  let s = '';
+  for (let i = 0; i < ms.length; i++) {
+    const m = ms[i];
+    if (m === 'っ') {
+      const nx = moraRoma(ms[i + 1] || '');
+      s += nx.startsWith('ch') ? 't' : (nx[0] || '');
+    } else if (m === 'ー') {
+    } else s += moraRoma(m);
+  }
+  return s;
+}
+function romaDisplay(h) {
+  let s = hepburn(h).replace(/ou/g, 'o').replace(/oo/g, 'o').replace(/uu/g, 'u');
+  return s.charAt(0).toUpperCase() + s.slice(1);
+}
+
+/* ---------- Hangul composition ---------- */
+const L_J = 'ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ';
+const V_J = 'ㅏㅐㅑㅒㅓㅔㅕㅖㅗㅘㅙㅚㅛㅜㅝㅞㅟㅠㅡㅢㅣ';
+const T_J = ['', 'ㄱ','ㄲ','ㄳ','ㄴ','ㄵ','ㄶ','ㄷ','ㄹ','ㄺ','ㄻ','ㄼ','ㄽ','ㄾ','ㄿ','ㅀ','ㅁ','ㅂ','ㅄ','ㅅ','ㅆ','ㅇ','ㅈ','ㅊ','ㅋ','ㅌ','ㅍ','ㅎ'];
+function decompose(ch) {
+  const c = ch.charCodeAt(0) - 0xAC00;
+  if (c < 0 || c > 11171) return null;
+  return { L: Math.floor(c / 588), V: Math.floor((c % 588) / 28), T: c % 28 };
+}
+const compose = (L, V, T) => String.fromCharCode(0xAC00 + (L * 21 + V) * 28 + (T || 0));
+function addFinal(syl, T) {
+  const d = decompose(syl);
+  if (!d || d.T) return syl;
+  return compose(d.L, d.V, T);
+}
+
+/* Japanese kana -> Hangul (Korean standard for Japanese words):
+   voiceless k/t/ch plain at word start, aspirated inside; long vowels dropped;
+   っ -> ㅅ batchim, ん -> ㄴ batchim, つ -> 쓰 */
+const KH = {
+  あ:'아',い:'이',う:'우',え:'에',お:'오',
+  か:['가','카'],き:['기','키'],く:['구','쿠'],け:['게','케'],こ:['고','코'],
+  が:'가',ぎ:'기',ぐ:'구',げ:'게',ご:'고',
+  さ:'사',し:'시',す:'스',せ:'세',そ:'소',ざ:'자',じ:'지',ず:'즈',ぜ:'제',ぞ:'조',
+  た:['다','타'],ち:['지','치'],つ:'쓰',て:['데','테'],と:['도','토'],
+  だ:'다',ぢ:'지',づ:'즈',で:'데',ど:'도',
+  な:'나',に:'니',ぬ:'누',ね:'네',の:'노',は:'하',ひ:'히',ふ:'후',へ:'헤',ほ:'호',
+  ば:'바',び:'비',ぶ:'부',べ:'베',ぼ:'보',ぱ:'파',ぴ:'피',ぷ:'푸',ぺ:'페',ぽ:'포',
+  ま:'마',み:'미',む:'무',め:'메',も:'모',や:'야',ゆ:'유',よ:'요',
+  ら:'라',り:'리',る:'루',れ:'레',ろ:'로',わ:'와',を:'오',
+  きゃ:['갸','캬'],きゅ:['규','큐'],きょ:['교','쿄'],ぎゃ:'갸',ぎゅ:'규',ぎょ:'교',
+  しゃ:'샤',しゅ:'슈',しょ:'쇼',じゃ:'자',じゅ:'주',じょ:'조',
+  ちゃ:['자','차'],ちゅ:['주','추'],ちょ:['조','초'],
+  にゃ:'냐',にゅ:'뉴',にょ:'뇨',ひゃ:'햐',ひゅ:'휴',ひょ:'효',
+  びゃ:'뱌',びゅ:'뷰',びょ:'뵤',ぴゃ:'퍄',ぴゅ:'퓨',ぴょ:'표',
+  みゃ:'먀',みゅ:'뮤',みょ:'묘',りゃ:'랴',りゅ:'류',りょ:'료'
+};
+/* returns [{h:'긴', k:'ぎん'}...] one entry per Hangul block */
+function kanaChunks(kana, keepLong) {
+  const ms = morae(toHira(kana));
+  const out = [];
+  let prevV = '';
+  for (const m of ms) {
+    const last = out[out.length - 1];
+    if (m === 'ー') { if (last) last.k += m; continue; }
+    if (m === 'ん') { if (last) { last.h = addFinal(last.h, 4); last.k += m; } continue; }
+    if (m === 'っ') { if (last) { last.h = addFinal(last.h, 19); last.k += m; } continue; }
+    if (!keepLong && last && ((m === 'う' && (prevV === 'o' || prevV === 'u')) || (m === 'お' && prevV === 'o'))) {
+      last.k += m; continue; // long vowel: not written in Hangul
+    }
+    const e = KH[m];
+    if (!e) continue;
+    const h = Array.isArray(e) ? e[out.length === 0 ? 0 : 1] : e;
+    out.push({ h, k: m });
+    prevV = vowelOf(m);
+  }
+  return out;
+}
+const kanaToHangul = k => kanaChunks(k).map(c => c.h).join('');
+
+/* ---------- loose keys for judging ---------- */
+const LGRP = { 0:'g',1:'g',15:'g', 3:'d',4:'d',16:'d', 7:'b',8:'b',17:'b', 12:'j',13:'j',14:'j', 9:'s',10:'s' };
+const VJ_FOLD = { 2:0, 6:4, 12:8, 17:13 }; // ㅑㅕㅛㅠ -> ㅏㅓㅗㅜ after ㅈ-group
+function hangulSyls(s) {
+  const out = [];
+  for (const ch of s) { const d = decompose(ch); if (d) out.push(d); }
+  return out;
+}
+function looseH(s, very) {
+  const syls = hangulSyls(s);
+  const keys = [];
+  let prevV = -1;
+  for (const d of syls) {
+    let L = LGRP[d.L] !== undefined ? LGRP[d.L] : String(d.L);
+    let V = d.V;
+    if (L === 'j' && VJ_FOLD[V] !== undefined) V = VJ_FOLD[V];
+    if (V === 1) V = 5; if (V === 3) V = 7;
+    if (V === 18 && (L === 's' || L === 'j')) L = 'z';
+    let T = d.T;
+    if (T === 7 || T === 20) T = 19;
+    if (very) {
+      if (T === 19) T = 0;
+      if (d.L === 11 && d.V === 13 && !d.T && [8, 12, 13, 17].includes(prevV)) { prevV = d.V; continue; }
+    }
+    keys.push(L + '.' + V + '.' + T);
+    prevV = d.V;
+  }
+  return keys.join('|');
+}
+const hasHangul = s => /[가-힣]/.test(s);
+const hasKana = s => /[ぁ-ゖァ-ヺ]/.test(s);
+
+/* collapse Japanese long vowels so とうきょう = とーきょー = ときょう */
+function collapseKana(s) {
+  const ms = morae(toHira(s).replace(/[\s・･]/g, ''));
+  let out = '', prevV = '';
+  for (const m of ms) {
+    if (m === 'ー') continue;
+    if ((m === 'う' && (prevV === 'o' || prevV === 'u')) || (m === 'お' && prevV === 'o')) continue;
+    out += m;
+    if (m !== 'っ' && m !== 'ん') prevV = vowelOf(m);
+  }
+  return out;
+}
+/* very loose kana for Korean station names typed by Japanese users */
+function looseKanaKR(s) {
+  let h = toHira(s).replace(/[\sー・･っ]/g, '').replace(/を/g, 'お').replace(/[じぢ]/g, 'ち').replace(/[ずづ]/g, 'つ');
+  h = h.normalize('NFD').replace(/[゙゚]/g, '').normalize('NFC');
+  return h;
+}
+function romaJP(s) {
+  let r = s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z]/g, '');
+  r = r.replace(/shi/g, 'si').replace(/chi/g, 'ti').replace(/tsu/g, 'tu').replace(/fu/g, 'hu').replace(/ji/g, 'zi')
+       .replace(/tch/g, 'tty').replace(/sh/g, 'sy').replace(/ch/g, 'ty').replace(/j/g, 'zy')
+       .replace(/m(?=[bmp])/g, 'n')
+       .replace(/ou/g, 'o').replace(/oo/g, 'o').replace(/uu/g, 'u').replace(/oh(?![aiueoy])/g, 'o');
+  return r;
+}
+function romaKR(s) {
+  let r = s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]/g, '');
+  r = r.replace(/wae/g, 'we').replace(/oe/g, 'we').replace(/eo/g, 'o').replace(/eu/g, 'u').replace(/ae/g, 'e').replace(/ui/g, 'i')
+       .replace(/tch/g, 'j').replace(/ch/g, 'j').replace(/sh/g, 's')
+       .replace(/g/g, 'k').replace(/d/g, 't').replace(/b/g, 'p').replace(/r/g, 'l')
+       .replace(/(.)\1+/g, '$1');
+  return r;
+}
+const normKanji = s => s.normalize('NFKC').replace(/\s/g, '').replace(/[ヶヵ]/g, 'ケ').replace(/駅$/, '');
+
+/* ---------- jamo labels ---------- */
+const L_SND = ['k/g','kk','n','t/d','tt','r','m','p/b','pp','s','ss','(無音)','ch/j','jj','ch','k','t','p','h'];
+const V_KANA = ['ア','エ','ヤ','イェ','オ(口ひろく)','エ','ヨ(口ひろく)','イェ','オ','ワ','ウェ','ウェ','ヨ','ウ','ウォ','ウェ','ウィ','ユ','ウ(口よこ)','ウィ','イ'];
+const T_KANA = {1:'ク',2:'ク',4:'ン',7:'ッ',8:'ル',16:'ム',17:'プ',19:'ッ',20:'ッ',21:'ン(ng)',22:'ッ',23:'ッ',24:'ク',25:'ッ',26:'プ',27:'ッ'};
+const VERT = [0,1,2,3,4,5,6,7,20], HORI = [8,12,13,17,18];
+function blockInfo(ch) {
+  const d = decompose(ch);
+  if (!d) return null;
+  const shape = VERT.includes(d.V) ? 'lr' : HORI.includes(d.V) ? 'tb' : 'mix';
+  return {
+    ch, d, shape,
+    L: L_J[d.L], Lsnd: L_SND[d.L],
+    V: V_J[d.V], Vsnd: V_KANA[d.V],
+    T: T_J[d.T], Tsnd: d.T ? (T_KANA[d.T] || '') : ''
+  };
+}
+
+/* ---------- station data ---------- */
+// Japanese stations: [kanji, reading, ...alt spellings]
+const JP = {
+  ginza: { name:{ja:'銀座線',ko:'긴자선'}, color:'#F39700', country:'jp', prefix:'G', start:1, sections:[{ st:[
+    ['渋谷','しぶや'],['表参道','おもてさんどう'],['外苑前','がいえんまえ'],['青山一丁目','あおやまいっちょうめ'],['赤坂見附','あかさかみつけ'],
+    ['溜池山王','ためいけさんのう'],['虎ノ門','とらのもん','虎の門'],['新橋','しんばし'],['銀座','ぎんざ'],['京橋','きょうばし'],
+    ['日本橋','にほんばし'],['三越前','みつこしまえ'],['神田','かんだ'],['末広町','すえひろちょう'],['上野広小路','うえのひろこうじ'],
+    ['上野','うえの'],['稲荷町','いなりちょう'],['田原町','たわらまち'],['浅草','あさくさ'] ]}]},
+  marunouchi: { name:{ja:'丸ノ内線',ko:'마루노우치선'}, color:'#E60012', country:'jp', prefix:'M', start:1, sections:[{ st:[
+    ['荻窪','おぎくぼ'],['南阿佐ケ谷','みなみあさがや'],['新高円寺','しんこうえんじ'],['東高円寺','ひがしこうえんじ'],['新中野','しんなかの'],
+    ['中野坂上','なかのさかうえ'],['西新宿','にししんじゅく'],['新宿','しんじゅく'],['新宿三丁目','しんじゅくさんちょうめ'],['新宿御苑前','しんじゅくぎょえんまえ'],
+    ['四谷三丁目','よつやさんちょうめ'],['四ツ谷','よつや','四谷'],['赤坂見附','あかさかみつけ'],['国会議事堂前','こっかいぎじどうまえ'],['霞ケ関','かすみがせき'],
+    ['銀座','ぎんざ'],['東京','とうきょう'],['大手町','おおてまち'],['淡路町','あわじちょう'],['御茶ノ水','おちゃのみず','お茶の水'],
+    ['本郷三丁目','ほんごうさんちょうめ'],['後楽園','こうらくえん'],['茗荷谷','みょうがだに'],['新大塚','しんおおつか'],['池袋','いけぶくろ'] ]},
+    { label:{ja:'方南町支線',ko:'호난초 지선'}, codes:['m05','m04','m03'], st:[
+    ['中野新橋','なかのしんばし'],['中野富士見町','なかのふじみちょう'],['方南町','ほうなんちょう'] ]}]},
+  midosuji: { name:{ja:'御堂筋線',ko:'미도스지선'}, color:'#E5171F', country:'jp', prefix:'M', start:11, sections:[{ st:[
+    ['江坂','えさか'],['東三国','ひがしみくに'],['新大阪','しんおおさか'],['西中島南方','にしなかじまみなみがた'],['中津','なかつ'],
+    ['梅田','うめだ'],['淀屋橋','よどやばし'],['本町','ほんまち'],['心斎橋','しんさいばし'],['なんば','なんば','難波'],
+    ['大国町','だいこくちょう'],['動物園前','どうぶつえんまえ'],['天王寺','てんのうじ'],['昭和町','しょうわちょう'],['西田辺','にしたなべ'],
+    ['長居','ながい'],['あびこ','あびこ','我孫子'],['北花田','きたはなだ'],['新金岡','しんかなおか'],['なかもず','なかもず','中百舌鳥'] ]}]},
+  monorail: { name:{ja:'東京モノレール',ko:'도쿄 모노레일'}, color:'#0072BC', country:'jp', prefix:'MO', start:1, sections:[{ st:[
+    ['モノレール浜松町','ものれーるはままつちょう','浜松町'],['天王洲アイル','てんのうずあいる'],['大井競馬場前','おおいけいばじょうまえ'],['流通センター','りゅうつうせんたー'],
+    ['昭和島','しょうわじま'],['整備場','せいびじょう'],['天空橋','てんくうばし'],['羽田空港第3ターミナル','はねだくうこうだいさんたーみなる'],
+    ['新整備場','しんせいびじょう'],['羽田空港第1ターミナル','はねだくうこうだいいちたーみなる'],['羽田空港第2ターミナル','はねだくうこうだいにたーみなる'] ]}]}
+};
+// Korean stations: [hangul, katakana, romanization]
+const KR = {
+  seoul1: { name:{ja:'ソウル1号線',ko:'서울 1호선'}, color:'#0052A4', country:'kr', prefix:'', start:133, step:-1, sections:[{ st:[
+    ['서울역','ソウルヨク','seoulyeok'],['시청','シチョン','sicheong'],['종각','チョンガク','jonggak'],['종로3가','チョンノサムガ','jongno3ga'],
+    ['종로5가','チョンノオガ','jongno5ga'],['동대문','トンデムン','dongdaemun'],['동묘앞','トンミョアプ','dongmyoap'],['신설동','シンソルトン','sinseoldong'],
+    ['제기동','チェギドン','jegidong'],['청량리','チョンニャンニ','cheongnyangni'] ]}]},
+  seoul2: { name:{ja:'ソウル2号線',ko:'서울 2호선'}, color:'#00A84D', country:'kr', prefix:'', start:201, sections:[{ st:[
+    ['시청','シチョン','sicheong'],['을지로입구','ウルチロイプク','euljiroipgu'],['을지로3가','ウルチロサムガ','euljiro3ga'],['을지로4가','ウルチロサガ','euljiro4ga'],
+    ['동대문역사문화공원','トンデムンヨクサムンファコンウォン','dongdaemunyeoksamunhwagongwon'],['신당','シンダン','sindang'],['상왕십리','サンワンシムニ','sangwangsimni'],
+    ['왕십리','ワンシムニ','wangsimni'],['한양대','ハニャンデ','hanyangdae'],['뚝섬','トゥクソム','ttukseom'],['성수','ソンス','seongsu'],
+    ['건대입구','コンデイプク','geondaeipgu'],['구의','クイ','guui'],['강변','カンビョン','gangbyeon'],['잠실나루','チャムシルナル','jamsillaru'],
+    ['잠실','チャムシル','jamsil'],['잠실새내','チャムシルセネ','jamsilsaenae'],['종합운동장','チョンハプウンドンジャン','jonghapundongjang'],['삼성','サムソン','samseong'],
+    ['선릉','ソルルン','seolleung'],['역삼','ヨクサム','yeoksam'],['강남','カンナム','gangnam'],['교대','キョデ','gyodae'],['서초','ソチョ','seocho'],
+    ['방배','パンベ','bangbae'],['사당','サダン','sadang'],['낙성대','ナクソンデ','nakseongdae'],['서울대입구','ソウルデイプク','seouldaeipgu'],['봉천','ポンチョン','bongcheon'],
+    ['신림','シルリム','sillim'],['신대방','シンデバン','sindaebang'],['구로디지털단지','クロディジトルダンジ','gurodijiteoldanji'],['대림','テリム','daerim'],
+    ['신도림','シンドリム','sindorim'],['문래','ムルレ','mullae'],['영등포구청','ヨンドゥンポグチョン','yeongdeungpogucheong'],['당산','タンサン','dangsan'],
+    ['합정','ハプチョン','hapjeong'],['홍대입구','ホンデイプク','hongdaeipgu'],['신촌','シンチョン','sinchon'],['이대','イデ','idae'],['아현','アヒョン','ahyeon'],
+    ['충정로','チュンジョンノ','chungjeongno'] ]},
+    { label:{ja:'聖水支線',ko:'성수지선'}, codes:['211-1','211-2','211-3','211-4'], st:[
+    ['용답','ヨンダプ','yongdap'],['신답','シンダプ','sindap'],['용두','ヨンドゥ','yongdu'],['신설동','シンソルトン','sinseoldong'] ]},
+    { label:{ja:'新亭支線',ko:'신정지선'}, codes:['234-1','234-2','234-3','234-4'], st:[
+    ['도림천','トリムチョン','dorimcheon'],['양천구청','ヤンチョングチョン','yangcheongucheong'],['신정네거리','シンジョンネゴリ','sinjeongnegeori'],['까치산','カチサン','kkachisan'] ]}]},
+  busan1: { name:{ja:'釜山1号線',ko:'부산 1호선'}, color:'#F06A00', country:'kr', prefix:'', start:95, sections:[{ st:[
+    ['다대포해수욕장','タデポヘスヨクチャン','dadaepohaesuyokjang'],['다대포항','タデポハン','dadaepohang'],['낫개','ナッケ','natgae'],['신장림','シンジャンニム','sinjangnim'],
+    ['장림','チャンニム','jangnim'],['동매','トンメ','dongmae'],['신평','シンピョン','sinpyeong'],['하단','ハダン','hadan'],['당리','タンニ','dangni'],
+    ['사하','サハ','saha'],['괴정','クェジョン','goejeong'],['대티','テティ','daeti'],['서대신','ソデシン','seodaesin'],['동대신','トンデシン','dongdaesin'],
+    ['토성','トソン','toseong'],['자갈치','チャガルチ','jagalchi'],['남포','ナムポ','nampo'],['중앙','チュンアン','jungang'],['부산역','プサンヨク','busanyeok'],
+    ['초량','チョリャン','choryang'],['부산진','プサンジン','busanjin'],['좌천','チャチョン','jwacheon'],['범일','ポミル','beomil'],['범내골','ポムネゴル','beomnaegol'],
+    ['서면','ソミョン','seomyeon'],['부전','プジョン','bujeon'],['양정','ヤンジョン','yangjeong'],['시청','シチョン','sicheong'],['연산','ヨンサン','yeonsan'],
+    ['교대','キョデ','gyodae'],['동래','トンネ','dongnae'],['명륜','ミョンニュン','myeongnyun'],['온천장','オンチョンジャン','oncheonjang'],['부산대','プサンデ','busandae'],
+    ['장전','チャンジョン','jangjeon'],['구서','クソ','guseo'],['두실','トゥシル','dusil'],['남산','ナムサン','namsan'],['범어사','ポモサ','beomeosa'],['노포','ノポ','nopo'] ]}]},
+  arex: { name:{ja:'空港鉄道',ko:'공항철도'}, color:'#0090D2', country:'kr', prefix:'', start:1, sections:[{
+    codes:['A01','A02','A03','A04','A042','A05','A06','A07','A071','A072','A08','A09','A10','A11'], st:[
+    ['서울역','ソウルヨク','seoulyeok'],['공덕','コンドク','gongdeok'],['홍대입구','ホンデイプク','hongdaeipgu'],['디지털미디어시티','ディジトルミディオシティ','dijiteolmidieositi'],
+    ['마곡나루','マゴンナル','magongnaru'],['김포공항','キンポコンハン','gimpogonghang'],['계양','ケヤン','gyeyang'],['검암','コマム','geomam'],
+    ['청라국제도시','チョンナククチェドシ','cheongnagukjedosi'],['영종','ヨンジョン','yeongjong'],['운서','ウンソ','unseo'],['공항화물청사','コンハンファムルチョンサ','gonghanghwamulcheongsa'],
+    ['인천공항1터미널','インチョンコンハンイルトミノル','incheongonghang1teomineol'],['인천공항2터미널','インチョンコンハンイトミノル','incheongonghang2teomineol'] ]}]}
+};
+
+const SINO = { 1:'일', 2:'이', 3:'삼', 4:'사', 5:'오' };
+const SINO_R = { 1:'il', 2:'i', 3:'sam', 4:'sa', 5:'o' };
+const SINO_K = { 1:'イル', 2:'イ', 3:'サム', 4:'サ', 5:'オ' };
+
+function buildLines() {
+  const lines = {};
+  const all = Object.assign({}, JP, KR);
+  for (const id of Object.keys(all)) {
+    const src = all[id];
+    const stations = [];
+    let n = src.start;
+    src.sections.forEach((sec, si) => {
+      sec.st.forEach((row, i) => {
+        let code;
+        if (sec.codes) code = sec.codes[i];
+        else { code = src.prefix + (src.prefix ? String(n).padStart(2, '0') : String(n)); n += (src.step || 1); }
+        let s;
+        if (src.country === 'jp') {
+          const [kanji, kana, ...alt] = row;
+          const chunks = kanaChunks(kana);
+          s = { country:'jp', name:kanji, kana, alt, hangul: chunks.map(c => c.h).join(''), chunks, roma: romaDisplay(kana) };
+        } else {
+          const [ko, kata, rr] = row;
+          const koAlt = [ko], rrAlt = [rr];
+          if (/\d/.test(ko)) {
+            koAlt.push(ko.replace(/\d/g, d => SINO[d]));
+            rrAlt.push(rr.replace(/\d/g, d => SINO_R[d]));
+          }
+          s = { country:'kr', name:ko, kata, koAlt, rrAlt, hangul: ko, roma: rr.charAt(0).toUpperCase() + rr.slice(1) };
+        }
+        s.code = code; s.section = si; s.idx = stations.length;
+        stations.push(s);
+      });
+    });
+    lines[id] = { id, name: src.name, color: src.color, country: src.country,
+      sections: src.sections.map(s => s.label || null), stations };
+  }
+  return lines;
+}
+
+/* ---------- judging ----------
+   mode 'ja': question is Hangul, answer kana/kanji/romaji
+   mode 'ko': question is kana,   answer Hangul/romaji
+   returns 'ok' | 'close' | 'ng' | null                     */
+
+/* long vowels kept as ':' so とうきょう = とーきょー but ≠ ときょ */
+function strictKana(s) {
+  const ms = morae(toHira(s).replace(/[\s・･]/g, ''));
+  let out = '', prevV = '';
+  for (const m of ms) {
+    if (m === 'ー') { out += ':'; prevV = ''; continue; }
+    if ((m === 'う' && (prevV === 'o' || prevV === 'u')) || (m === 'お' && prevV === 'o')) { out += ':'; prevV = ''; continue; }
+    out += m;
+    prevV = (m === 'っ' || m === 'ん') ? '' : vowelOf(m);
+  }
+  return out;
+}
+const rrStrict = s => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]/g, '');
+
+function judge(mode, st, raw) {
+  const a = (raw || '').trim();
+  if (!a) return null;
+  const isRoma = /[a-z]/i.test(a) && !hasKana(a) && !hasHangul(a);
+  if (st.country === 'jp') {
+    const ok =
+      (hasKana(a) && strictKana(a) === strictKana(st.kana)) ||
+      [st.name, ...st.alt].some(n => normKanji(n) === normKanji(a)) ||
+      (isRoma && romaJP(a) === romaJP(hepburn(st.kana))) ||
+      (hasHangul(a) && looseH(a) === looseH(st.hangul));
+    if (ok) return 'ok';
+    if (/^[ぁ-ゖァ-ヺー\s・･]+$/.test(a)) {
+      if (collapseKana(a) === collapseKana(st.kana)) return 'close';
+      if (mode === 'ja' && looseH(kanaToHangul(a)) === looseH(st.hangul)) return 'close';
+    }
+    if (hasHangul(a) && looseH(a, true) === looseH(st.hangul, true)) return 'close';
+    return 'ng';
+  } else {
+    const ok =
+      (hasHangul(a) && st.koAlt.some(k => looseH(k) === looseH(a))) ||
+      (isRoma && st.rrAlt.some(r => rrStrict(r) === rrStrict(a))) ||
+      (hasKana(a) && looseKanaKR(a) === looseKanaKR(st.kata));
+    if (ok) return 'ok';
+    if (isRoma && st.rrAlt.some(r => romaKR(r) === romaKR(a))) return 'close'; // older McCune-Reischauer etc.
+    if (hasHangul(a) && st.koAlt.some(k => looseH(k, true) === looseH(a, true))) return 'close';
+    return 'ng';
+  }
+}
+
+/* ---------- learning units ----------
+   ja: Hangul parts  'L:ㄱ' 'V:ㅣ' 'T:ㄴ'
+   ko: kana morae    'K:キャ' (katakana) / 'H:きゃ' (hiragana) */
+function hangulUnits(hs) {
+  const out = [];
+  for (const c of hs) { const d = decompose(c); if (!d) continue;
+    out.push('L:' + L_J[d.L], 'V:' + V_J[d.V]); if (d.T) out.push('T:' + T_J[d.T]); }
+  return out;
+}
+/* split a kana string in its own script into morae */
+function moraeAny(str) {
+  const hs = toHira(str), out = [];
+  for (let i = 0; i < hs.length; i++) {
+    if (SMALL_Y.includes(hs[i + 1])) { out.push(str.slice(i, i + 2)); i++; }
+    else out.push(str[i]);
+  }
+  return out;
+}
+function kanaUnits(str) {
+  return moraeAny(str).filter(m => m !== 'ー' && /[ぁ-ヺ]/.test(m))
+    .map(m => (/[ァ-ヺ]/.test(m) ? 'K:' : 'H:') + m);
+}
+/* the Hangul a single kana mora stands for (for hints) */
+function moraHangul(m) {
+  const h = toHira(m);
+  if (h === 'ん') return 'ㄴ';
+  if (h === 'っ') return 'ㅅ';
+  if (h === 'ー') return '—';
+  const e = KH[h];
+  return e ? (Array.isArray(e) ? e[0] + '/' + e[1] : e) : '';
+}
+
+G.EKI = { toHira, toKata, morae, hepburn, romaDisplay, kanaChunks, kanaToHangul, decompose, blockInfo,
+  looseH, collapseKana, strictKana, looseKanaKR, romaJP, romaKR, buildLines, judge, hangulUnits, kanaUnits, moraeAny, moraHangul, L_J, V_J, T_J, L_SND, V_KANA, T_KANA };
+})(typeof window !== 'undefined' ? window : globalThis);
+
+</script>
+<script>
+(function(){
+'use strict';
+const E = window.EKI;
+const LINES = E.buildLines();
+const ORDER = { ja:['ginza','marunouchi','midosuji','monorail','seoul1','seoul2','busan1','arex'], ko:['seoul1','seoul2','busan1','arex','ginza','marunouchi','midosuji','monorail'] };
+const SYM = { ginza:'G', marunouchi:'M', midosuji:'M', monorail:'MO', seoul1:'1', seoul2:'2', busan1:'1', arex:'A' };
+const symEl = (id, extra) => h('span', { class:'sym' + (SYM[id].length > 1 ? ' two' : '') + (extra || ''), style: extra ? null : null }, SYM[id]);
+const RUN_MS = 3 * 60 * 1000;
+const PTS = { input:3, choice:2, hinted:1, learned:2, mastered:6 };
+
+const FONTS = {
+  ja:[ ['goth','ゴシック','Noto Sans JP'], ['min','明朝','Shippori Mincho'], ['maru','丸ゴシック','Zen Maru Gothic'], ['kyo','教科書体','Klee One'] ],
+  ko:[ ['goth','고딕','Noto Sans KR'], ['min','명조','Noto Serif KR'], ['maru','둥근','Gowun Dodum'], ['pen','손글씨','Nanum Pen Script'] ]
+};
+
+/* ---------- collection catalogues ---------- */
+const KANA_BASE = [...'あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよらりるれろわん'];
+const KANA_DAKU = [...'がぎぐげござじずぜぞだでどばびぶべぼぱぴぷぺぽ'];
+const KANA_YOON = 'きゃ きゅ きょ ぎゃ ぎゅ ぎょ しゃ しゅ しょ じゃ じゅ じょ ちゃ ちゅ ちょ にゃ にゅ にょ ひゃ ひゅ ひょ びゃ びゅ びょ ぴゃ ぴゅ ぴょ みゃ みゅ みょ りゃ りゅ りょ'.split(' ');
+const KANA_SMALL = ['っ'];
+const KANA_RARE = ['を','ぢ','づ'];
+const H_L = [...'ㄱㄴㄷㄹㅁㅂㅅㅇㅈㅊㅋㅌㅍㅎㄲㄸㅆ'], H_L_RARE = ['ㅃ','ㅉ'];
+const H_V = [...'ㅏㅑㅓㅕㅗㅛㅜㅠㅡㅣㅐㅔㅖㅘㅚㅝㅟㅢ'], H_V_RARE = ['ㅒ','ㅙ','ㅞ'];
+const H_T = [...'ㄱㄴㄷㄹㅁㅂㅅㅇㅈㅊㅋㅌㅍㅎㄲㅆ'], H_T_RARE = [...'ㄳㄵㄶㄺㄻㄼㄽㄾㄿㅀㅄ'];
+
+const TXT = {
+  ja:{
+    coll:'コレクション', set:'設定', lang:'한국어',
+    st1:'ステージ1 日本の駅', st2:'ステージ2 韓国の駅',
+    st1sub:'知ってる駅名でハングルを覚える', st2sub:'知らない駅名を、ハングルだけで読む',
+    locked:'ステージ1の3路線のバッジを全部集めると出てくる',
+    badges:'バッジ', best:'ベスト', cleared:'クリア', pt:'点',
+    time:'のこり', score:'スコア', correctN:'正解数', qUnit:'問', practice:'4択は練習モード（スコアなし）', streak:'連続', got:'バッジ',
+    prompt:'この駅名、なんて読む？', ph:'かな・漢字・ローマ字で', go:'答える',
+    hintBtn:'ヒント', hintClose:'ヒントをとじる', cut:'2つ消す', skip:'スキップ', next:'次へ', quit:'やめる', toLines:'路線',
+    enter:'Enterでも進む',
+    ok:'正解！', close:'おしい！', ng:'ちがう…',
+    closeMsg:a=>'読みは合ってる。駅名は「'+a+'」。', ngMsg:a=>'答えは「'+a+'」。',
+    hintNote:'青＝子音 緑＝母音 黄＝パッチム ／ ✓は覚えた部品',
+    hintNoteKR:'ㅓとㅗはどちらも「オ」、ㅡとㅜはどちらも「ウ」に聞こえる',
+    shape:{lr:'左右型',tb:'上下型',mix:'組合せ型'}, fin:'＋パッチム', known:'✓',
+    setTitle:'設定', themeOpt:'画面', light:'白地に黒文字', dark:'黒地に白文字',
+    kanaOpt:'かなの表示', kata:'カタカナ', hira:'ひらがな',
+    ansOpt:'答え方', input:'入力', choice:'4択',
+    fjOpt:'日本語の文字のフォント', fkOpt:'ハングルのフォント',
+    openOpt:'ステージ2', openNo:'順番に解放', openAll:'全部ひらく',
+    reset:'記録を消す', reset2:'本当に消す？（もう一度押す）', resetDone:'記録を消した',
+    close_:'閉じる',
+    tStations:'駅', tHangul:'ハングル', tKata:'カタカナ', tHira:'ひらがな',
+    lv0:'未学習', lv1:'学習済み', lv2:'覚えた', lvVoid:'まだ駅がない',
+    gL:'子音', gV:'母音', gT:'パッチム', gRare:'レア枠',
+    gBase:'清音', gDaku:'濁音・半濁音', gYoon:'拗音', gSmall:'小さいつ',
+    timeUp:'タイムアップ！', quitT:'おしまい', newBadges:n=>'新しいバッジ '+n+'個',
+    statOk:'正解', statClose:'おしい', statNg:'ミス', newBest:'ベスト更新！',
+    lineClear:l=>l+' クリア！', again:'もう一回', toLinesBtn:'路線をえらぶ', collBtn:'コレクション',
+    master:'日韓駅名マスター', masterSub:'全路線のバッジを全部集めた！',
+    unlock:'ステージ2がひらいた！韓国の駅、読んでみよう',
+    howTitle:'あそびかた',
+    how:'1回3分。駅名標のハングルを、かな・漢字・ローマ字で答える。正解した駅はバッジになって、路線のバッジを全部集めるとクリア。何度も正解した文字は「覚えた」になって、ヒントに出なくなる。'
+  },
+  ko:{
+    coll:'컬렉션', set:'설정', lang:'日本語',
+    st1:'1단계 한국의 역', st2:'2단계 일본의 역',
+    st1sub:'아는 역 이름으로 가타카나 익히기', st2sub:'모르는 역 이름을 가나만 보고 읽기',
+    locked:'1단계 3개 노선의 배지를 모두 모으면 열려요',
+    badges:'배지', best:'최고', cleared:'클리어', pt:'점',
+    time:'남은 시간', score:'점수', correctN:'맞힌 수', qUnit:'문제', practice:'4지선다는 연습 모드 (점수 없음)', streak:'연속', got:'배지',
+    prompt:'이 역 이름, 어떻게 읽을까요?', ph:'한글 또는 로마자로', go:'확인',
+    hintBtn:'힌트', hintClose:'힌트 닫기', cut:'2개 지우기', skip:'건너뛰기', next:'다음', quit:'그만하기', toLines:'노선',
+    enter:'Enter로도 넘어가요',
+    ok:'정답!', close:'아깝다!', ng:'틀렸어요…',
+    closeMsg:a=>'읽기는 맞았어요. 표기는 「'+a+'」.', ngMsg:a=>'정답은 「'+a+'」.',
+    hintNote:'일본어 장음(ー, う)은 한글로 쓰지 않아요. ッ는 받침 ㅅ, ン은 받침 ㄴ. ✓는 외운 글자',
+    hintNoteKR:'オ는 ㅓ도 ㅗ도 될 수 있고, ウ는 ㅜ도 ㅡ도 될 수 있어요',
+    shape:{lr:'',tb:'',mix:''}, fin:'', known:'✓',
+    setTitle:'설정', themeOpt:'화면', light:'흰 바탕에 검은 글씨', dark:'검은 바탕에 흰 글씨',
+    kanaOpt:'가나 표시', kata:'가타카나', hira:'히라가나',
+    ansOpt:'답하는 방법', input:'입력', choice:'4지선다',
+    fjOpt:'일본어 글자 글꼴', fkOpt:'한글 글꼴',
+    openOpt:'2단계', openNo:'순서대로 열기', openAll:'모두 열기',
+    reset:'기록 지우기', reset2:'정말 지울까요? (한 번 더 누르기)', resetDone:'기록을 지웠어요',
+    close_:'닫기',
+    tStations:'역', tHangul:'한글', tKata:'가타카나', tHira:'히라가나',
+    lv0:'미학습', lv1:'학습함', lv2:'외움', lvVoid:'아직 역이 없음',
+    gL:'자음', gV:'모음', gT:'받침', gRare:'희귀',
+    gBase:'청음', gDaku:'탁음·반탁음', gYoon:'요음', gSmall:'작은 つ',
+    timeUp:'시간 종료!', quitT:'끝', newBadges:n=>'새 배지 '+n+'개',
+    statOk:'정답', statClose:'아깝다', statNg:'틀림', newBest:'최고 기록!',
+    lineClear:l=>l+' 클리어!', again:'다시 하기', toLinesBtn:'노선 고르기', collBtn:'컬렉션',
+    master:'한일 역 이름 마스터', masterSub:'모든 노선의 배지를 모두 모았어요!',
+    unlock:'2단계가 열렸어요! 일본의 역을 읽어 봐요',
+    howTitle:'하는 방법',
+    how:'한 번에 3분. 역 표지판의 가타카나를 한글이나 로마자로 답해요. 맞힌 역은 배지가 되고, 노선의 배지를 모두 모으면 클리어. 여러 번 맞힌 글자는 「외움」이 되어 힌트에 나오지 않아요.'
+  }
+};
+
+/* ---------- storage ---------- */
+const KEY = 'ekiyomi.v2';
+let D = { lang:null, ui:null, theme:'light', kana:'kata', answer:'input', fja:'goth', fko:'goth', openAll:false,
+  badge:{ja:{},ko:{}}, know:{ja:{},ko:{}}, best:{ja:{},ko:{}} };
+try {
+  const s = JSON.parse(localStorage.getItem(KEY) || 'null');
+  if (s) D = Object.assign(D, s);
+  else {
+    const old = JSON.parse(localStorage.getItem('ekiyomi.v1') || 'null');
+    if (old) { D.lang = old.lang || null; D.kana = old.kana || 'kata'; D.answer = old.answer || 'input'; D.openAll = !!old.openAll; if (old.prog) D.badge = old.prog; }
+  }
+} catch(e) {}
+['badge','know','best'].forEach(k => { D[k] = D[k] || {}; D[k].ja = D[k].ja || {}; D[k].ko = D[k].ko || {}; });
+const save = () => { try { localStorage.setItem(KEY, JSON.stringify(D)); } catch(e) {} };
+
+function detectLang() {
+  try {
+    const ls = navigator.languages && navigator.languages.length ? navigator.languages : [navigator.language || ''];
+    for (const l of ls) { const x = String(l).toLowerCase(); if (x.startsWith('ko')) return 'ko'; if (x.startsWith('ja')) return 'ja'; }
+    const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || '';
+    if (tz === 'Asia/Seoul') return 'ko';
+    if (tz === 'Asia/Tokyo') return 'ja';
+  } catch(e) {}
+  return null;
+}
+
+/* ---------- helpers ---------- */
+const $ = id => document.getElementById(id);
+const h = (tag, attrs, ...kids) => {
+  const el = document.createElement(tag);
+  if (attrs) for (const k in attrs) {
+    const v = attrs[k];
+    if (v == null || v === false) continue;
+    if (k === 'class') el.className = v;
+    else if (k === 'style') el.setAttribute('style', v);
+    else if (k.startsWith('on')) el.addEventListener(k.slice(2), v);
+    else el.setAttribute(k, v === true ? '' : v);
+  }
+  for (const c of kids.flat()) if (c != null && c !== false) el.append(c.nodeType ? c : String(c));
+  return el;
+};
+const uiLang = () => D.lang || D.ui || 'ja';
+const t = () => TXT[uiLang()];
+const badges = id => (D.badge[D.lang] ||= {})[id] ||= {};
+const badgeCount = id => Object.keys(badges(id)).length;
+const isCleared = id => badgeCount(id) >= LINES[id].stations.length;
+const stageOf = id => (D.lang === 'ja') === (LINES[id].country === 'jp') ? 1 : 2;
+const stage1Done = () => ORDER[D.lang].filter(id => stageOf(id) === 1).every(isCleared);
+const lineName = id => LINES[id].name[D.lang];
+const fmt = ms => { const s = Math.max(0, Math.ceil(ms / 1000)); return Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0'); };
+const kanaDisp = k => D.kana === 'hira' ? E.toHira(k) : E.toKata(k);
+const shuffle = a => { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+const know = () => D.know[D.lang] ||= {};
+const level = u => { const p = know()[u] || 0; return p >= PTS.mastered ? 2 : p >= PTS.learned ? 1 : 0; };
+
+function question(st) {
+  if (D.lang === 'ja') return { text: st.hangul, lang: 'ko' };
+  return { text: kanaDisp(st.country === 'jp' ? st.kana : st.kata), lang: 'ja' };
+}
+function answerText(st) {
+  if (D.lang === 'ja') return st.country === 'jp' ? st.kana : E.toKata(st.kata);
+  return st.hangul;
+}
+function unitsOf(st) {
+  const u = D.lang === 'ja' ? E.hangulUnits(st.hangul) : E.kanaUnits(question(st).text);
+  return [...new Set(u)];
+}
+
+function applyLook() {
+  const root = document.documentElement;
+  root.setAttribute('data-theme', D.theme === 'dark' ? 'dark' : 'light');
+  const fj = FONTS.ja.find(f => f[0] === D.fja) || FONTS.ja[0];
+  const fk = FONTS.ko.find(f => f[0] === D.fko) || FONTS.ko[0];
+  root.style.setProperty('--gf-ja', '"' + fj[2] + '", var(--f-ja)');
+  root.style.setProperty('--gf-ko', '"' + fk[2] + '", var(--f-ko)');
+  root.lang = uiLang();
+}
+
+/* ---------- state ---------- */
+let S = { view:'start' };
+
+/* ---------- header ---------- */
+function renderBar() {
+  const T = t(), inGame = !!D.lang && S.view !== 'start' && S.view !== 'dev';
+  $('main').classList.toggle('wide', S.view === 'dev');
+  const lg = $('logo'), ko = uiLang() === 'ko';
+  lg.replaceChildren(ko ? h('span', { lang:'ko' }, '역읽기') : h('span', { lang:'ja' }, 'えきよみ'), h('small', { lang: ko ? 'ja' : 'ko' }, ko ? 'えきよみ' : '역읽기'));
+  document.title = ko ? '역읽기 えきよみ' : 'えきよみ 역읽기';
+  $('bColl').hidden = !inGame;
+  $('bColl').textContent = T.coll; $('bSet').textContent = T.set;
+  applyLook();
+}
+
+/* ---------- start ---------- */
+function viewStart() {
+  stopTimer(); S = { view:'start' }; D.lang = null; save(); renderBar();
+  const main = D.ui || detectLang() || 'ja';
+  const m = $('main'); m.replaceChildren();
+  // only the card for the language on screen can be chosen; the other is greyed out
+  const NOTE = { ja:'下の「日本語で表示」を押すと選べる', ko:'아래 「한국어로 보기」를 누르면 선택할 수 있어요' };
+  const pickBtn = (lang, who, what, q, a, c) => h('button', { type:'button', lang, disabled: lang !== main, 'aria-disabled': String(lang !== main),
+      onclick:() => { if (lang !== main) return; D.lang = lang; D.ui = lang; save(); viewLines(); } },
+    h('span', { class:'who' }, who),
+    h('span', { class:'mini' },
+      h('span', { class:'ms glyph', style:'--c:' + c, lang: lang === 'ja' ? 'ko' : 'ja' }, q),
+      h('span', { class:'arrow' }, '→'),
+      h('span', { class:'ans' }, a)),
+    h('span', { class:'what' }, what),
+    lang !== main ? h('span', { class:'pnote' }, NOTE[lang]) : null);
+  const jaPick = pickBtn('ja', '日本語で遊ぶ', '駅名のハングルを読む。銀座線・丸ノ内線・御堂筋線から', '긴자', 'ぎんざ？', LINES.ginza.color);
+  const koPick = pickBtn('ko', '한국어로 하기', '역 이름의 가타카나 읽기. 서울 1·2호선, 부산 1호선부터', 'ミョンドン', '명동?', LINES.seoul2.color);
+  // the title names only the other country's script; the second line is its translation
+  const H = {
+    ja: { main:'ハングルの駅名ぐらいはサッと読めるようになるための練習アプリ', sub:'한글 역 이름 정도는 바로 읽을 수 있게 되는 연습 앱' },
+    ko: { main:'가타카나·히라가나 역 이름 정도는 바로 읽을 수 있게 되는 연습 앱', sub:'カタカナ・ひらがなの駅名ぐらいはサッと読めるようになるための練習アプリ' }
+  };
+  const other = main === 'ja' ? 'ko' : 'ja';
+  m.append(
+    h('section', { class:'hero' },
+      h('h1', { lang:main }, H[main].main),
+      h('p', { class:'sub1', lang:other }, H[main].sub)),
+    h('div', { class:'pick' }, main === 'ja' ? [jaPick, koPick] : [koPick, jaPick]),
+    h('div', { class:'how' },
+      [main, other].map(l => h('div', { lang:l }, h('b', null, TXT[l].howTitle), ' ', TXT[l].how))),
+    h('div', { class:'subrow', style:'margin-top:18px' },
+      h('button', { class:'sbtn', type:'button', lang:other, onclick:() => { D.ui = other; save(); viewStart(); } },
+        other === 'ko' ? '한국어로 보기' : '日本語で表示'))
+  );
+}
+
+/* ---------- line select ---------- */
+function viewLines(flash) {
+  stopTimer(); S = { view:'lines' }; renderBar();
+  const T = t(), m = $('main'); m.replaceChildren();
+  if (flash) m.append(h('div', { class:'fb ok', style:'margin-top:16px' }, h('div', { class:'v' }, flash)));
+  [1, 2].forEach(stg => {
+    const ids = ORDER[D.lang].filter(id => stageOf(id) === stg);
+    const locked = stg === 2 && !stage1Done() && !D.openAll;
+    const sec = h('section', { class:'stage' },
+      h('h2', null, stg === 1 ? T.st1 : T.st2),
+      h('p', { class:'lock' }, locked ? '🔒 ' + T.locked : (stg === 1 ? T.st1sub : T.st2sub)));
+    const list = h('div', { class:'lines' });
+    ids.forEach(id => {
+      const L = LINES[id], n = L.stations.length, c = badgeCount(id), b = D.best[D.lang][id];
+      list.append(h('button', { type:'button', class:'lcard', style:'--c:' + L.color, disabled:locked, onclick:() => startRun(id) },
+        symEl(id),
+        h('span', { style:'min-width:0' },
+          h('span', { class:'lname' }, lineName(id)),
+          h('span', { class:'lsub' }, ' ' + T.badges + ' ' + c + '/' + n),
+          h('span', { class:'meter' }, h('i', { style:'width:' + (c / n * 100) + '%' }))),
+        h('span', { class:'lstat' }, c >= n ? h('span', { class:'done-badge' }, '✓ ' + T.cleared) : c + '/' + n,
+          b != null ? h('small', null, T.best + ' ' + b + T.pt) : null)));
+    });
+    sec.append(list); m.append(sec);
+  });
+}
+
+/* ---------- run ---------- */
+function buildQueue(excludeIdx) {
+  const L = LINES[S.line], got = badges(S.line);
+  const fresh = shuffle(L.stations.filter(s => !got[s.idx] && s.idx !== excludeIdx).map(s => s.idx));
+  const old = shuffle(L.stations.filter(s => got[s.idx] && s.idx !== excludeIdx).map(s => s.idx));
+  return fresh.concat(old);
+}
+function startRun(id) {
+  S = { view:'play', line:id, queue:[], score:0, streak:0, stats:{ ok:0, close:0, ng:0 }, newB:[],
+        s1Before: stage1Done(), clearedBefore: isCleared(id), t0: Date.now(), over:false };
+  S.end = S.t0 + RUN_MS;
+  S.queue = buildQueue(-1);
+  renderBar(); startTimer(); nextQ();
+}
+function startTimer() {
+  stopTimer();
+  S.timer = setInterval(() => {
+    if (S.view !== 'play' || S.over) return;
+    const left = S.end - Date.now();
+    const el = $('htime');
+    if (el) { el.textContent = fmt(left); el.parentNode.classList.toggle('low', left < 20000); }
+    if (left <= 0) endRun('time');
+  }, 250);
+}
+function stopTimer() { if (S && S.timer) clearInterval(S.timer); if (S) S.timer = null; }
+
+function nextQ() {
+  if (S.over) return;
+  if (!S.queue.length) S.queue = buildQueue(S.cur ? S.cur.idx : -1);
+  S.cur = LINES[S.line].stations[S.queue.shift()];
+  Object.assign(S, { done:false, hintOpen:false, hintUsed:false, cut:false, choiceSet:null, picked:null, lastInput:null, result:null, gain:0 });
+  renderPlay();
+}
+
+function renderPlay() {
+  const T = t(), L = LINES[S.line], st = S.cur, m = $('main');
+  m.replaceChildren();
+  const q = question(st);
+  const got = badges(S.line);
+
+  m.append(h('div', { class:'ptop', style:'--c:' + L.color },
+    h('button', { class:'back', type:'button', onclick:() => viewLines() }, '‹ ' + T.toLines),
+    h('span', { class:'pline' }, symEl(S.line), lineName(S.line)),
+    h('button', { class:'quit', type:'button', onclick:() => endRun('quit') }, T.quit)));
+
+  const left = S.end - Date.now();
+  m.append(h('div', { class:'hud' },
+    h('div', { class: left < 20000 ? 'low' : null }, h('small', null, T.time), h('b', { id:'htime' }, fmt(left))),
+    D.answer === 'choice' ? h('div', null, h('small', null, T.correctN), h('b', null, S.stats.ok + S.stats.close)) : h('div', null, h('small', null, T.score), h('b', null, S.score)),
+    h('div', null, h('small', null, T.streak), h('b', null, S.streak)),
+    h('div', null, h('small', null, T.got), h('b', null, badgeCount(S.line) + '/' + L.stations.length))));
+
+  // strip: lit = badge collected; the current station is shown only after answering
+  const strip = h('div', { class:'strip', style:'--c:' + L.color, 'aria-hidden':'true' });
+  L.sections.forEach((lab, si) => {
+    const row = h('div', { class:'strip-sec' });
+    if (lab) row.append(h('span', { class:'lbl' }, lab[D.lang]));
+    L.stations.filter(s => s.section === si).forEach(s => {
+      row.append(h('span', { class:'dot' + (got[s.idx] ? ' lit' : '') + (S.done && s === st ? ' now' : '') }));
+    });
+    strip.append(row);
+  });
+  m.append(strip);
+
+  // sign: station number hidden until answered
+  const len = [...q.text].length;
+  let codeEl;
+  if (L.country === 'jp') {
+    const letter = st.code.replace(/\d+/, ''), num = st.code.replace(/\D+/, '');
+    codeEl = h('div', { class:'code' }, h('span', { class:'cl' }, letter), h('span', { class:'cn' + (S.done ? '' : ' hide') }, S.done ? num : '??'));
+  } else codeEl = h('div', { class:'code kr' }, h('span', { class:'cn' + (S.done ? '' : ' hide') }, S.done ? st.code : '??'));
+  const foot = h('div', { class:'sign-foot' });
+  if (S.done) {
+    if (st.country === 'jp') foot.append(h('span', { class:'k glyph', lang:'ja' }, st.name), h('span', { class:'s glyph', lang:'ja' }, D.lang === 'ja' ? st.kana : kanaDisp(st.kana)), h('span', { class:'s glyph', lang:'ko' }, st.hangul));
+    else foot.append(h('span', { class:'k glyph', lang:'ko' }, st.name), h('span', { class:'s glyph', lang:'ja' }, D.lang === 'ja' ? E.toKata(st.kata) : kanaDisp(st.kata)));
+    foot.append(h('span', { class:'r' }, st.roma));
+  } else foot.append(h('span', { class:'hidden' }, '・・・'));
+  m.append(h('div', { class:'sign flip', style:'--c:' + L.color },
+    h('div', { class:'sign-band' }),
+    h('div', { class:'sign-body' }, codeEl, h('div', { class:'q glyph' + (len > 9 ? ' xlong' : len > 5 ? ' long' : ''), lang:q.lang }, q.text)),
+    foot));
+
+  // action area right under the sign: answer UI, or the result with a big Next button
+  const act = h('div', { class:'act' });
+  if (S.done) {
+    const r = S.result, a = answerText(st);
+    act.append(h('div', { class:'fb ' + r, role:'status' },
+      h('div', { class:'v' }, r === 'ok' ? T.ok : r === 'close' ? T.close : T.ng, S.gain ? h('small', null, '+' + S.gain) : null),
+      r === 'close' ? h('div', { class:'msg' }, T.closeMsg(a)) : r === 'ng' ? h('div', { class:'msg' }, T.ngMsg(a)) : h('div', { class:'msg' }),
+      h('button', { class:'next', type:'button', id:'nextBtn', onclick:nextQ }, T.next + ' ›', h('span', { class:'kbd' }, T.enter))));
+  } else {
+    act.append(h('p', { class:'prompt' }, T.prompt));
+    if (D.answer === 'choice') {
+      if (!S.choiceSet) {
+        const pool = shuffle(L.stations.filter(s => answerText(s) !== answerText(st)));
+        const seen = new Set([answerText(st)]), opts = [st];
+        for (const s of pool) { if (opts.length >= 4) break; if (!seen.has(answerText(s))) { seen.add(answerText(s)); opts.push(s); } }
+        S.choiceSet = shuffle(opts);
+        S.gone = new Set(shuffle(opts.filter(o => o !== st)).slice(0, 2));
+      }
+      const box = h('div', { class:'choices' });
+      S.choiceSet.forEach(s => {
+        const gone = S.cut && S.gone.has(s);
+        box.append(h('button', { type:'button', class:'glyph' + (gone ? ' gone' : ''), lang: D.lang === 'ja' ? 'ja' : 'ko', disabled:gone,
+          onclick:() => { S.picked = s; answer(s === st ? 'ok' : 'ng'); } }, answerText(s)));
+      });
+      act.append(box);
+    } else {
+      const inp = h('input', { id:'ans', type:'text', autocomplete:'off', autocapitalize:'off', spellcheck:'false', placeholder:T.ph, lang: D.lang === 'ja' ? 'ja' : 'ko', 'aria-label':T.prompt });
+      act.append(h('form', { class:'ansrow', onsubmit:e => { e.preventDefault(); const r = E.judge(D.lang, st, inp.value); if (r) answer(r, inp.value); } },
+        inp, h('button', { class:'go', type:'submit' }, T.go)));
+    }
+    const sub = h('div', { class:'subrow' },
+      h('button', { class:'sbtn', type:'button', 'aria-pressed': String(S.hintOpen), onclick:toggleHint }, S.hintOpen ? T.hintClose : '💡 ' + T.hintBtn));
+    if (D.answer === 'choice' && S.hintUsed) sub.append(h('button', { class:'sbtn', type:'button', disabled:S.cut, onclick:() => { S.cut = true; renderPlay(); } }, '✂ ' + T.cut));
+    sub.append(h('button', { class:'sbtn', type:'button', onclick:skip }, T.skip + ' ›'));
+    act.append(sub);
+  }
+  m.append(act);
+  if (S.hintOpen || S.done) { const hn = renderHint(st); hn.style.marginTop = '12px'; m.append(hn); }
+
+  setTimeout(() => {
+    if (S.view !== 'play' || !$('ov').hidden) return;
+    if (S.done) { const b = $('nextBtn'); if (b) b.focus({ preventScroll:true }); }
+    else { const i = $('ans'); if (i) i.focus({ preventScroll:true }); }
+  }, 30);
+}
+
+function toggleHint() {
+  S.hintOpen = !S.hintOpen;
+  if (S.hintOpen) S.hintUsed = true;
+  const v = $('ans') ? $('ans').value : '';
+  renderPlay();
+  if ($('ans')) $('ans').value = v;
+}
+
+function renderHint(st) {
+  const T = t(), box = h('div', { class:'hint' });
+  if (D.lang === 'ja') {
+    const chars = [...st.hangul].filter(c => E.decompose(c));
+    chars.forEach((c, i) => {
+      const b = E.blockInfo(c);
+      const part = (cls, j, snd, unit) => {
+        const k = level(unit) === 2 && !S.done;
+        return h('span', { class:'jm ' + cls + (k ? ' known' : ''), lang:'ko' }, j, h('small', null, k ? T.known : snd));
+      };
+      const kk = st.country === 'jp' && st.chunks[i] && S.done ? E.toKata(st.chunks[i].k) : null;
+      box.append(h('div', { class:'blk' },
+        h('span', { class:'g glyph', lang:'ko' }, c),
+        h('span', { class:'parts' },
+          part('L', b.L, b.Lsnd, 'L:' + b.L), part('V', b.V, b.Vsnd, 'V:' + b.V),
+          b.T ? part('T', b.T, b.Tsnd, 'T:' + b.T) : null),
+        h('span', { class:'shape' }, T.shape[b.shape] + (b.T ? T.fin : '')),
+        kk ? h('span', { class:'kk' }, kk) : null));
+    });
+    box.append(h('span', { class:'hint-note' }, T.hintNote));
+    if (st.country === 'kr') box.append(h('span', { class:'hint-note' }, T.hintNoteKR));
+  } else {
+    const q = question(st).text;
+    E.moraeAny(q).forEach(mo => {
+      const unit = (/[ァ-ヺ]/.test(mo) ? 'K:' : 'H:') + mo;
+      const k = mo !== 'ー' && level(unit) === 2 && !S.done;
+      box.append(h('div', { class:'blk' },
+        h('span', { class:'g glyph', lang:'ja', style:'font-size:1.6rem' }, mo),
+        h('span', { class:'jm L' + (k ? ' known' : ''), lang:'ko', style:'font-size:1.2rem' }, k ? T.known : E.moraHangul(mo))));
+    });
+    box.append(h('span', { class:'hint-note' }, st.country === 'kr' ? T.hintNoteKR : T.hintNote));
+  }
+  return box;
+}
+
+function answer(r, raw) {
+  if (S.done || S.over) return;
+  S.done = true; S.result = r; S.lastInput = raw;
+  const st = S.cur, units = unitsOf(st), K = know();
+  if (r === 'ok' || r === 'close') {
+    S.stats[r]++;
+    S.streak++;
+    let g = r === 'ok' ? 10 : 5;
+    if (S.hintUsed) g = Math.floor(g / 2);
+    if (S.streak >= 3) g += 2;
+    if (D.answer === 'choice') { S.gain = 0; S.usedChoice = true; } else { S.gain = g; S.score += g; }
+    const got = badges(S.line);
+    if (!got[st.idx]) { got[st.idx] = 1; S.newB.push(st.idx); }
+    const add = D.answer === 'choice' ? PTS.choice : PTS.input;
+    units.forEach(u => {
+      const shown = S.hintUsed && level(u) < 2;
+      K[u] = Math.min(99, (K[u] || 0) + (shown ? PTS.hinted : add));
+    });
+  } else {
+    S.stats.ng++; S.streak = 0; S.gain = 0; if (D.answer === 'choice') S.usedChoice = true;
+    units.forEach(u => { if ((K[u] || 0) > PTS.learned) K[u] = PTS.learned; });
+  }
+  save();
+  renderPlay();
+}
+function skip() { S.streak = 0; nextQ(); }
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && !$('ov').hidden) { closeOv(); return; }
+  if (e.key === 'Enter' && !e.repeat && S.view === 'play' && S.done && !S.over && $('ov').hidden) {
+    e.preventDefault(); nextQ();
+  }
+});
+
+function endRun(why) {
+  if (S.over) return;
+  S.over = true; stopTimer();
+  const T = t(), id = S.line, L = LINES[id];
+  const bests = D.best[D.lang];
+  const scored = !S.usedChoice;
+  const newBest = scored && (bests[id] == null || S.score > bests[id]);
+  if (newBest && (S.score > 0 || why === 'time')) bests[id] = S.score;
+  save();
+  const nowCleared = isCleared(id) && !S.clearedBefore;
+  const all = ORDER[D.lang].every(isCleared);
+  const unlocked = !S.s1Before && stage1Done() && !D.openAll;
+  const sh = $('sheet'); sh.replaceChildren(); sh.className = 'sheet result';
+  sh.append(
+    h('span', { style:'--c:' + L.color }, symEl(id)),
+    h('div', { class:'big' }, why === 'time' ? T.timeUp : T.quitT),
+    scored ? h('div', { class:'score' }, S.score, h('small', { style:'font-size:1.2rem' }, T.pt))
+           : h('div', { class:'score' }, S.stats.ok + S.stats.close, h('small', { style:'font-size:1.2rem' }, T.qUnit)),
+    scored ? null : h('div', { class:'sub' }, T.practice),
+    newBest && S.score > 0 ? h('div', { class:'sub', style:'color:var(--ok);font-weight:900' }, T.newBest) : null,
+    h('div', { class:'stats' },
+      h('span', null, T.statOk + ' ', h('b', null, S.stats.ok)),
+      h('span', null, T.statClose + ' ', h('b', null, S.stats.close)),
+      h('span', null, T.statNg + ' ', h('b', null, S.stats.ng))),
+    h('div', { class:'sub' }, T.newBadges(S.newB.length) + ' · ' + T.badges + ' ' + badgeCount(id) + '/' + L.stations.length));
+  if (S.newB.length) sh.append(h('div', { class:'stgrid', style:'justify-content:center;--c:' + L.color },
+    S.newB.map(i => h('span', { class:'badge got glyph', lang: L.country === 'jp' ? 'ja' : 'ko' }, L.stations[i].name))));
+  if (nowCleared) sh.append(h('div', { class:'fb ok', style:'width:100%' }, h('div', { class:'v' }, '🎉 ' + T.lineClear(lineName(id)))));
+  if (all && nowCleared) sh.append(h('div', { class:'cert' }, h('div', { class:'ttl' }, '🏅 ' + T.master), h('div', { class:'sub' }, T.masterSub)));
+  else if (unlocked) sh.append(h('div', { class:'fb ok', style:'width:100%' }, h('div', { class:'v', style:'font-size:1rem' }, T.unlock)));
+  sh.append(h('div', { class:'rowbtns' },
+    h('button', { class:'pbtn', type:'button', onclick:() => { closeOv(); startRun(id); } }, T.again),
+    h('button', { class:'gbtn', type:'button', onclick:() => { closeOv(); showColl(); } }, T.collBtn),
+    h('button', { class:'gbtn', type:'button', onclick:() => { closeOv(); viewLines(); } }, T.toLinesBtn)));
+  viewLines();
+  openOv();
+}
+
+/* ---------- developer page (logo x5) ---------- */
+function longBar(kana) {           // とうきょう -> とーきょー
+  const ms = E.morae(E.toHira(kana)); let out = '', prev = '';
+  for (const m of ms) {
+    const r = E.hepburn(m), v = r ? r[r.length - 1] : '';
+    if ((m === 'う' && (prev === 'o' || prev === 'u')) || (m === 'お' && prev === 'o')) { out += 'ー'; prev = ''; continue; }
+    out += m; prev = (m === 'っ' || m === 'ん') ? '' : v;
+  }
+  return out;
+}
+function dropLong(kana) { return longBar(kana).replace(/ー/g, ''); }
+const VOICE = { か:'が',き:'ぎ',く:'ぐ',け:'げ',こ:'ご',さ:'ざ',し:'じ',す:'ず',せ:'ぜ',そ:'ぞ',た:'だ',ち:'ぢ',て:'で',と:'ど',は:'ば',ひ:'び',ふ:'ぶ',へ:'べ',ほ:'ぼ' };
+const UNVOICE = Object.fromEntries(Object.entries(VOICE).map(([a, b]) => [b, a]));
+function swapFirstVoice(kana) { const h0 = E.toHira(kana); const c = h0[0]; const r = VOICE[c] || UNVOICE[c]; return r ? r + h0.slice(1) : null; }
+function hangulVariants(hs) {
+  const out = new Set([hs, hs.replace(/쓰/g, '츠'), hs.replace(/초/g, '쵸').replace(/조/g, '죠').replace(/주/g, '쥬').replace(/추/g, '츄')]);
+  const d = E.decompose(hs[0]);
+  if (d) { const asp = { 0:15, 3:16, 12:14 }[d.L]; if (asp != null) out.add(String.fromCharCode(0xAC00 + (asp * 21 + d.V) * 28 + d.T) + hs.slice(1)); }
+  return [...out];
+}
+function dropBatchimS(hs) { return [...hs].map(c => { const d = E.decompose(c); return d && d.T === 19 ? String.fromCharCode(0xAC00 + (d.L * 21 + d.V) * 28) : c; }).join(''); }
+function mrStyle(rr) {
+  const w = rr.replace(/eo/g, 'ŏ').replace(/eu/g, 'ŭ');
+  return [w.replace(/^g/, 'k').replace(/^d/, 't').replace(/^b/, 'p').replace(/^j/, 'ch'),
+          w.replace(/(?<!n)g/g, 'k').replace(/d/g, 't').replace(/b/g, 'p').replace(/j/g, 'ch')];
+}
+const cap = x => x.charAt(0).toUpperCase() + x.slice(1);
+function examples(st) {
+  const J = v => E.judge(/[가-힣]/.test(v) ? 'ko' : 'ja', st, v);
+  let okC, closeC;
+  if (st.country === 'jp') {
+    const hep = E.hepburn(st.kana);
+    const mac = hep.replace(/ou/g, 'ō').replace(/oo/g, 'ō').replace(/uu/g, 'ū');
+    okC = [st.kana, E.toKata(st.kana), longBar(st.kana), E.toKata(longBar(st.kana)), st.name, ...st.alt, st.roma, hep, cap(mac), ...hangulVariants(st.hangul)];
+    closeC = [dropLong(st.kana), E.toKata(dropLong(st.kana)), swapFirstVoice(st.kana), E.kanaChunks(st.kana, true).map(c => c.h).join(''), dropBatchimS(st.hangul)];
+  } else {
+    okC = [st.name, ...st.koAlt, st.kata, E.toHira(st.kata), st.roma, ...st.rrAlt];
+    closeC = [...mrStyle(st.rrAlt[0]).map(cap), dropBatchimS(st.name)];
+  }
+  const uniq = a => [...new Set(a.filter(Boolean))];
+  return { ok: uniq(okC).filter(v => J(v) === 'ok'), close: uniq(closeC).filter(v => J(v) === 'close') };
+}
+let devFilter = { line:'all', q:'', test:'', notes:false };
+const NKEY = 'ekiyomi.devnotes';
+let NOTES = { all:'', st:{} };
+try { const n = JSON.parse(localStorage.getItem(NKEY) || 'null'); if (n) NOTES = Object.assign(NOTES, n); } catch(e) {}
+NOTES.st = NOTES.st || {};
+const saveNotes = () => { try { localStorage.setItem(NKEY, JSON.stringify(NOTES)); } catch(e) {} };
+
+function viewDev() {
+  stopTimer(); S = { view:'dev' }; renderBar();
+  const m = $('main'); m.replaceChildren(); m.classList.add('wide');
+  const ids = Object.keys(LINES);
+  const rows = [];
+  ids.forEach(id => LINES[id].stations.forEach(st => {
+    rows.push({ id, st, key: id + ':' + st.idx, ex: examples(st),
+      kana: st.country === 'jp' ? st.kana : E.toHira(st.kata), kata: st.country === 'jp' ? E.toKata(st.kana) : st.kata });
+  }));
+  const sel = h('select', { id:'devLine', class:'devsel' }, h('option', { value:'all' }, '全路線'), ids.map(id => h('option', { value:id }, LINES[id].name.ja)));
+  sel.value = devFilter.line;
+  const q = h('input', { id:'devQ', class:'devin', type:'search', placeholder:'しぼりこみ（どの表記でも）', value:devFilter.q });
+  const test = h('input', { id:'devT', class:'devin', type:'text', placeholder:'ためし打ち：答えを入れると判定', value:devFilter.test, autocomplete:'off', spellcheck:'false' });
+  const onlyNotes = h('label', { class:'devchk' }, h('input', { type:'checkbox', id:'devN', checked:devFilter.notes }), ' メモありだけ');
+  const sum = h('div', { class:'devsum', role:'status' });
+  const msg = h('span', { class:'devmsg', role:'status' });
+  const grid = h('div', { class:'devgrid' });
+  const ta = h('textarea', { class:'devta', hidden:true, readonly:true, 'aria-label':'コピー用テキスト' });
+  const chip = (r, l) => r === 'ok' ? h('span', { class:'dchip ok' }, l + ' 正解') : r === 'close' ? h('span', { class:'dchip close' }, l + ' おしい') : null;
+  const noteCount = () => Object.values(NOTES.st).filter(v => v && v.trim()).length;
+  const memoAll = h('textarea', { id:'devMemo', class:'devmemo', placeholder:'全体メモ（駅に関係ない気づき）。書いたら自動で保存', rows:3 });
+  memoAll.value = NOTES.all || '';
+  memoAll.addEventListener('input', () => { NOTES.all = memoAll.value; saveNotes(); });
+
+  function tile(r, rj, rk, hit) {
+    const L = LINES[r.id], has = !!(NOTES.st[r.key] && NOTES.st[r.key].trim());
+    const note = h('textarea', { class:'devnote', rows:2, placeholder:'この駅のメモ', hidden: !has && !r.open });
+    note.value = NOTES.st[r.key] || '';
+    const nbtn = h('button', { class:'nbtn' + (has ? ' has' : ''), type:'button', 'aria-label':'メモ', title:'メモ' }, has ? '📝 メモあり' : '📝');
+    note.addEventListener('input', () => {
+      NOTES.st[r.key] = note.value; if (!note.value.trim()) delete NOTES.st[r.key]; saveNotes();
+      const hz = !!note.value.trim(); nbtn.textContent = hz ? '📝 メモあり' : '📝'; nbtn.classList.toggle('has', hz); card.classList.toggle('noted', hz);
+    });
+    nbtn.addEventListener('click', () => { r.open = note.hidden; note.hidden = !note.hidden; if (!note.hidden) note.focus(); });
+    const card = h('div', { class:'dtile' + (hit ? ' hit-' + hit : '') + (has ? ' noted' : ''), style:'--c:' + L.color },
+      h('div', { class:'dthead' },
+        h('span', { class:'num' }, r.st.code),
+        h('span', { class:'dtname glyph', lang: r.st.country === 'jp' ? 'ja' : 'ko' }, r.st.name),
+        h('span', { class:'dtline' }, L.name.ja), nbtn),
+      h('dl', { class:'dtforms' },
+        h('dt', null, 'かな'), h('dd', { lang:'ja' }, r.kana + ' ／ ' + r.kata),
+        h('dt', null, 'ハングル'), h('dd', { class:'glyph', lang:'ko' }, r.st.hangul),
+        h('dt', null, 'ローマ字'), h('dd', { class:'num' }, r.st.roma)),
+      h('div', { class:'dtex' }, h('span', { class:'dtlbl ok' }, '正解'), r.ex.ok.map(v => h('span', { class:'dex ok' }, v))),
+      h('div', { class:'dtex' }, h('span', { class:'dtlbl close' }, 'おしい'), r.ex.close.length ? r.ex.close.map(v => h('span', { class:'dex close' }, v)) : h('span', { class:'muted' }, '—')),
+      (rj || rk) ? h('div', { class:'dtex' }, chip(rj, '日'), chip(rk, '韓')) : null,
+      note);
+    return card;
+  }
+  function draw() {
+    grid.replaceChildren();
+    const fq = devFilter.q.trim().toLowerCase(), tv = devFilter.test.trim();
+    let nOk = 0, nClose = 0, shown = 0;
+    rows.forEach(r => {
+      if (devFilter.line !== 'all' && r.id !== devFilter.line) return;
+      if (devFilter.notes && !(NOTES.st[r.key] && NOTES.st[r.key].trim())) return;
+      const hay = [r.st.name, r.kana, r.kata, r.st.hangul, r.st.roma, r.st.code, ...r.ex.ok, ...r.ex.close, NOTES.st[r.key] || ''].join(' ').toLowerCase();
+      if (fq && !hay.includes(fq)) return;
+      let rj = null, rk = null;
+      if (tv) { rj = E.judge('ja', r.st, tv); rk = E.judge('ko', r.st, tv); }
+      const hit = rj === 'ok' || rk === 'ok' ? 'ok' : rj === 'close' || rk === 'close' ? 'close' : '';
+      if (hit === 'ok') nOk++; else if (hit === 'close') nClose++;
+      if (tv && !hit) return;
+      shown++;
+      grid.append(tile(r, rj === 'ng' ? null : rj, rk === 'ng' ? null : rk, hit));
+    });
+    sum.textContent = (tv ? '「' + tv + '」→ 正解 ' + nOk + '駅 / おしい ' + nClose + '駅' : shown + '駅を表示中（全' + rows.length + '駅）') + ' ・ メモ ' + noteCount() + '件';
+  }
+  sel.addEventListener('change', () => { devFilter.line = sel.value; draw(); });
+  q.addEventListener('input', () => { devFilter.q = q.value; draw(); });
+  test.addEventListener('input', () => { devFilter.test = test.value; draw(); });
+  onlyNotes.querySelector('input').addEventListener('change', e => { devFilter.notes = e.target.checked; draw(); });
+
+  const copyText = (txt, okMsg) => {
+    const fallback = () => { ta.hidden = false; ta.value = txt; ta.focus(); ta.select(); msg.textContent = '下の枠を選んでコピーして'; };
+    try { navigator.clipboard.writeText(txt).then(() => { ta.hidden = true; msg.textContent = okMsg; }, fallback); } catch(e) { fallback(); }
+  };
+  const copyTsv = h('button', { class:'sbtn', type:'button', onclick:() => {
+    const lines = [['路線','番号','表記','ひらがな','カタカナ','ハングル','ローマ字','正解になる例','おしいになる例','メモ'].join('\t')];
+    rows.forEach(r => lines.push([LINES[r.id].name.ja, r.st.code, r.st.name, r.kana, r.kata, r.st.hangul, r.st.roma, r.ex.ok.join(' / '), r.ex.close.join(' / '), (NOTES.st[r.key] || '').replace(/\s+/g, ' ')].join('\t')));
+    copyText(lines.join('\n'), '一覧をコピーした（' + rows.length + '駅）');
+  } }, '一覧をコピー（TSV）');
+  const copyNotes = h('button', { class:'sbtn', type:'button', onclick:() => {
+    const out = ['【全体メモ】', (NOTES.all || '').trim() || '（なし）', '', '【駅メモ】'];
+    const st = rows.filter(r => NOTES.st[r.key] && NOTES.st[r.key].trim());
+    if (!st.length) out.push('（なし）');
+    st.forEach(r => out.push('・' + LINES[r.id].name.ja + ' ' + r.st.code + ' ' + r.st.name + '：' + NOTES.st[r.key].trim()));
+    copyText(out.join('\n'), 'メモをコピーした（駅メモ' + st.length + '件）');
+  } }, '📝 メモをまとめてコピー');
+
+  m.append(
+    h('div', { class:'ptop' },
+      h('button', { class:'back', type:'button', onclick:() => viewStart() }, '‹ タイトル'),
+      h('span', { class:'pline' }, '🛠 開発者ページ')),
+    h('p', { class:'muted', style:'margin:0 0 10px;font-size:.85rem' }, '例はルールから作って、実際の判定で確かめたものだけ表示。「日」は日本語版、「韓」は韓国語版の判定。メモはこのブラウザだけに保存。'),
+    memoAll,
+    h('div', { class:'devbar' }, sel, q, test, onlyNotes),
+    h('div', { class:'devbar' }, sum, copyNotes, copyTsv, msg),
+    ta, grid);
+  draw();
+}
+
+/* ---------- overlays ---------- */
+function openOv() { $('ov').hidden = false; const f = $('sheet').querySelector('button'); if (f) f.focus(); }
+function closeOv() {
+  $('ov').hidden = true; $('sheet').className = 'sheet';
+  if (S.view === 'play') { const x = S.done ? $('nextBtn') : $('ans'); if (x) x.focus({ preventScroll:true }); }
+}
+$('ov').addEventListener('click', e => { if (e.target.id === 'ov') closeOv(); });
+
+function seg(label, val, opts, onpick, langAttr) {
+  return h('div', { class:'opt' }, h('span', { class:'ol' }, label),
+    h('div', { class:'seg' }, opts.map(([v, l, fam]) => h('button', { type:'button', 'aria-pressed': String(v === val), lang:langAttr || null,
+      style: fam ? 'font-family:"' + fam + '",inherit' : null, onclick:() => onpick(v) }, l))));
+}
+function showSettings() {
+  const T = t(), sh = $('sheet'); sh.replaceChildren(); sh.className = 'sheet';
+  let armed = false;
+  const rst = h('button', { class:'danger', type:'button', onclick:() => {
+    if (!armed) { armed = true; rst.textContent = T.reset2; return; }
+    const l = D.lang || 'ja';
+    D.badge[l] = {}; D.know[l] = {}; D.best[l] = {}; save(); closeOv(); if (D.lang) viewLines(T.resetDone);
+  } }, T.reset);
+  const redraw = () => {
+    save(); applyLook(); showSettings();
+    if (S.view === 'play' && !S.over) { const v = $('ans') ? $('ans').value : ''; renderPlay(); if ($('ans')) $('ans').value = v; }
+    else if (S.view === 'lines') viewLines(); else if (S.view === 'start') viewStart();
+  };
+  sh.append(
+    h('h3', null, T.setTitle, h('button', { class:'tbtn', type:'button', onclick:closeOv }, T.close_)),
+    seg(T.themeOpt, D.theme, [['light', T.light], ['dark', T.dark]], v => { D.theme = v; redraw(); }),
+    seg(T.ansOpt, D.answer, [['input', T.input], ['choice', T.choice]], v => { D.answer = v; if (S.view === 'play') S.choiceSet = null; redraw(); }),
+    seg(T.kanaOpt, D.kana, [['kata', T.kata], ['hira', T.hira]], v => { D.kana = v; redraw(); }),
+    seg(T.fjOpt, D.fja, FONTS.ja.map(f => [f[0], f[1], f[2]]), v => { D.fja = v; redraw(); }, 'ja'),
+    h('div', { class:'fontprev glyph', lang:'ja' }, 'ギンザ ぎんざ 銀座'),
+    seg(T.fkOpt, D.fko, FONTS.ko.map(f => [f[0], f[1], f[2]]), v => { D.fko = v; redraw(); }, 'ko'),
+    h('div', { class:'fontprev glyph', lang:'ko' }, '긴자 명동 강남'));
+  if (D.lang) sh.append(seg(T.openOpt, D.openAll ? 'all' : 'no', [['no', T.openNo], ['all', T.openAll]], v => { D.openAll = v === 'all'; redraw(); }), rst);
+  openOv();
+}
+
+/* ---------- collection ---------- */
+function availableUnits() {
+  const set = new Set();
+  for (const id in LINES) for (const s of LINES[id].stations) {
+    if (D.lang === 'ja') E.hangulUnits(s.hangul).forEach(u => set.add(u));
+    else { const k = s.country === 'jp' ? s.kana : s.kata;
+      E.kanaUnits(E.toKata(k)).forEach(u => set.add(u)); E.kanaUnits(E.toHira(k)).forEach(u => set.add(u)); }
+  }
+  return set;
+}
+function showColl(tab) {
+  const T = t(), sh = $('sheet'); sh.replaceChildren(); sh.className = 'sheet coll';
+  const tabs = D.lang === 'ja' ? [['st', T.tStations], ['hg', T.tHangul]] : [['st', T.tStations], ['K', T.tKata], ['H', T.tHira]];
+  tab = tab || S.collTab || 'st'; S.collTab = tab;
+  sh.append(h('h3', null, T.coll, h('button', { class:'tbtn', type:'button', onclick:closeOv }, T.close_)),
+    h('div', { class:'tabs' }, tabs.map(([k, l]) => h('button', { type:'button', 'aria-pressed': String(k === tab), onclick:() => showColl(k) }, l))));
+  if (tab === 'st') {
+    ORDER[D.lang].forEach(id => {
+      const L = LINES[id], got = badges(id);
+      sh.append(h('h4', null, lineName(id), h('span', null, badgeCount(id) + '/' + L.stations.length)),
+        h('div', { class:'stgrid', style:'--c:' + L.color },
+          L.stations.map(s => got[s.idx]
+            ? h('span', { class:'badge got glyph', lang: L.country === 'jp' ? 'ja' : 'ko' }, s.name)
+            : h('span', { class:'badge no' }, '？'))));
+    });
+  } else {
+    const avail = availableUnits();
+    sh.append(h('div', { class:'legend' },
+      h('span', null, h('i', { style:'background:var(--sign)' }), T.lv0),
+      h('span', null, h('i', { style:'background:color-mix(in srgb,var(--lv1) 50%,var(--sign));border-color:var(--lv1)' }), T.lv1),
+      h('span', null, h('i', { style:'background:color-mix(in srgb,var(--lv2) 50%,var(--sign));border-color:var(--lv2)' }), T.lv2),
+      h('span', null, h('i', { style:'border-style:dashed' }), T.lvVoid)));
+    const grid = (title, items, langAttr, sub) => {
+      const cells = items.map(([unit, label, note]) => {
+        const lv = level(unit), v = !avail.has(unit);
+        return h('div', { class:'cell' + (v ? ' void' : lv === 2 ? ' l2' : lv === 1 ? ' l1' : ''), title: note || '' },
+          h('b', { class:'glyph', lang:langAttr }, label), note ? h('span', null, note) : null);
+      });
+      const done = items.filter(([u]) => level(u) === 2).length;
+      return [h('h4', null, title, h('span', null, done + '/' + items.length)), h('div', { class:'cgrid' }, cells)];
+    };
+    if (tab === 'hg') {
+      const snd = { L:i => E.L_SND[E.L_J.indexOf(i)], V:i => E.V_KANA[E.V_J.indexOf(i)], T:i => E.T_KANA[E.T_J.indexOf(i)] || '' };
+      const mk = (pre, arr) => arr.map(j => ['' + pre + ':' + j, j, snd[pre](j)]);
+      sh.append(...grid(T.gL, mk('L', H_L), 'ko'), ...grid(T.gV, mk('V', H_V), 'ko'), ...grid(T.gT, mk('T', H_T), 'ko'),
+        ...grid(T.gRare, mk('L', H_L_RARE).concat(mk('V', H_V_RARE), mk('T', H_T_RARE)), 'ko'));
+    } else {
+      const conv = tab === 'K' ? E.toKata : E.toHira;
+      const mk = arr => arr.map(k => { const s = conv(k); return [tab + ':' + s, s, E.moraHangul(k)]; });
+      sh.append(...grid(T.gBase, mk(KANA_BASE), 'ja'), ...grid(T.gDaku, mk(KANA_DAKU), 'ja'),
+        ...grid(T.gYoon, mk(KANA_YOON), 'ja'), ...grid(T.gSmall, mk(KANA_SMALL), 'ja'), ...grid(T.gRare, mk(KANA_RARE), 'ja'));
+    }
+  }
+  openOv();
+}
+
+$('bSet').addEventListener('click', showSettings);
+$('bColl').addEventListener('click', () => showColl());
+let taps = [];
+$('logo').addEventListener('click', () => {
+  const now = Date.now();
+  taps = taps.filter(x => now - x < 2000); taps.push(now);
+  if (taps.length >= 5) { taps = []; viewDev(); return; }
+  if (S.view !== 'start') viewStart();
+});
+
+applyLook();
+if (D.lang) viewLines(); else viewStart();
+})();
+</script>
+
+</body>
+</html>
