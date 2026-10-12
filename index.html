@@ -42,6 +42,8 @@
 
 *{box-sizing:border-box}
 [hidden]{display:none!important}
+.flag{display:inline-block;height:.95em;width:auto;aspect-ratio:3/2;vertical-align:-.12em;border:1px solid var(--rule);border-radius:2px;margin-right:.35em;background:#fff}
+.sign-foot .flag{margin-right:-.6em}
 html{-webkit-text-size-adjust:100%}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-ja);line-height:1.6;font-size:15px}
 :lang(ko){font-family:var(--f-ko)}
@@ -55,6 +57,8 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline
 .bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-bottom:1px solid var(--rule)}
 .bar-in{max-width:720px;margin:0 auto;padding:10px 16px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
 .logo{display:flex;align-items:baseline;gap:8px;font-weight:900;font-size:1.15rem;letter-spacing:.02em;background:none;border:0;padding:0}
+.logo{align-items:center}
+.logo .appicon{width:1.6em;height:1.6em;border-radius:.3em;flex:none;align-self:center}
 .logo small{font-family:var(--f-ko);font-weight:700;color:var(--muted);font-size:.85rem}
 .bar-btns{margin-left:auto;display:flex;gap:6px;flex-wrap:wrap}
 .tbtn{border:1px solid var(--rule);background:var(--panel);border-radius:999px;padding:4px 12px;font-size:.85rem;font-weight:700}
@@ -223,6 +227,19 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline
 .pbtn{border:0;border-radius:8px;background:var(--accent);color:var(--sign);font-weight:900;padding:10px 20px}
 .gbtn{border:1px solid var(--rule);border-radius:8px;background:var(--sign);font-weight:700;padding:10px 20px}
 /* developer page */
+.devsrc{margin-bottom:12px;border:1px solid var(--rule);border-radius:8px;padding:8px 12px;background:var(--panel)}
+.devsrc summary{cursor:pointer;font-weight:700}
+.devsrc .devwrap{margin-top:8px;overflow-x:auto;border:0}
+.srctab{border-collapse:collapse;font-size:.82rem;min-width:760px;width:100%}
+.srctab th{text-align:left;font-size:.75rem;color:var(--muted);padding:6px 8px;border-bottom:1px solid var(--rule)}
+.srctab td{padding:6px 8px;border-bottom:1px solid var(--rule);vertical-align:top}
+.srcnum{font-weight:700;white-space:nowrap}
+.srcsrc{font-size:.72rem;color:var(--muted)}
+.dtsrc{display:grid;gap:2px;font-size:.75rem;border-top:1px dashed var(--rule);padding-top:4px}
+.srow{display:flex;flex-wrap:wrap;gap:4px 6px;align-items:baseline}
+.srow b{font-size:.72rem;min-width:4.5em}
+.srow span{color:var(--muted)}
+.srow.diff .soff{color:var(--close);font-weight:700}
 .wrap.wide{max-width:1400px}
 .muted{color:var(--muted)}
 .devbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:10px}
@@ -259,6 +276,10 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline
 .dchip{display:inline-block;border-radius:999px;padding:0 8px;font-size:.75rem;font-weight:700;margin:1px}
 .dchip.ok{background:var(--ok);color:var(--bg)}
 .dchip.close{background:var(--close);color:var(--bg)}
+.dchip.mean{background:var(--accent);color:var(--bg)}
+.dtlbl.mean{color:var(--accent)}
+.dex.mean{background:color-mix(in srgb,var(--accent) 12%,var(--sign));border:1px solid color-mix(in srgb,var(--accent) 40%,transparent)}
+.sign-foot .sub{flex-basis:100%;text-align:center;font-size:.85rem}
 @media (prefers-reduced-motion:no-preference){
   .sign.flip{animation:flip .3s ease}
   @keyframes flip{from{transform:translateY(6px);opacity:.4}to{transform:none;opacity:1}}
@@ -285,7 +306,7 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline
 /* ---------- kana utils ---------- */
 const toHira = s => s.replace(/[ァ-ヶ]/g, c => String.fromCharCode(c.charCodeAt(0) - 0x60));
 const toKata = s => s.replace(/[ぁ-ゖ]/g, c => String.fromCharCode(c.charCodeAt(0) + 0x60));
-const SMALL_Y = 'ゃゅょ';
+const SMALL_Y = 'ゃゅょぁぃぅぇぉ';  // a mora can be a kana + small kana (きゃ, うぇ, てぃ)
 
 const ROMA = {
   あ:'a',い:'i',う:'u',え:'e',お:'o',か:'ka',き:'ki',く:'ku',け:'ke',こ:'ko',が:'ga',ぎ:'gi',ぐ:'gu',げ:'ge',ご:'go',
@@ -307,7 +328,10 @@ function morae(h) {
   }
   return out;
 }
+const SMALLV_ROMA = { うぃ:'wi',うぇ:'we',うぉ:'wo',てぃ:'ti',でぃ:'di',とぅ:'tu',どぅ:'du',ふぁ:'fa',ふぃ:'fi',ふぇ:'fe',ふぉ:'fo',
+  しぇ:'she',じぇ:'je',ちぇ:'che',くぁ:'kwa',ぐぁ:'gwa',くぇ:'kwe',ぐぇ:'gwe',つぁ:'tsa',ゔぁ:'va' };
 function moraRoma(m) {
+  if (m.length === 2 && 'ぁぃぅぇぉ'.includes(m[1])) return SMALLV_ROMA[m] || (ROMA[m[0]] || '');
   if (m.length === 2) {
     const base = ROMA[m[0]] || '';
     const v = { ゃ:'a', ゅ:'u', ょ:'o' }[m[1]];
@@ -335,7 +359,8 @@ function hepburn(h) {
   return s;
 }
 function romaDisplay(h) {
-  let s = hepburn(h).replace(/ou/g, 'o').replace(/oo/g, 'o').replace(/uu/g, 'u');
+  // station-sign style: long vowels folded, n written m before b/m/p (Shimbashi, Namba)
+  let s = hepburn(h).replace(/ou/g, 'o').replace(/oo/g, 'o').replace(/uu/g, 'u').replace(/n(?=[bmp])/g, 'm');
   return s.charAt(0).toUpperCase() + s.slice(1);
 }
 
@@ -374,7 +399,9 @@ const KH = {
   ちゃ:['자','차'],ちゅ:['주','추'],ちょ:['조','초'],
   にゃ:'냐',にゅ:'뉴',にょ:'뇨',ひゃ:'햐',ひゅ:'휴',ひょ:'효',
   びゃ:'뱌',びゅ:'뷰',びょ:'뵤',ぴゃ:'퍄',ぴゅ:'퓨',ぴょ:'표',
-  みゃ:'먀',みゅ:'뮤',みょ:'묘',りゃ:'랴',りゅ:'류',りょ:'료'
+  みゃ:'먀',みゅ:'뮤',みょ:'묘',りゃ:'랴',りゅ:'류',りょ:'료',
+  うぃ:'위',うぇ:'웨',うぉ:'워',てぃ:'티',でぃ:'디',とぅ:'투',どぅ:'두',ふぁ:'파',ふぃ:'피',ふぇ:'페',ふぉ:'포',
+  しぇ:'셰',じぇ:'제',ちぇ:'체',くぁ:'과',ぐぁ:'과',くぇ:'궤',ぐぇ:'궤'
 };
 /* returns [{h:'긴', k:'ぎん'}...] one entry per Hangul block */
 function kanaChunks(kana, keepLong) {
@@ -445,7 +472,7 @@ function collapseKana(s) {
 }
 /* very loose kana for Korean station names typed by Japanese users */
 function looseKanaKR(s) {
-  let h = toHira(s).replace(/[\sー・･っ]/g, '').replace(/を/g, 'お').replace(/[じぢ]/g, 'ち').replace(/[ずづ]/g, 'つ');
+  let h = toHira(s).replace(/[\sー・･っ()（）]/g, '').replace(/を/g, 'お').replace(/[じぢ]/g, 'ち').replace(/[ずづ]/g, 'つ');
   h = h.normalize('NFD').replace(/[゙゚]/g, '').normalize('NFC');
   return h;
 }
@@ -498,13 +525,29 @@ const JP = {
     ['四谷三丁目','よつやさんちょうめ'],['四ツ谷','よつや','四谷'],['赤坂見附','あかさかみつけ'],['国会議事堂前','こっかいぎじどうまえ'],['霞ケ関','かすみがせき'],
     ['銀座','ぎんざ'],['東京','とうきょう'],['大手町','おおてまち'],['淡路町','あわじちょう'],['御茶ノ水','おちゃのみず','お茶の水'],
     ['本郷三丁目','ほんごうさんちょうめ'],['後楽園','こうらくえん'],['茗荷谷','みょうがだに'],['新大塚','しんおおつか'],['池袋','いけぶくろ'] ]},
-    { label:{ja:'方南町支線',ko:'호난초 지선'}, codes:['m05','m04','m03'], st:[
+    { label:{ja:'方南町支線',ko:'호난초 지선'}, codes:['Mb05','Mb04','Mb03'], st:[
     ['中野新橋','なかのしんばし'],['中野富士見町','なかのふじみちょう'],['方南町','ほうなんちょう'] ]}]},
   midosuji: { name:{ja:'御堂筋線',ko:'미도스지선'}, color:'#E5171F', country:'jp', prefix:'M', start:11, sections:[{ st:[
     ['江坂','えさか'],['東三国','ひがしみくに'],['新大阪','しんおおさか'],['西中島南方','にしなかじまみなみがた'],['中津','なかつ'],
     ['梅田','うめだ'],['淀屋橋','よどやばし'],['本町','ほんまち'],['心斎橋','しんさいばし'],['なんば','なんば','難波'],
     ['大国町','だいこくちょう'],['動物園前','どうぶつえんまえ'],['天王寺','てんのうじ'],['昭和町','しょうわちょう'],['西田辺','にしたなべ'],
     ['長居','ながい'],['あびこ','あびこ','我孫子'],['北花田','きたはなだ'],['新金岡','しんかなおか'],['なかもず','なかもず','中百舌鳥'] ]}]},
+  yamanote: { name:{ja:'山手線',ko:'야마노테선'}, color:'#80C241', country:'jp', prefix:'JY', start:1, sections:[{ st:[
+    ['東京','とうきょう'],['神田','かんだ'],['秋葉原','あきはばら'],['御徒町','おかちまち'],['上野','うえの'],['鶯谷','うぐいすだに'],
+    ['日暮里','にっぽり'],['西日暮里','にしにっぽり'],['田端','たばた'],['駒込','こまごめ'],['巣鴨','すがも'],['大塚','おおつか'],
+    ['池袋','いけぶくろ'],['目白','めじろ'],['高田馬場','たかだのばば'],['新大久保','しんおおくぼ'],['新宿','しんじゅく'],['代々木','よよぎ'],
+    ['原宿','はらじゅく'],['渋谷','しぶや'],['恵比寿','えびす'],['目黒','めぐろ'],['五反田','ごたんだ'],['大崎','おおさき'],
+    ['品川','しながわ'],['高輪ゲートウェイ','たかなわげーとうぇい','Takanawa Gateway'],['田町','たまち'],['浜松町','はままつちょう'],
+    ['新橋','しんばし'],['有楽町','ゆうらくちょう'] ]}]},
+  tokaido: { name:{ja:'東海道・山陽新幹線',ko:'도카이도·산요 신칸센'}, color:'#1A5CA8', country:'jp', prefix:'', start:0, sections:[
+    { label:{ja:'東海道新幹線',ko:'도카이도 신칸센'}, nocode:true, st:[
+    ['東京','とうきょう'],['品川','しながわ'],['新横浜','しんよこはま'],['小田原','おだわら'],['熱海','あたみ'],['三島','みしま'],
+    ['新富士','しんふじ'],['静岡','しずおか'],['掛川','かけがわ'],['浜松','はままつ'],['豊橋','とよはし'],['三河安城','みかわあんじょう'],
+    ['名古屋','なごや'],['岐阜羽島','ぎふはしま'],['米原','まいばら'],['京都','きょうと'],['新大阪','しんおおさか'] ]},
+    { label:{ja:'山陽新幹線',ko:'산요 신칸센'}, nocode:true, st:[
+    ['新神戸','しんこうべ'],['西明石','にしあかし'],['姫路','ひめじ'],['相生','あいおい'],['岡山','おかやま'],['新倉敷','しんくらしき'],
+    ['福山','ふくやま'],['新尾道','しんおのみち'],['三原','みはら'],['東広島','ひがしひろしま'],['広島','ひろしま'],['新岩国','しんいわくに'],
+    ['徳山','とくやま'],['新山口','しんやまぐち'],['厚狭','あさ'],['新下関','しんしものせき'],['小倉','こくら'],['博多','はかた'] ]} ]},
   monorail: { name:{ja:'東京モノレール',ko:'도쿄 모노레일'}, color:'#0072BC', country:'jp', prefix:'MO', start:1, sections:[{ st:[
     ['モノレール浜松町','ものれーるはままつちょう','浜松町'],['天王洲アイル','てんのうずあいる'],['大井競馬場前','おおいけいばじょうまえ'],['流通センター','りゅうつうせんたー'],
     ['昭和島','しょうわじま'],['整備場','せいびじょう'],['天空橋','てんくうばし'],['羽田空港第3ターミナル','はねだくうこうだいさんたーみなる'],
@@ -532,6 +575,19 @@ const KR = {
     ['용답','ヨンダプ','yongdap'],['신답','シンダプ','sindap'],['용두','ヨンドゥ','yongdu'],['신설동','シンソルトン','sinseoldong'] ]},
     { label:{ja:'新亭支線',ko:'신정지선'}, codes:['234-1','234-2','234-3','234-4'], st:[
     ['도림천','トリムチョン','dorimcheon'],['양천구청','ヤンチョングチョン','yangcheongucheong'],['신정네거리','シンジョンネゴリ','sinjeongnegeori'],['까치산','カチサン','kkachisan'] ]}]},
+  seoul4: { name:{ja:'ソウル4号線',ko:'서울 4호선'}, color:'#00A5DE', country:'kr', prefix:'', start:409, sections:[{ st:[
+    ['불암산','プラムサン','buramsan'],['상계','サンゲ','sanggye'],['노원','ノウォン','nowon'],['창동','チャンドン','changdong'],
+    ['쌍문','サンムン','ssangmun'],['수유','スユ','suyu'],['미아','ミア','mia'],['미아사거리','ミアサゴリ','miasageori'],['길음','キルム','gireum'],
+    ['성신여대입구','ソンシンヨデイック','seongsinyeodaeipgu'],['한성대입구','ハンソンデイック','hanseongdaeipgu'],['혜화','ヘファ','hyehwa'],
+    ['동대문','トンデムン','dongdaemun'],['동대문역사문화공원','トンデムンヨクサムンファゴンウォン','dongdaemunyeoksamunhwagongwon'],
+    ['충무로','チュンムロ','chungmuro'],['명동','ミョンドン','myeongdong'],['회현','フェヒョン','hoehyeon'],['서울역','ソウルヨク','seoulyeok'],
+    ['숙대입구','スクテイック','sukdaeipgu'],['삼각지','サムガクチ','samgakji'],['신용산','シニョンサン','sinyongsan'],['이촌','イチョン','ichon'],
+    ['동작','トンジャク','dongjak'],['총신대입구','チョンシンデイック','chongsindaeipgu'],['사당','サダン','sadang'],['남태령','ナムテリョン','namtaeryeong'] ]}]},
+  ktx: { name:{ja:'KTX京釜線',ko:'KTX 경부선'}, color:'#1B3F94', country:'kr', prefix:'', start:0, sections:[{ nocode:true, st:[
+    ['서울','ソウル','seoul',{ ko:['서울역'], kata:['ソウルヨク'] }],['광명','クァンミョン','gwangmyeong'],['천안아산','チョナンアサン','cheonanasan'],
+    ['오송','オソン','osong'],['대전','テジョン','daejeon'],['김천(구미)','キムチョン(クミ)','gimcheon(gumi)',{ ko:['김천'], kata:['キムチョン'], rr:['gimcheon'] }],
+    ['서대구','ソデグ','seodaegu'],['동대구','トンデグ','dongdaegu'],['경주','キョンジュ','gyeongju',{ ko:['신경주'], kata:['シンギョンジュ'], rr:['singyeongju'] }],
+    ['울산','ウルサン','ulsan',{ ko:['울산통도사'] }],['부산','プサン','busan',{ ko:['부산역'], kata:['プサンヨク'] }] ]}]},
   busan1: { name:{ja:'釜山1号線',ko:'부산 1호선'}, color:'#F06A00', country:'kr', prefix:'', start:95, sections:[{ st:[
     ['다대포해수욕장','タデポヘスヨクチャン','dadaepohaesuyokjang'],['다대포항','タデポハン','dadaepohang'],['낫개','ナッケ','natgae'],['신장림','シンジャンニム','sinjangnim'],
     ['장림','チャンニム','jangnim'],['동매','トンメ','dongmae'],['신평','シンピョン','sinpyeong'],['하단','ハダン','hadan'],['당리','タンニ','dangni'],
@@ -549,6 +605,54 @@ const KR = {
     ['인천공항1터미널','インチョンコンハンイルトミノル','incheongonghang1teomineol'],['인천공항2터미널','インチョンコンハンイトミノル','incheongonghang2teomineol'] ]}]}
 };
 
+/* official katakana (Seoul Metro CSV 2024-11-01 / namu.wiki); my earlier spelling stays accepted */
+const OFFICIAL_KATA = {
+  seoul2: { '을지로입구':'ウルチロイック','동대문역사문화공원':'トンデムンヨクサムンファゴンウォン','뚝섬':'トゥッソム','건대입구':'コンデイック',
+    '종합운동장':'チョンハブンドンジャン','선릉':'ソンルン','역삼':'ヨッサム','서울대입구':'ソウルデイック','신림':'シンリム',
+    '구로디지털단지':'クロ・デジタルダンジ','문래':'ムンレ','홍대입구':'ホンデイック' },
+  busan1: { '남포':'ナンポ','좌천':'チュアチョン' },
+  arex: { '홍대입구':'ホンデイック','디지털미디어시티':'デジタルメディアシティ','김포공항':'キンポゴンハン' }
+};
+/* answers by meaning (Wikipedia / official sign / namu.wiki): count as "correct (meaning)" */
+const MEANING_JP = {  // Japanese station -> Korean meaning-translation
+  '国会議事堂前':['국회의사당','국회의사당앞'], '動物園前':['동물원앞','동물원'],
+  'モノレール浜松町':['모노레일하마마쓰초'], '天王洲アイル':['덴노즈아일'], '流通センター':['류쓰센터'],
+  '高輪ゲートウェイ':['다카나와게이트웨이'],
+  '羽田空港第3ターミナル':['하네다공항제3터미널'], '羽田空港第1ターミナル':['하네다공항제1터미널'], '羽田空港第2ターミナル':['하네다공항제2터미널']
+};
+const MEANING_KR = {  // Korean station -> Japanese kanji / meaning (official Japanese map, namu.wiki)
+  '서울역':['ソウル駅'],'시청':['市庁'],'종각':['鐘閣'],'종로3가':['鐘路3街'],'종로5가':['鐘路5街'],'동대문':['東大門'],'동묘앞':['東廟前'],
+  '신설동':['新設洞'],'제기동':['祭基洞'],'청량리':['清凉里','清涼里'],
+  '을지로입구':['乙支路入口'],'을지로3가':['乙支路3街'],'을지로4가':['乙支路4街'],'동대문역사문화공원':['東大門歴史文化公園'],'신당':['新堂'],
+  '상왕십리':['上往十里'],'왕십리':['往十里'],'한양대':['漢陽大'],'성수':['聖水'],'건대입구':['建大入口'],'구의':['九宜'],'강변':['江辺'],
+  '잠실나루':['蚕室ナル'],'잠실':['蚕室'],'종합운동장':['綜合運動場','総合運動場'],'삼성':['三成'],'선릉':['宣陵'],'역삼':['駅三'],'강남':['江南'],
+  '교대':['教大','釜山教育大学'],'서초':['瑞草'],'방배':['方背'],'사당':['舎堂'],'낙성대':['落星垈'],'서울대입구':['ソウル大入口'],'봉천':['奉天'],
+  '신림':['新林'],'신대방':['新大方'],'구로디지털단지':['九老デジタル団地'],'대림':['大林'],'신도림':['新道林'],'문래':['文来'],
+  '영등포구청':['永登浦区庁'],'당산':['堂山'],'합정':['合井'],'홍대입구':['弘大入口'],'신촌':['新村'],'이대':['梨大'],'아현':['阿峴'],
+  '충정로':['忠正路'],'용답':['龍踏'],'신답':['新踏'],'용두':['龍頭'],'도림천':['道林川'],'양천구청':['陽川区庁'],'신정네거리':['新亭ネゴリ','新亭四差路'],
+  '다대포해수욕장':['多大浦海水浴場'],'다대포항':['多大浦港'],'신장림':['新長林'],'장림':['長林'],'신평':['新平'],'하단':['下端'],'당리':['堂里'],
+  '사하':['沙下'],'괴정':['槐亭'],'서대신':['西大新'],'토성':['土城'],'남포':['南浦'],'중앙':['中央'],'부산역':['釜山駅','釜山'],'초량':['草梁'],
+  '좌천':['佐川'],'범일':['凡一'],'서면':['西面'],'부전':['釜田'],'양정':['楊亭'],'연산':['蓮山'],'동래':['東萊'],'명륜':['明倫'],
+  '온천장':['温泉場'],'부산대':['釜山大学','釜山大'],'장전':['長箭'],'구서':['久瑞'],'두실':['斗実'],'남산':['南山'],'범어사':['梵魚寺'],'노포':['老圃'],
+  '불암산':['仏岩山'],'상계':['上渓'],'노원':['蘆原'],'창동':['倉洞'],'쌍문':['双門'],'수유':['水踰'],'미아':['弥阿'],'미아사거리':['弥阿サゴリ'],
+  '길음':['吉音'],'성신여대입구':['誠信女大入口'],'한성대입구':['漢城大入口'],'혜화':['恵化'],'충무로':['忠武路'],'명동':['明洞'],'회현':['会賢'],
+  '숙대입구':['淑大入口'],'삼각지':['三角地'],'신용산':['新龍山'],'이촌':['二村'],'동작':['銅雀'],'총신대입구':['総神大入口'],'남태령':['南泰嶺'],
+  '서울':['ソウル駅','ソウル'],'광명':['光明'],'천안아산':['天安牙山'],'오송':['五松'],'대전':['大田'],'김천(구미)':['金泉(亀尾)','金泉亀尾','金泉'],
+  '서대구':['西大邱'],'동대구':['東大邱'],'경주':['慶州','新慶州'],'울산':['蔚山'],'부산':['釜山','釜山駅'],
+  '공덕':['孔徳'],'마곡나루':['麻谷渡口','麻谷ナル'],'김포공항':['金浦空港','キンポ空港'],'계양':['桂陽'],'검암':['黔岩'],
+  '청라국제도시':['青羅国際都市'],'영종':['永宗'],'운서':['雲西'],'공항화물청사':['空港貨物ターミナル'],
+  '인천공항1터미널':['仁川国際空港1ターミナル'],'인천공항2터미널':['仁川国際空港2ターミナル']
+};
+/* sub-station names of Korean stations (Seoul Metro CSV), Korean only */
+const SUB_KR = { '수유':'강북구청','미아':'서울사이버대학','성신여대입구':'돈암','한성대입구':'삼선교','회현':'남대문시장','숙대입구':'갈월',
+  '이촌':'국립중앙박물관','동작':'현충원','총신대입구':'이수','청량리':'서울시립대입구','왕십리':'성동구청','구의':'광진구청','강변':'동서울터미널',
+  '잠실':'송파구청','삼성':'무역센터','교대':'법원·검찰청','낙성대':'강감찬','서울대입구':'관악구청','대림':'구로구청','신촌':'지하','충정로':'경기대입구','용두':'동대문구청', '울산':'통도사' };
+/* sub-station names shown after answering (Korean Wikipedia) */
+const SUB_JP = {
+  '銀座':['松屋・三越前','마쓰야·미쓰코시 앞'], '京橋':['明治屋前','메이지야 앞'], '日本橋':['高島屋前','다카시마야 앞'],
+  '上野広小路':['松坂屋前','마쓰자카야 앞'], '西新宿':['東京医大病院前','도쿄의대병원 앞'], '新宿三丁目':['伊勢丹前','이세탄 앞'],
+  '大手町':['サンケイ前','산케이 앞'], '新宿御苑前':['新宿御苑','신주쿠 교엔'], '国会議事堂前':['国会議事堂','국회의사당']
+};
 const SINO = { 1:'일', 2:'이', 3:'삼', 4:'사', 5:'오' };
 const SINO_R = { 1:'il', 2:'i', 3:'sam', 4:'sa', 5:'o' };
 const SINO_K = { 1:'イル', 2:'イ', 3:'サム', 4:'サ', 5:'オ' };
@@ -563,21 +667,29 @@ function buildLines() {
     src.sections.forEach((sec, si) => {
       sec.st.forEach((row, i) => {
         let code;
-        if (sec.codes) code = sec.codes[i];
+        if (sec.nocode) code = '';
+        else if (sec.codes) code = sec.codes[i];
         else { code = src.prefix + (src.prefix ? String(n).padStart(2, '0') : String(n)); n += (src.step || 1); }
         let s;
         if (src.country === 'jp') {
-          const [kanji, kana, ...alt] = row;
+          const [kanji, kana, ...rest] = row;
+          const alt = rest.filter(x => !/^[\x20-\x7E]+$/.test(x)), romaAlt = rest.filter(x => /^[\x20-\x7E]+$/.test(x));
           const chunks = kanaChunks(kana);
-          s = { country:'jp', name:kanji, kana, alt, hangul: chunks.map(c => c.h).join(''), chunks, roma: romaDisplay(kana) };
+          let roma = romaAlt[0] || romaDisplay(kana);
+          if (!romaAlt.length && kanji.length >= 3 && kanji[0] === '新' && /^Shin/.test(roma)) roma = 'Shin-' + roma.charAt(4).toUpperCase() + roma.slice(5);  // Shin-Osaka
+          s = { country:'jp', name:kanji, kana, alt, romaAlt, hangul: chunks.map(c => c.h).join(''), chunks, roma,
+                meaning: MEANING_JP[kanji] || [], sub: SUB_JP[kanji] || null };
         } else {
-          const [ko, kata, rr] = row;
-          const koAlt = [ko], rrAlt = [rr];
+          const [ko, kata, rr, extra = {}] = row;
+          const koAlt = [ko, ...(extra.ko || [])], rrAlt = [rr, ...(extra.rr || [])];
           if (/\d/.test(ko)) {
             koAlt.push(ko.replace(/\d/g, d => SINO[d]));
             rrAlt.push(rr.replace(/\d/g, d => SINO_R[d]));
           }
-          s = { country:'kr', name:ko, kata, koAlt, rrAlt, hangul: ko, roma: rr.charAt(0).toUpperCase() + rr.slice(1) };
+          const off = OFFICIAL_KATA[id] && OFFICIAL_KATA[id][ko];
+          s = { country:'kr', name:ko, kata: off || kata, kataAlt: (off ? [kata] : []).concat(extra.kata || []), koAlt, rrAlt, hangul: ko,
+                roma: rr.charAt(0).toUpperCase() + rr.slice(1), meaning: MEANING_KR[ko] || [], official: !!off,
+                sub: SUB_KR[ko] ? [null, SUB_KR[ko]] : null };
         }
         s.code = code; s.section = si; s.idx = stations.length;
         stations.push(s);
@@ -608,29 +720,47 @@ function strictKana(s) {
 }
 const rrStrict = s => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]/g, '');
 
+/* Japanese numbers in a Hangul answer: 신주쿠3초메 -> 신주쿠산초메 */
+const JP_NUM_H = { 0:['제로','레이'], 1:['이치','잇'], 2:['니'], 3:['산'], 4:['욘','시'], 5:['고'], 6:['로쿠','롯'], 7:['나나','시치'], 8:['하치','핫'], 9:['규','구'] };
+function digitVariants(a) {
+  let out = [a.replace(/\s/g, '')];
+  for (let guard = 0; guard < 4 && out.some(x => /\d/.test(x)); guard++)
+    out = out.flatMap(x => { const m = x.match(/\d/); return m ? JP_NUM_H[m[0]].map(r => x.replace(m[0], r)) : [x]; });
+  return out.filter(x => !/\d/.test(x));
+}
+const normMeaning = s => normKanji(s).replace(/[・･·\s]/g, '').replace(/역$/, '');
+function meaningMatch(st, a) {
+  if (!st.meaning || !st.meaning.length) return false;
+  const n = normMeaning(a);
+  return st.meaning.some(m => normMeaning(m) === n || (hasHangul(a) && looseH(m) === looseH(a)));
+}
+
 function judge(mode, st, raw) {
   const a = (raw || '').trim();
   if (!a) return null;
   const isRoma = /[a-z]/i.test(a) && !hasKana(a) && !hasHangul(a);
   if (st.country === 'jp') {
+    const hv = hasHangul(a) ? (/\d/.test(a) ? digitVariants(a) : [a]) : [];
     const ok =
       (hasKana(a) && strictKana(a) === strictKana(st.kana)) ||
       [st.name, ...st.alt].some(n => normKanji(n) === normKanji(a)) ||
-      (isRoma && romaJP(a) === romaJP(hepburn(st.kana))) ||
-      (hasHangul(a) && looseH(a) === looseH(st.hangul));
+      (isRoma && [hepburn(st.kana), ...(st.romaAlt || [])].some(r => romaJP(r) === romaJP(a))) ||
+      hv.some(v => looseH(v) === looseH(st.hangul));
     if (ok) return 'ok';
+    if (meaningMatch(st, a)) return 'meaning';
     if (/^[ぁ-ゖァ-ヺー\s・･]+$/.test(a)) {
       if (collapseKana(a) === collapseKana(st.kana)) return 'close';
       if (mode === 'ja' && looseH(kanaToHangul(a)) === looseH(st.hangul)) return 'close';
     }
-    if (hasHangul(a) && looseH(a, true) === looseH(st.hangul, true)) return 'close';
+    if (hv.some(v => looseH(v, true) === looseH(st.hangul, true))) return 'close';
     return 'ng';
   } else {
     const ok =
       (hasHangul(a) && st.koAlt.some(k => looseH(k) === looseH(a))) ||
       (isRoma && st.rrAlt.some(r => rrStrict(r) === rrStrict(a))) ||
-      (hasKana(a) && looseKanaKR(a) === looseKanaKR(st.kata));
+      (hasKana(a) && [st.kata, ...(st.kataAlt || [])].some(k => looseKanaKR(k) === looseKanaKR(a)));
     if (ok) return 'ok';
+    if (meaningMatch(st, a)) return 'meaning';
     if (isRoma && st.rrAlt.some(r => romaKR(r) === romaKR(a))) return 'close'; // older McCune-Reischauer etc.
     if (hasHangul(a) && st.koAlt.some(k => looseH(k, true) === looseH(a, true))) return 'close';
     return 'ng';
@@ -670,7 +800,7 @@ function moraHangul(m) {
 }
 
 G.EKI = { toHira, toKata, morae, hepburn, romaDisplay, kanaChunks, kanaToHangul, decompose, blockInfo,
-  looseH, collapseKana, strictKana, looseKanaKR, romaJP, romaKR, buildLines, judge, hangulUnits, kanaUnits, moraeAny, moraHangul, L_J, V_J, T_J, L_SND, V_KANA, T_KANA };
+  looseH, collapseKana, strictKana, looseKanaKR, romaJP, romaKR, buildLines, judge, meaningMatch, hangulUnits, kanaUnits, moraeAny, moraHangul, L_J, V_J, T_J, L_SND, V_KANA, T_KANA };
 })(typeof window !== 'undefined' ? window : globalThis);
 
 </script>
@@ -679,10 +809,14 @@ G.EKI = { toHira, toKata, morae, hepburn, romaDisplay, kanaChunks, kanaToHangul,
 'use strict';
 const E = window.EKI;
 const LINES = E.buildLines();
-const ORDER = { ja:['ginza','marunouchi','midosuji','monorail','seoul1','seoul2','busan1','arex'], ko:['seoul1','seoul2','busan1','arex','ginza','marunouchi','midosuji','monorail'] };
-const SYM = { ginza:'G', marunouchi:'M', midosuji:'M', monorail:'MO', seoul1:'1', seoul2:'2', busan1:'1', arex:'A' };
+const ORDER = { ja:['ginza','marunouchi','midosuji','monorail','yamanote','tokaido','seoul1','seoul2','seoul4','busan1','arex','ktx'], ko:['seoul1','seoul2','seoul4','busan1','arex','ktx','ginza','marunouchi','midosuji','monorail','yamanote','tokaido'] };
+const SYM = { ginza:'G', marunouchi:'M', midosuji:'M', monorail:'MO', seoul1:'1', seoul2:'2', seoul4:'4', busan1:'1', arex:'A', yamanote:'JY', tokaido:'新', ktx:'K' };
 const symEl = (id, extra) => h('span', { class:'sym' + (SYM[id].length > 1 ? ' two' : '') + (extra || ''), style: extra ? null : null }, SYM[id]);
 const RUN_MS = 3 * 60 * 1000;
+/* flags drawn as SVG (emoji flags do not show on Windows) */
+const FLAG_SRC = { jp:'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20900%20600%22%3E%3Crect%20fill%3D%22%23fff%22%20width%3D%22900%22%20height%3D%22600%22/%3E%3Ccircle%20fill%3D%22%23bc002d%22%20cx%3D%22450%22%20cy%3D%22300%22%20r%3D%22180%22/%3E%3C/svg%3E', kr:'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20xmlns%3Axlink%3D%22http%3A//www.w3.org/1999/xlink%22%20viewBox%3D%22-36%20-24%2072%2048%22%3E%3Crect%20fill%3D%22%23fff%22%20x%3D%22-36%22%20y%3D%22-24%22%20width%3D%2272%22%20height%3D%2248%22/%3E%3Cg%20transform%3D%22rotate%28-56.3099325%29%22%3E%3Cg%20id%3D%22b2%22%3E%3Cpath%20id%3D%22b%22%20d%3D%22M-6-25H6M-6-22H6M-6-19H6%22%20stroke%3D%22%23000%22%20stroke-width%3D%222%22/%3E%3Cuse%20xlink%3Ahref%3D%22%23b%22%20y%3D%2244%22/%3E%3C/g%3E%3Cpath%20stroke%3D%22%23fff%22%20stroke-width%3D%221%22%20d%3D%22M0%2C17v10%22/%3E%3Ccircle%20fill%3D%22%23cd2e3a%22%20r%3D%2212%22/%3E%3Cpath%20fill%3D%22%230047a0%22%20d%3D%22M0-12A6%2C6%200%200%200%200%2C0A6%2C6%200%200%201%200%2C12A12%2C12%200%200%2C1%200-12z%22/%3E%3C/g%3E%3Cg%20transform%3D%22rotate%28-123.6900675%29%22%3E%3Cuse%20xlink%3Ahref%3D%22%23b2%22/%3E%3Cpath%20stroke%3D%22%23fff%22%20stroke-width%3D%221%22%20d%3D%22M0-23.5v3M0%2C17v3.5M0%2C23.5v3%22/%3E%3C/g%3E%3C/svg%3E' };
+const APP_ICON = 'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Cdefs%3E%3CclipPath%20id%3D%22r%22%3E%3Crect%20x%3D%222%22%20y%3D%222%22%20width%3D%2260%22%20height%3D%2260%22%20rx%3D%2212%22/%3E%3C/clipPath%3E%3C/defs%3E%3Cg%20clip-path%3D%22url%28%23r%29%22%3E%3Crect%20x%3D%220%22%20y%3D%220%22%20width%3D%2232%22%20height%3D%2264%22%20fill%3D%22%23F39700%22/%3E%3Crect%20x%3D%2232%22%20y%3D%220%22%20width%3D%2232%22%20height%3D%2264%22%20fill%3D%22%2300A84D%22/%3E%3C/g%3E%3Cpath%20d%3D%22M9%209H25M17%209V24M8%2024H26%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%224.5%22%20stroke-linecap%3D%22round%22/%3E%3Cpath%20d%3D%22M8%2037H26M7%2047H27M15%2031L19%2057%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%224.5%22%20stroke-linecap%3D%22round%22/%3E%3Ccircle%20cx%3D%2241.5%22%20cy%3D%2217%22%20r%3D%226.5%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%224.5%22/%3E%3Cpath%20d%3D%22M57%209V35M49%2016H57M49%2028H57%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%224.5%22%20stroke-linecap%3D%22round%22/%3E%3Cpath%20d%3D%22M37%2043H57V57%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%224.5%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22/%3E%3C/svg%3E';
+const flag = c => h('img', { class:'flag', src: FLAG_SRC[c === 'ja' ? 'jp' : c === 'ko' ? 'kr' : c], alt:'' });
 const PTS = { input:3, choice:2, hinted:1, learned:2, mastered:6 };
 
 const FONTS = {
@@ -711,7 +845,8 @@ const TXT = {
     prompt:'この駅名、なんて読む？', ph:'かな・漢字・ローマ字で', go:'答える',
     hintBtn:'ヒント', hintClose:'ヒントをとじる', cut:'2つ消す', skip:'スキップ', next:'次へ', quit:'やめる', toLines:'路線',
     enter:'Enterでも進む',
-    ok:'正解！', close:'おしい！', ng:'ちがう…',
+    ok:'正解！', close:'おしい！', ng:'ちがう…', meaning:'正解！（意味訳）',
+    meaningMsg:a=>'意味で読めた。音で読むと「'+a+'」。', subL:'副駅名',
     closeMsg:a=>'読みは合ってる。駅名は「'+a+'」。', ngMsg:a=>'答えは「'+a+'」。',
     hintNote:'青＝子音 緑＝母音 黄＝パッチム ／ ✓は覚えた部品',
     hintNoteKR:'ㅓとㅗはどちらも「オ」、ㅡとㅜはどちらも「ウ」に聞こえる',
@@ -745,7 +880,8 @@ const TXT = {
     prompt:'이 역 이름, 어떻게 읽을까요?', ph:'한글 또는 로마자로', go:'확인',
     hintBtn:'힌트', hintClose:'힌트 닫기', cut:'2개 지우기', skip:'건너뛰기', next:'다음', quit:'그만하기', toLines:'노선',
     enter:'Enter로도 넘어가요',
-    ok:'정답!', close:'아깝다!', ng:'틀렸어요…',
+    ok:'정답!', close:'아깝다!', ng:'틀렸어요…', meaning:'정답! (의미 번역)',
+    meaningMsg:a=>'뜻으로 읽었어요. 소리대로는 「'+a+'」.', subL:'부역명',
     closeMsg:a=>'읽기는 맞았어요. 표기는 「'+a+'」.', ngMsg:a=>'정답은 「'+a+'」.',
     hintNote:'일본어 장음(ー, う)은 한글로 쓰지 않아요. ッ는 받침 ㅅ, ン은 받침 ㄴ. ✓는 외운 글자',
     hintNoteKR:'オ는 ㅓ도 ㅗ도 될 수 있고, ウ는 ㅜ도 ㅡ도 될 수 있어요',
@@ -857,10 +993,10 @@ function renderBar() {
   const T = t(), inGame = !!D.lang && S.view !== 'start' && S.view !== 'dev';
   $('main').classList.toggle('wide', S.view === 'dev');
   const lg = $('logo'), ko = uiLang() === 'ko';
-  lg.replaceChildren(ko ? h('span', { lang:'ko' }, '역읽기') : h('span', { lang:'ja' }, 'えきよみ'), h('small', { lang: ko ? 'ja' : 'ko' }, ko ? 'えきよみ' : '역읽기'));
+  lg.replaceChildren(h('img', { class:'appicon', src:APP_ICON, alt:'' }), ko ? h('span', { lang:'ko' }, '역읽기') : h('span', { lang:'ja' }, 'えきよみ'), h('small', { lang: ko ? 'ja' : 'ko' }, ko ? 'えきよみ' : '역읽기'));
   document.title = ko ? '역읽기 えきよみ' : 'えきよみ 역읽기';
   $('bColl').hidden = !inGame;
-  $('bColl').textContent = T.coll; $('bSet').textContent = T.set;
+  $('bColl').textContent = '👑 ' + T.coll; $('bSet').textContent = '⚙️ ' + T.set;
   applyLook();
 }
 
@@ -873,7 +1009,7 @@ function viewStart() {
   const NOTE = { ja:'下の「日本語で表示」を押すと選べる', ko:'아래 「한국어로 보기」를 누르면 선택할 수 있어요' };
   const pickBtn = (lang, who, what, q, a, c) => h('button', { type:'button', lang, disabled: lang !== main, 'aria-disabled': String(lang !== main),
       onclick:() => { if (lang !== main) return; D.lang = lang; D.ui = lang; save(); viewLines(); } },
-    h('span', { class:'who' }, who),
+    h('span', { class:'who' }, flag(lang), who),
     h('span', { class:'mini' },
       h('span', { class:'ms glyph', style:'--c:' + c, lang: lang === 'ja' ? 'ko' : 'ja' }, q),
       h('span', { class:'arrow' }, '→'),
@@ -894,7 +1030,7 @@ function viewStart() {
       h('p', { class:'sub1', lang:other }, H[main].sub)),
     h('div', { class:'pick' }, main === 'ja' ? [jaPick, koPick] : [koPick, jaPick]),
     h('div', { class:'how' },
-      [main, other].map(l => h('div', { lang:l }, h('b', null, TXT[l].howTitle), ' ', TXT[l].how))),
+      [main, other].map(l => h('div', { lang:l }, flag(l), h('b', null, TXT[l].howTitle), ' ', TXT[l].how))),
     h('div', { class:'subrow', style:'margin-top:18px' },
       h('button', { class:'sbtn', type:'button', lang:other, onclick:() => { D.ui = other; save(); viewStart(); } },
         other === 'ko' ? '한국어로 보기' : '日本語で表示'))
@@ -910,7 +1046,7 @@ function viewLines(flash) {
     const ids = ORDER[D.lang].filter(id => stageOf(id) === stg);
     const locked = stg === 2 && !stage1Done() && !D.openAll;
     const sec = h('section', { class:'stage' },
-      h('h2', null, stg === 1 ? T.st1 : T.st2),
+      h('h2', null, flag((stg === 1) === (D.lang === 'ja') ? 'jp' : 'kr'), stg === 1 ? T.st1 : T.st2),
       h('p', { class:'lock' }, locked ? '🔒 ' + T.locked : (stg === 1 ? T.st1sub : T.st2sub)));
     const list = h('div', { class:'lines' });
     ids.forEach(id => {
@@ -918,7 +1054,7 @@ function viewLines(flash) {
       list.append(h('button', { type:'button', class:'lcard', style:'--c:' + L.color, disabled:locked, onclick:() => startRun(id) },
         symEl(id),
         h('span', { style:'min-width:0' },
-          h('span', { class:'lname' }, lineName(id)),
+          h('span', { class:'lname' }, flag(L.country), lineName(id)),
           h('span', { class:'lsub' }, ' ' + T.badges + ' ' + c + '/' + n),
           h('span', { class:'meter' }, h('i', { style:'width:' + (c / n * 100) + '%' }))),
         h('span', { class:'lstat' }, c >= n ? h('span', { class:'done-badge' }, '✓ ' + T.cleared) : c + '/' + n,
@@ -971,7 +1107,7 @@ function renderPlay() {
   m.append(h('div', { class:'ptop', style:'--c:' + L.color },
     h('button', { class:'back', type:'button', onclick:() => viewLines() }, '‹ ' + T.toLines),
     h('span', { class:'pline' }, symEl(S.line), lineName(S.line)),
-    h('button', { class:'quit', type:'button', onclick:() => endRun('quit') }, T.quit)));
+    h('button', { class:'quit', type:'button', onclick:() => endRun('quit') }, '🏳️ ' + T.quit)));
 
   const left = S.end - Date.now();
   m.append(h('div', { class:'hud' },
@@ -995,15 +1131,17 @@ function renderPlay() {
   // sign: station number hidden until answered
   const len = [...q.text].length;
   let codeEl;
-  if (L.country === 'jp') {
+  if (!st.code) codeEl = h('div', { class:'code' + (L.country === 'kr' ? ' kr' : '') }, h('span', { class:'cl' }, SYM[S.line]));  // line without station numbers
+  else if (L.country === 'jp') {
     const letter = st.code.replace(/\d+/, ''), num = st.code.replace(/\D+/, '');
     codeEl = h('div', { class:'code' }, h('span', { class:'cl' }, letter), h('span', { class:'cn' + (S.done ? '' : ' hide') }, S.done ? num : '??'));
   } else codeEl = h('div', { class:'code kr' }, h('span', { class:'cn' + (S.done ? '' : ' hide') }, S.done ? st.code : '??'));
   const foot = h('div', { class:'sign-foot' });
   if (S.done) {
-    if (st.country === 'jp') foot.append(h('span', { class:'k glyph', lang:'ja' }, st.name), h('span', { class:'s glyph', lang:'ja' }, D.lang === 'ja' ? st.kana : kanaDisp(st.kana)), h('span', { class:'s glyph', lang:'ko' }, st.hangul));
-    else foot.append(h('span', { class:'k glyph', lang:'ko' }, st.name), h('span', { class:'s glyph', lang:'ja' }, D.lang === 'ja' ? E.toKata(st.kata) : kanaDisp(st.kata)));
+    if (st.country === 'jp') foot.append(flag('jp'), h('span', { class:'k glyph', lang:'ja' }, st.name), h('span', { class:'s glyph', lang:'ja' }, D.lang === 'ja' ? st.kana : kanaDisp(st.kana)), flag('kr'), h('span', { class:'s glyph', lang:'ko' }, st.hangul));
+    else foot.append(flag('kr'), h('span', { class:'k glyph', lang:'ko' }, st.name), flag('jp'), h('span', { class:'s glyph', lang:'ja' }, D.lang === 'ja' ? E.toKata(st.kata) : kanaDisp(st.kata)));
     foot.append(h('span', { class:'r' }, st.roma));
+    if (st.sub) foot.append(h('span', { class:'s sub' }, T.subL + '：', st.sub[0] ? [h('span', { class:'glyph', lang:'ja' }, st.sub[0]), ' ／ '] : null, h('span', { class:'glyph', lang:'ko' }, st.sub[1])));
   } else foot.append(h('span', { class:'hidden' }, '・・・'));
   m.append(h('div', { class:'sign flip', style:'--c:' + L.color },
     h('div', { class:'sign-band' }),
@@ -1014,9 +1152,9 @@ function renderPlay() {
   const act = h('div', { class:'act' });
   if (S.done) {
     const r = S.result, a = answerText(st);
-    act.append(h('div', { class:'fb ' + r, role:'status' },
-      h('div', { class:'v' }, r === 'ok' ? T.ok : r === 'close' ? T.close : T.ng, S.gain ? h('small', null, '+' + S.gain) : null),
-      r === 'close' ? h('div', { class:'msg' }, T.closeMsg(a)) : r === 'ng' ? h('div', { class:'msg' }, T.ngMsg(a)) : h('div', { class:'msg' }),
+    act.append(h('div', { class:'fb ' + (r === 'meaning' ? 'ok' : r), role:'status' },
+      h('div', { class:'v' }, r === 'ok' ? T.ok : r === 'meaning' ? T.meaning : r === 'close' ? T.close : T.ng, S.gain ? h('small', null, '+' + S.gain) : null),
+      r === 'meaning' ? h('div', { class:'msg' }, T.meaningMsg(a)) : r === 'close' ? h('div', { class:'msg' }, T.closeMsg(a)) : r === 'ng' ? h('div', { class:'msg' }, T.ngMsg(a)) : h('div', { class:'msg' }),
       h('button', { class:'next', type:'button', id:'nextBtn', onclick:nextQ }, T.next + ' ›', h('span', { class:'kbd' }, T.enter))));
   } else {
     act.append(h('p', { class:'prompt' }, T.prompt));
@@ -1043,7 +1181,7 @@ function renderPlay() {
     const sub = h('div', { class:'subrow' },
       h('button', { class:'sbtn', type:'button', 'aria-pressed': String(S.hintOpen), onclick:toggleHint }, S.hintOpen ? T.hintClose : '💡 ' + T.hintBtn));
     if (D.answer === 'choice' && S.hintUsed) sub.append(h('button', { class:'sbtn', type:'button', disabled:S.cut, onclick:() => { S.cut = true; renderPlay(); } }, '✂ ' + T.cut));
-    sub.append(h('button', { class:'sbtn', type:'button', onclick:skip }, T.skip + ' ›'));
+    sub.append(h('button', { class:'sbtn', type:'button', onclick:skip }, '⏭ ' + T.skip));
     act.append(sub);
   }
   m.append(act);
@@ -1103,17 +1241,18 @@ function answer(r, raw) {
   if (S.done || S.over) return;
   S.done = true; S.result = r; S.lastInput = raw;
   const st = S.cur, units = unitsOf(st), K = know();
-  if (r === 'ok' || r === 'close') {
-    S.stats[r]++;
+  if (r === 'ok' || r === 'close' || r === 'meaning') {
+    S.stats[r === 'meaning' ? 'ok' : r]++;
     S.streak++;
-    let g = r === 'ok' ? 10 : 5;
+    let g = r === 'ok' ? 10 : 5;  // a meaning answer scores like "close" 
     if (S.hintUsed) g = Math.floor(g / 2);
     if (S.streak >= 3) g += 2;
     if (D.answer === 'choice') { S.gain = 0; S.usedChoice = true; } else { S.gain = g; S.score += g; }
     const got = badges(S.line);
     if (!got[st.idx]) { got[st.idx] = 1; S.newB.push(st.idx); }
     const add = D.answer === 'choice' ? PTS.choice : PTS.input;
-    units.forEach(u => {
+    // answering by meaning does not read the letters, so it adds no learning points
+    if (r !== 'meaning') units.forEach(u => {
       const shown = S.hintUsed && level(u) < 2;
       K[u] = Math.min(99, (K[u] || 0) + (shown ? PTS.hinted : add));
     });
@@ -1211,9 +1350,77 @@ function examples(st) {
     closeC = [...mrStyle(st.rrAlt[0]).map(cap), dropBatchimS(st.name)];
   }
   const uniq = a => [...new Set(a.filter(Boolean))];
-  return { ok: uniq(okC).filter(v => J(v) === 'ok'), close: uniq(closeC).filter(v => J(v) === 'close') };
+  if (st.country === 'kr') okC.push(...(st.kataAlt || []));
+  return { ok: uniq(okC).filter(v => J(v) === 'ok'), close: uniq(closeC).filter(v => J(v) === 'close'), meaning: uniq(st.meaning || []).filter(v => J(v) === 'meaning') };
 }
-let devFilter = { line:'all', q:'', test:'', notes:false };
+/* ---------- where each answer comes from (developer page) ---------- */
+const KNOW = 'Claudeの知識';
+const SRC_ICON = { ok:'✅', diff:'⚠️', unk:'❓' };
+const NAMU_PART = new Set(['다대포해수욕장','부산역','부산대','청라국제도시','인천공항1터미널','인천공항2터미널']);
+const KR_CSV_KATA = new Set(['seoul1','seoul2','seoul4']);
+const AREX_CSV = new Set(['서울역','공덕','홍대입구','디지털미디어시티','김포공항']);
+function srcOf(id, st) {
+  const out = [];
+  const add = (f, state, src, off) => out.push({ f, state, src, off });
+  if (st.country === 'jp') {
+    const wiki = { ginza:'韓国語版Wikipedia', marunouchi:'韓国語版Wikipedia＋公式韓国語路線図', midosuji:'韓国語版Wikipedia', monorail:'韓国語版Wikipedia' }[id];
+    if (!wiki) {  // lines added without a checked source yet (Yamanote, Tokaido-Sanyo Shinkansen)
+      add('駅リスト', 'unk', KNOW);
+      add('かな', 'unk', KNOW);
+      add('ハングル', 'unk', 'ルール変換（未確認）' + (st.meaning && st.meaning.length ? '（意味訳：' + st.meaning[0] + '）' : ''));
+      add('ローマ字', 'unk', st.romaAlt && st.romaAlt.length ? '公式の英語名' : 'ルール変換（駅名標式）');
+      return out;
+    }
+    add('駅リスト', 'ok', wiki + '（駅番号・順番）');
+    if (id === 'ginza' || id === 'marunouchi') add('かな', 'ok', KNOW + ' → Wikipediaのローマ字と一致');
+    else add('かな', 'unk', KNOW);
+    const mean = st.meaning && st.meaning.length ? '（意味訳：' + st.meaning[0] + '）' : '';
+    add('ハングル', 'ok', 'ルール変換 → ' + wiki + 'と一致' + mean);
+    add('ローマ字', 'unk', 'ルール変換（駅名標式：b・m・p の前は m）');
+  } else {
+    if (id === 'ktx') {
+      add('駅リスト', 'ok', 'Wikipedia（韓国語版、2023年に신경주→경주）');
+      add('ハングル', 'ok', 'ナムウィキ（各駅ページ）');
+      add('カタカナ', 'ok', 'ナムウィキ（各駅ページ）');
+      add('ローマ字', 'unk', KNOW + '（RR式、未確認）');
+      return out;
+    }
+    if (id === 'arex') add('駅リスト', 'ok', 'Wikipedia（韓国語版）');
+    else if (KR_CSV_KATA.has(id)) add('駅リスト', 'ok', 'ソウル交通公社の公式CSV');
+    else add('駅リスト', 'ok', 'ナムウィキ（各駅ページ）');
+    if (id === 'busan1') add('ハングル', 'ok', 'ナムウィキ（各駅ページ）');
+    else add('ハングル', 'ok', id === 'arex' ? 'Wikipedia（韓国語版）' : 'ソウル交通公社の公式CSV');
+    const fixed = st.official ? '（前の表記 ' + st.kataAlt[0] + ' も正解）' : '';
+    if (st.name === '불암산') add('カタカナ', 'ok', 'ナムウィキ（2024年10月31日に당고개から改名。公式CSVは旧名タンゴゲ）');
+    else if (KR_CSV_KATA.has(id) || (id === 'arex' && AREX_CSV.has(st.name))) add('カタカナ', 'ok', 'ソウル交通公社の公式CSV' + fixed);
+    else if (st.name === '동대신') add('カタカナ', 'unk', 'Claudeの手書き（ナムウィキのページが開けず未確認）');
+    else if (st.name === '공항화물청사') add('カタカナ', 'unk', 'Claudeの手書き（ナムウィキは「空港貨物ターミナル」と意味訳のみ）');
+    else if (NAMU_PART.has(st.name)) add('カタカナ', 'ok', 'ナムウィキ（地名部分のカタカナと一致、残りは意味訳）');
+    else add('カタカナ', 'ok', 'ナムウィキ' + fixed);
+    add('ローマ字', 'unk', KNOW + '（RR式、未確認）');
+  }
+  return out;
+}
+const srcWorst = list => list.some(x => x.state === 'diff') ? 'diff' : list.some(x => x.state === 'unk') ? 'unk' : 'ok';
+function srcSummary() {
+  const table = h('table', { class:'srctab' });
+  const fieldsJP = ['駅リスト','かな','ハングル','ローマ字'], fieldsKR = ['駅リスト','ハングル','カタカナ','ローマ字'];
+  const cell = (id, f) => {
+    const c = { ok:0, diff:0, unk:0 }; const srcs = new Set();
+    LINES[id].stations.forEach(st => srcOf(id, st).filter(x => x.f === f).forEach(x => { c[x.state]++; srcs.add(x.src.replace(/（(意味訳|前の表記).*?）/, '')); }));
+    return h('td', null, h('div', { class:'srcnum' }, ['ok','diff','unk'].filter(k => c[k]).map(k => SRC_ICON[k] + c[k]).join(' ')),
+      h('div', { class:'srcsrc' }, [...srcs].join(' ／ ')));
+  };
+  ['jp', 'kr'].forEach(cty => {
+    const fs = cty === 'jp' ? fieldsJP : fieldsKR;
+    table.append(h('tr', null, h('th', null, cty === 'jp' ? '日本の路線' : '韓国の路線'), fs.map(f => h('th', null, f))));
+    Object.keys(LINES).filter(id => LINES[id].country === cty).forEach(id =>
+      table.append(h('tr', null, h('td', null, h('span', { class:'dline', style:'--c:' + LINES[id].color }, LINES[id].name.ja), ' (' + LINES[id].stations.length + ')'), fs.map(f => cell(id, f)))));
+  });
+  return h('details', { class:'devsrc' }, h('summary', null, '📚 出典一覧（路線ごと）　✅確認済み ⚠️公式とちがう ❓未確認'), h('div', { class:'devwrap' }, table));
+}
+
+let devFilter = { line:'all', q:'', test:'', notes:false, src:'all' };
 const NKEY = 'ekiyomi.devnotes';
 let NOTES = { all:'', st:{} };
 try { const n = JSON.parse(localStorage.getItem(NKEY) || 'null'); if (n) NOTES = Object.assign(NOTES, n); } catch(e) {}
@@ -1226,19 +1433,22 @@ function viewDev() {
   const ids = Object.keys(LINES);
   const rows = [];
   ids.forEach(id => LINES[id].stations.forEach(st => {
-    rows.push({ id, st, key: id + ':' + st.idx, ex: examples(st),
+    const src = srcOf(id, st);
+    rows.push({ id, st, src, srcState: srcWorst(src), key: id + ':' + st.idx, ex: examples(st),
       kana: st.country === 'jp' ? st.kana : E.toHira(st.kata), kata: st.country === 'jp' ? E.toKata(st.kana) : st.kata });
   }));
   const sel = h('select', { id:'devLine', class:'devsel' }, h('option', { value:'all' }, '全路線'), ids.map(id => h('option', { value:id }, LINES[id].name.ja)));
   sel.value = devFilter.line;
   const q = h('input', { id:'devQ', class:'devin', type:'search', placeholder:'しぼりこみ（どの表記でも）', value:devFilter.q });
   const test = h('input', { id:'devT', class:'devin', type:'text', placeholder:'ためし打ち：答えを入れると判定', value:devFilter.test, autocomplete:'off', spellcheck:'false' });
+  const srcSel = h('select', { id:'devS', class:'devsel' }, [['all','出典：すべて'],['diff','⚠️ 公式とちがう'],['unk','❓ 未確認あり'],['ok','✅ 全部確認済み']].map(([v,l]) => h('option', { value:v }, l)));
+  srcSel.value = devFilter.src;
   const onlyNotes = h('label', { class:'devchk' }, h('input', { type:'checkbox', id:'devN', checked:devFilter.notes }), ' メモありだけ');
   const sum = h('div', { class:'devsum', role:'status' });
   const msg = h('span', { class:'devmsg', role:'status' });
   const grid = h('div', { class:'devgrid' });
   const ta = h('textarea', { class:'devta', hidden:true, readonly:true, 'aria-label':'コピー用テキスト' });
-  const chip = (r, l) => r === 'ok' ? h('span', { class:'dchip ok' }, l + ' 正解') : r === 'close' ? h('span', { class:'dchip close' }, l + ' おしい') : null;
+  const chip = (r, l) => r === 'ok' ? h('span', { class:'dchip ok' }, l + ' 正解') : r === 'meaning' ? h('span', { class:'dchip mean' }, l + ' 意味訳') : r === 'close' ? h('span', { class:'dchip close' }, l + ' おしい') : null;
   const noteCount = () => Object.values(NOTES.st).filter(v => v && v.trim()).length;
   const memoAll = h('textarea', { id:'devMemo', class:'devmemo', placeholder:'全体メモ（駅に関係ない気づき）。書いたら自動で保存', rows:3 });
   memoAll.value = NOTES.all || '';
@@ -1263,8 +1473,11 @@ function viewDev() {
         h('dt', null, 'かな'), h('dd', { lang:'ja' }, r.kana + ' ／ ' + r.kata),
         h('dt', null, 'ハングル'), h('dd', { class:'glyph', lang:'ko' }, r.st.hangul),
         h('dt', null, 'ローマ字'), h('dd', { class:'num' }, r.st.roma)),
+      h('div', { class:'dtsrc' }, r.src.map(x => h('div', { class:'srow ' + x.state },
+        h('span', { class:'sico' }, SRC_ICON[x.state]), h('b', null, x.f), h('span', null, x.src), x.off ? h('span', { class:'soff' }, '公式：' + x.off) : null))),
       h('div', { class:'dtex' }, h('span', { class:'dtlbl ok' }, '正解'), r.ex.ok.map(v => h('span', { class:'dex ok' }, v))),
       h('div', { class:'dtex' }, h('span', { class:'dtlbl close' }, 'おしい'), r.ex.close.length ? r.ex.close.map(v => h('span', { class:'dex close' }, v)) : h('span', { class:'muted' }, '—')),
+      r.ex.meaning.length ? h('div', { class:'dtex' }, h('span', { class:'dtlbl mean' }, '意味訳'), r.ex.meaning.map(v => h('span', { class:'dex mean' }, v))) : null,
       (rj || rk) ? h('div', { class:'dtex' }, chip(rj, '日'), chip(rk, '韓')) : null,
       note);
     return card;
@@ -1276,11 +1489,12 @@ function viewDev() {
     rows.forEach(r => {
       if (devFilter.line !== 'all' && r.id !== devFilter.line) return;
       if (devFilter.notes && !(NOTES.st[r.key] && NOTES.st[r.key].trim())) return;
-      const hay = [r.st.name, r.kana, r.kata, r.st.hangul, r.st.roma, r.st.code, ...r.ex.ok, ...r.ex.close, NOTES.st[r.key] || ''].join(' ').toLowerCase();
+      if (devFilter.src !== 'all' && r.srcState !== devFilter.src && !(devFilter.src === 'unk' && r.src.some(x => x.state === 'unk'))) return;
+      const hay = [r.st.name, r.kana, r.kata, r.st.hangul, r.st.roma, r.st.code, ...r.ex.ok, ...r.ex.close, ...r.ex.meaning, NOTES.st[r.key] || ''].join(' ').toLowerCase();
       if (fq && !hay.includes(fq)) return;
       let rj = null, rk = null;
       if (tv) { rj = E.judge('ja', r.st, tv); rk = E.judge('ko', r.st, tv); }
-      const hit = rj === 'ok' || rk === 'ok' ? 'ok' : rj === 'close' || rk === 'close' ? 'close' : '';
+      const hit = rj === 'ok' || rk === 'ok' ? 'ok' : rj === 'meaning' || rk === 'meaning' ? 'ok' : rj === 'close' || rk === 'close' ? 'close' : '';
       if (hit === 'ok') nOk++; else if (hit === 'close') nClose++;
       if (tv && !hit) return;
       shown++;
@@ -1291,6 +1505,7 @@ function viewDev() {
   sel.addEventListener('change', () => { devFilter.line = sel.value; draw(); });
   q.addEventListener('input', () => { devFilter.q = q.value; draw(); });
   test.addEventListener('input', () => { devFilter.test = test.value; draw(); });
+  srcSel.addEventListener('change', () => { devFilter.src = srcSel.value; draw(); });
   onlyNotes.querySelector('input').addEventListener('change', e => { devFilter.notes = e.target.checked; draw(); });
 
   const copyText = (txt, okMsg) => {
@@ -1298,8 +1513,8 @@ function viewDev() {
     try { navigator.clipboard.writeText(txt).then(() => { ta.hidden = true; msg.textContent = okMsg; }, fallback); } catch(e) { fallback(); }
   };
   const copyTsv = h('button', { class:'sbtn', type:'button', onclick:() => {
-    const lines = [['路線','番号','表記','ひらがな','カタカナ','ハングル','ローマ字','正解になる例','おしいになる例','メモ'].join('\t')];
-    rows.forEach(r => lines.push([LINES[r.id].name.ja, r.st.code, r.st.name, r.kana, r.kata, r.st.hangul, r.st.roma, r.ex.ok.join(' / '), r.ex.close.join(' / '), (NOTES.st[r.key] || '').replace(/\s+/g, ' ')].join('\t')));
+    const lines = [['路線','番号','表記','ひらがな','カタカナ','ハングル','ローマ字','正解になる例','おしいになる例','出典','メモ'].join('\t')];
+    rows.forEach(r => lines.push([LINES[r.id].name.ja, r.st.code, r.st.name, r.kana, r.kata, r.st.hangul, r.st.roma, r.ex.ok.join(' / '), r.ex.close.join(' / '), r.src.map(x => SRC_ICON[x.state] + x.f + ':' + x.src + (x.off ? '（公式:' + x.off + '）' : '')).join(' / '), (NOTES.st[r.key] || '').replace(/\s+/g, ' ')].join('\t')));
     copyText(lines.join('\n'), '一覧をコピーした（' + rows.length + '駅）');
   } }, '一覧をコピー（TSV）');
   const copyNotes = h('button', { class:'sbtn', type:'button', onclick:() => {
@@ -1315,8 +1530,9 @@ function viewDev() {
       h('button', { class:'back', type:'button', onclick:() => viewStart() }, '‹ タイトル'),
       h('span', { class:'pline' }, '🛠 開発者ページ')),
     h('p', { class:'muted', style:'margin:0 0 10px;font-size:.85rem' }, '例はルールから作って、実際の判定で確かめたものだけ表示。「日」は日本語版、「韓」は韓国語版の判定。メモはこのブラウザだけに保存。'),
+    srcSummary(),
     memoAll,
-    h('div', { class:'devbar' }, sel, q, test, onlyNotes),
+    h('div', { class:'devbar' }, sel, srcSel, q, test, onlyNotes),
     h('div', { class:'devbar' }, sum, copyNotes, copyTsv, msg),
     ta, grid);
   draw();
@@ -1353,9 +1569,9 @@ function showSettings() {
     seg(T.themeOpt, D.theme, [['light', T.light], ['dark', T.dark]], v => { D.theme = v; redraw(); }),
     seg(T.ansOpt, D.answer, [['input', T.input], ['choice', T.choice]], v => { D.answer = v; if (S.view === 'play') S.choiceSet = null; redraw(); }),
     seg(T.kanaOpt, D.kana, [['kata', T.kata], ['hira', T.hira]], v => { D.kana = v; redraw(); }),
-    seg(T.fjOpt, D.fja, FONTS.ja.map(f => [f[0], f[1], f[2]]), v => { D.fja = v; redraw(); }, 'ja'),
+    seg([flag('jp'), T.fjOpt], D.fja, FONTS.ja.map(f => [f[0], f[1], f[2]]), v => { D.fja = v; redraw(); }, 'ja'),
     h('div', { class:'fontprev glyph', lang:'ja' }, 'ギンザ ぎんざ 銀座'),
-    seg(T.fkOpt, D.fko, FONTS.ko.map(f => [f[0], f[1], f[2]]), v => { D.fko = v; redraw(); }, 'ko'),
+    seg([flag('kr'), T.fkOpt], D.fko, FONTS.ko.map(f => [f[0], f[1], f[2]]), v => { D.fko = v; redraw(); }, 'ko'),
     h('div', { class:'fontprev glyph', lang:'ko' }, '긴자 명동 강남'));
   if (D.lang) sh.append(seg(T.openOpt, D.openAll ? 'all' : 'no', [['no', T.openNo], ['all', T.openAll]], v => { D.openAll = v === 'all'; redraw(); }), rst);
   openOv();
@@ -1373,7 +1589,7 @@ function availableUnits() {
 }
 function showColl(tab) {
   const T = t(), sh = $('sheet'); sh.replaceChildren(); sh.className = 'sheet coll';
-  const tabs = D.lang === 'ja' ? [['st', T.tStations], ['hg', T.tHangul]] : [['st', T.tStations], ['K', T.tKata], ['H', T.tHira]];
+  const tabs = D.lang === 'ja' ? [['st', ['🚉 ', T.tStations]], ['hg', [flag('kr'), T.tHangul]]] : [['st', ['🚉 ', T.tStations]], ['K', [flag('jp'), T.tKata]], ['H', [flag('jp'), T.tHira]]];
   tab = tab || S.collTab || 'st'; S.collTab = tab;
   sh.append(h('h3', null, T.coll, h('button', { class:'tbtn', type:'button', onclick:closeOv }, T.close_)),
     h('div', { class:'tabs' }, tabs.map(([k, l]) => h('button', { type:'button', 'aria-pressed': String(k === tab), onclick:() => showColl(k) }, l))));
