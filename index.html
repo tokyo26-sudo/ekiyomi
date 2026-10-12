@@ -29,7 +29,7 @@
   --f-num:"Barlow Condensed","Arial Narrow",sans-serif;
   --gf-ja:var(--f-ja); --gf-ko:var(--f-ko);
 }
-@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]):not([data-theme="paper"]){
   --bg:#0E1113;--panel:#191E21;--sign:#151A1D;--ink:#FFFFFF;--muted:#A3ADB3;--rule:#323A3F;--accent:#8DB4EA;
   --ok:#5BC98A;--close:#E7B25A;--ng:#F07A6B;--okbg:#14301F;--closebg:#352A14;--ngbg:#3A1E1A;
   --lv0:#323A3F;--lv1:#3E5878;--lv2:#8DB4EA;
@@ -39,6 +39,14 @@
   --ok:#5BC98A;--close:#E7B25A;--ng:#F07A6B;--okbg:#14301F;--closebg:#352A14;--ngbg:#3A1E1A;
   --lv0:#323A3F;--lv1:#3E5878;--lv2:#8DB4EA;
   --shadow:0 1px 0 rgba(0,0,0,.4),0 8px 22px -10px rgba(0,0,0,.8);color-scheme:dark}
+/* paper theme: unbleached paper, soft ink, muted colours */
+:root[data-theme="paper"]{
+  --bg:#F3EDDF;--panel:#EAE2CF;--sign:#FAF6EC;--ink:#3B342C;--muted:#7B7062;--rule:#D9CEB7;--accent:#4C6483;
+  --ok:#4F7C5B;--close:#A2793D;--ng:#A65A4E;--okbg:#E2E6D3;--closebg:#F0E2C7;--ngbg:#EFD9CF;
+  --lv0:#D9CEB7;--lv1:#AEB7C0;--lv2:#4C6483;
+  --shadow:0 1px 0 rgba(80,60,30,.06),0 6px 18px -10px rgba(80,60,30,.35);color-scheme:light}
+:root[data-theme="paper"] :is(.sign-band,.sym,.dot,.meter i,.mark,.badge,.code,.mini .ms){filter:saturate(.75) brightness(.97)}
+:root[data-theme="paper"] .mark:not(.off){background:#FBF7EE;color:#3B342C}
 
 *{box-sizing:border-box}
 [hidden]{display:none!important}
@@ -893,7 +901,7 @@ const symEl = (id, extra) => h('span', { class:'sym' + (SYM[id].length > 1 ? ' t
 const RUN_MS = 3 * 60 * 1000;
 /* flags drawn as SVG (emoji flags do not show on Windows) */
 const FLAG_SRC = { jp:'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20900%20600%22%3E%3Crect%20fill%3D%22%23fff%22%20width%3D%22900%22%20height%3D%22600%22/%3E%3Ccircle%20fill%3D%22%23bc002d%22%20cx%3D%22450%22%20cy%3D%22300%22%20r%3D%22180%22/%3E%3C/svg%3E', kr:'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20xmlns%3Axlink%3D%22http%3A//www.w3.org/1999/xlink%22%20viewBox%3D%22-36%20-24%2072%2048%22%3E%3Crect%20fill%3D%22%23fff%22%20x%3D%22-36%22%20y%3D%22-24%22%20width%3D%2272%22%20height%3D%2248%22/%3E%3Cg%20transform%3D%22rotate%28-56.3099325%29%22%3E%3Cg%20id%3D%22b2%22%3E%3Cpath%20id%3D%22b%22%20d%3D%22M-6-25H6M-6-22H6M-6-19H6%22%20stroke%3D%22%23000%22%20stroke-width%3D%222%22/%3E%3Cuse%20xlink%3Ahref%3D%22%23b%22%20y%3D%2244%22/%3E%3C/g%3E%3Cpath%20stroke%3D%22%23fff%22%20stroke-width%3D%221%22%20d%3D%22M0%2C17v10%22/%3E%3Ccircle%20fill%3D%22%23cd2e3a%22%20r%3D%2212%22/%3E%3Cpath%20fill%3D%22%230047a0%22%20d%3D%22M0-12A6%2C6%200%200%200%200%2C0A6%2C6%200%200%201%200%2C12A12%2C12%200%200%2C1%200-12z%22/%3E%3C/g%3E%3Cg%20transform%3D%22rotate%28-123.6900675%29%22%3E%3Cuse%20xlink%3Ahref%3D%22%23b2%22/%3E%3Cpath%20stroke%3D%22%23fff%22%20stroke-width%3D%221%22%20d%3D%22M0-23.5v3M0%2C17v3.5M0%2C23.5v3%22/%3E%3C/g%3E%3C/svg%3E' };
-const APP_VERSION = 'v0.17';  // shown after the logo; bump with every release
+const APP_VERSION = 'v0.18';  // shown after the logo; bump with every release
 const APP_ICON = 'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Cdefs%3E%3CclipPath%20id%3D%22r%22%3E%3Crect%20x%3D%222%22%20y%3D%222%22%20width%3D%2260%22%20height%3D%2260%22%20rx%3D%2212%22/%3E%3C/clipPath%3E%3C/defs%3E%3Cg%20clip-path%3D%22url%28%23r%29%22%3E%3Crect%20x%3D%220%22%20y%3D%220%22%20width%3D%2232%22%20height%3D%2264%22%20fill%3D%22%23F39700%22/%3E%3Crect%20x%3D%2232%22%20y%3D%220%22%20width%3D%2232%22%20height%3D%2264%22%20fill%3D%22%2300A84D%22/%3E%3C/g%3E%3Cpath%20d%3D%22M9%209H25M17%209V24M8%2024H26%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%224.5%22%20stroke-linecap%3D%22round%22/%3E%3Cpath%20d%3D%22M8%2037H26M7%2047H27M15%2031L19%2057%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%224.5%22%20stroke-linecap%3D%22round%22/%3E%3Ccircle%20cx%3D%2241.5%22%20cy%3D%2217%22%20r%3D%226.5%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%224.5%22/%3E%3Cpath%20d%3D%22M57%209V35M49%2016H57M49%2028H57%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%224.5%22%20stroke-linecap%3D%22round%22/%3E%3Cpath%20d%3D%22M37%2043H57V57%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%224.5%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22/%3E%3C/svg%3E';
 const flag = c => h('img', { class:'flag', src: FLAG_SRC[c === 'ja' ? 'jp' : c === 'ko' ? 'kr' : c], alt:'' });
 // learning points per letter: settled once per run (see applyTally)
@@ -932,11 +940,10 @@ const TXT = {
     hintNote:'青＝子音 緑＝母音 黄＝パッチム ／ ✓は覚えた部品',
     hintNoteKR:'ㅓとㅗはどちらも「オ」、ㅡとㅜはどちらも「ウ」に聞こえる',
     shape:{lr:'左右型',tb:'上下型',mix:'組合せ型'}, fin:'＋パッチム', known:'✓',
-    setTitle:'設定', themeOpt:'画面', light:'白地に黒文字', dark:'黒地に白文字',
+    setTitle:'設定', themeOpt:'画面', light:'白地に黒文字', dark:'黒地に白文字', paper:'かみ',
     kanaOpt:'かなの表示', kata:'カタカナ', hira:'ひらがな',
     ansOpt:'答え方', input:'入力', choice:'4択',
     fjOpt:'日本語の文字のフォント', fkOpt:'ハングルのフォント',
-    openOpt:'ステージ2', openNo:'順番に解放', openAll:'全部ひらく',
     reset:'記録を消す', reset2:'本当に消す？（もう一度押す）', resetDone:'記録を消した',
     close_:'閉じる',
     tStations:'駅', tHangul:'ハングル', tKata:'カタカナ', tHira:'ひらがな',
@@ -968,11 +975,10 @@ const TXT = {
     hintNote:'일본어 장음(ー, う)은 한글로 쓰지 않아요. ッ는 받침 ㅅ, ン은 받침 ㄴ. ✓는 외운 글자',
     hintNoteKR:'オ는 ㅓ도 ㅗ도 될 수 있고, ウ는 ㅜ도 ㅡ도 될 수 있어요',
     shape:{lr:'',tb:'',mix:''}, fin:'', known:'✓',
-    setTitle:'설정', themeOpt:'화면', light:'흰 바탕에 검은 글씨', dark:'검은 바탕에 흰 글씨',
+    setTitle:'설정', themeOpt:'화면', light:'흰 바탕에 검은 글씨', dark:'검은 바탕에 흰 글씨', paper:'종이',
     kanaOpt:'가나 표시', kata:'가타카나', hira:'히라가나',
     ansOpt:'답하는 방법', input:'입력', choice:'4지선다',
     fjOpt:'일본어 글자 글꼴', fkOpt:'한글 글꼴',
-    openOpt:'2단계', openNo:'순서대로 열기', openAll:'모두 열기',
     reset:'기록 지우기', reset2:'정말 지울까요? (한 번 더 누르기)', resetDone:'기록을 지웠어요',
     close_:'닫기',
     tStations:'역', tHangul:'한글', tKata:'가타카나', tHira:'히라가나',
@@ -1005,6 +1011,9 @@ try {
 if (!D.mig17) {  // v0.17: stricter "mastered" — everything earned under the old rule goes back to "learned"
   ['ja','ko'].forEach(l => { const K = D.know[l]; for (const u in K) K[u] = Math.min(K[u], 14); });
   D.mig17 = true;
+}
+if (!D.mig18) {  // v0.18: "open all" left the settings (now a dev-page switch), so everyone starts locked again
+  D.openAll = false; D.mig18 = true;
 }
 const save = () => { try { localStorage.setItem(KEY, JSON.stringify(D)); } catch(e) {} };
 
@@ -1063,7 +1072,7 @@ function unitsOf(st) {
 
 function applyLook() {
   const root = document.documentElement;
-  root.setAttribute('data-theme', D.theme === 'dark' ? 'dark' : 'light');
+  root.setAttribute('data-theme', D.theme === 'dark' || D.theme === 'paper' ? D.theme : 'light');
   const fj = FONTS.ja.find(f => f[0] === D.fja) || FONTS.ja[0];
   const fk = FONTS.ko.find(f => f[0] === D.fko) || FONTS.ko[0];
   root.style.setProperty('--gf-ja', '"' + fj[2] + '", var(--f-ja)');
@@ -1623,6 +1632,12 @@ function viewDev() {
     st.forEach(r => out.push('・' + LINES[r.id].name.ja + ' ' + r.st.code + ' ' + r.st.name + '：' + NOTES.st[r.key].trim()));
     copyText(out.join('\n'), 'メモをコピーした（駅メモ' + st.length + '件）');
   } }, '📝 メモをまとめてコピー');
+  // unlock switch: opens stage 2 for every language; press again to lock it back
+  const keyLbl = () => D.openAll ? '🔓 カギ解除中（押すと元にもどす）' : '🔒 カギ解除';
+  const keyBtn = h('button', { class:'sbtn', type:'button', 'aria-pressed': String(!!D.openAll), onclick:() => {
+    D.openAll = !D.openAll; save(); keyBtn.textContent = keyLbl(); keyBtn.setAttribute('aria-pressed', String(D.openAll));
+    msg.textContent = D.openAll ? 'ステージ2を全部ひらいた' : 'カギをもどした';
+  } }, keyLbl());
 
   m.append(
     h('div', { class:'ptop' },
@@ -1632,7 +1647,7 @@ function viewDev() {
     srcSummary(),
     memoAll,
     h('div', { class:'devbar' }, sel, srcSel, q, test, onlyNotes),
-    h('div', { class:'devbar' }, sum, copyNotes, copyTsv, msg),
+    h('div', { class:'devbar' }, sum, keyBtn, copyNotes, copyTsv, msg),
     ta, grid);
   draw();
 }
@@ -1665,14 +1680,14 @@ function showSettings() {
   };
   sh.append(
     h('h3', null, T.setTitle, h('button', { class:'tbtn', type:'button', onclick:closeOv }, T.close_)),
-    seg(T.themeOpt, D.theme, [['light', T.light], ['dark', T.dark]], v => { D.theme = v; redraw(); }),
+    seg(T.themeOpt, D.theme, [['light', T.light], ['dark', T.dark], ['paper', T.paper]], v => { D.theme = v; redraw(); }),
     seg(T.ansOpt, D.answer, [['input', T.input], ['choice', T.choice]], v => { D.answer = v; if (S.view === 'play') S.choiceSet = null; redraw(); }),
     seg(T.kanaOpt, D.kana, [['kata', T.kata], ['hira', T.hira]], v => { D.kana = v; redraw(); }),
     seg([flag('jp'), T.fjOpt], D.fja, FONTS.ja.map(f => [f[0], f[1], f[2]]), v => { D.fja = v; redraw(); }, 'ja'),
     h('div', { class:'fontprev glyph', lang:'ja' }, 'ギンザ ぎんざ 銀座'),
     seg([flag('kr'), T.fkOpt], D.fko, FONTS.ko.map(f => [f[0], f[1], f[2]]), v => { D.fko = v; redraw(); }, 'ko'),
     h('div', { class:'fontprev glyph', lang:'ko' }, '긴자 명동 강남'));
-  if (D.lang) sh.append(seg(T.openOpt, D.openAll ? 'all' : 'no', [['no', T.openNo], ['all', T.openAll]], v => { D.openAll = v === 'all'; redraw(); }), rst);
+  if (D.lang) sh.append(rst);
   openOv();
 }
 
