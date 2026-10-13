@@ -901,7 +901,7 @@ const symEl = (id, extra) => h('span', { class:'sym' + (SYM[id].length > 1 ? ' t
 const RUN_MS = 3 * 60 * 1000;
 /* flags drawn as SVG (emoji flags do not show on Windows) */
 const FLAG_SRC = { jp:'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20900%20600%22%3E%3Crect%20fill%3D%22%23fff%22%20width%3D%22900%22%20height%3D%22600%22/%3E%3Ccircle%20fill%3D%22%23bc002d%22%20cx%3D%22450%22%20cy%3D%22300%22%20r%3D%22180%22/%3E%3C/svg%3E', kr:'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20xmlns%3Axlink%3D%22http%3A//www.w3.org/1999/xlink%22%20viewBox%3D%22-36%20-24%2072%2048%22%3E%3Crect%20fill%3D%22%23fff%22%20x%3D%22-36%22%20y%3D%22-24%22%20width%3D%2272%22%20height%3D%2248%22/%3E%3Cg%20transform%3D%22rotate%28-56.3099325%29%22%3E%3Cg%20id%3D%22b2%22%3E%3Cpath%20id%3D%22b%22%20d%3D%22M-6-25H6M-6-22H6M-6-19H6%22%20stroke%3D%22%23000%22%20stroke-width%3D%222%22/%3E%3Cuse%20xlink%3Ahref%3D%22%23b%22%20y%3D%2244%22/%3E%3C/g%3E%3Cpath%20stroke%3D%22%23fff%22%20stroke-width%3D%221%22%20d%3D%22M0%2C17v10%22/%3E%3Ccircle%20fill%3D%22%23cd2e3a%22%20r%3D%2212%22/%3E%3Cpath%20fill%3D%22%230047a0%22%20d%3D%22M0-12A6%2C6%200%200%200%200%2C0A6%2C6%200%200%201%200%2C12A12%2C12%200%200%2C1%200-12z%22/%3E%3C/g%3E%3Cg%20transform%3D%22rotate%28-123.6900675%29%22%3E%3Cuse%20xlink%3Ahref%3D%22%23b2%22/%3E%3Cpath%20stroke%3D%22%23fff%22%20stroke-width%3D%221%22%20d%3D%22M0-23.5v3M0%2C17v3.5M0%2C23.5v3%22/%3E%3C/g%3E%3C/svg%3E' };
-const APP_VERSION = 'v0.18';  // shown after the logo; bump with every release
+const APP_VERSION = 'v0.19';  // shown after the logo; bump with every release
 const APP_ICON = 'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Cdefs%3E%3CclipPath%20id%3D%22r%22%3E%3Crect%20x%3D%222%22%20y%3D%222%22%20width%3D%2260%22%20height%3D%2260%22%20rx%3D%2212%22/%3E%3C/clipPath%3E%3C/defs%3E%3Cg%20clip-path%3D%22url%28%23r%29%22%3E%3Crect%20x%3D%220%22%20y%3D%220%22%20width%3D%2232%22%20height%3D%2264%22%20fill%3D%22%23F39700%22/%3E%3Crect%20x%3D%2232%22%20y%3D%220%22%20width%3D%2232%22%20height%3D%2264%22%20fill%3D%22%2300A84D%22/%3E%3C/g%3E%3Cpath%20d%3D%22M9%209H25M17%209V24M8%2024H26%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%224.5%22%20stroke-linecap%3D%22round%22/%3E%3Cpath%20d%3D%22M8%2037H26M7%2047H27M15%2031L19%2057%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%224.5%22%20stroke-linecap%3D%22round%22/%3E%3Ccircle%20cx%3D%2241.5%22%20cy%3D%2217%22%20r%3D%226.5%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%224.5%22/%3E%3Cpath%20d%3D%22M57%209V35M49%2016H57M49%2028H57%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%224.5%22%20stroke-linecap%3D%22round%22/%3E%3Cpath%20d%3D%22M37%2043H57V57%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%224.5%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22/%3E%3C/svg%3E';
 const flag = c => h('img', { class:'flag', src: FLAG_SRC[c === 'ja' ? 'jp' : c === 'ko' ? 'kr' : c], alt:'' });
 // learning points per letter: settled once per run (see applyTally)
@@ -950,7 +950,7 @@ const TXT = {
     lv0:'未学習', lv1:'学習済み', lv2:'覚えた', lvVoid:'まだ駅がない',
     gL:'子音', gV:'母音', gT:'パッチム', gRare:'レア枠',
     gBase:'清音', gDaku:'濁音・半濁音', gYoon:'拗音', gSmall:'小さいつ',
-    timeUp:'タイムアップ！', quitT:'おしまい', newBadges:n=>'新しいバッジ '+n+'個',
+    timeUp:'タイムアップ！', quitT:'おしまい', allDone:'全駅正解！', leftT:'のこり時間', newBadges:n=>'新しいバッジ '+n+'個',
     statOk:'正解', statClose:'おしい', statNg:'ミス', newBest:'ベスト更新！',
     lineClear:l=>l+' クリア！', again:'もう一回', toLinesBtn:'路線をえらぶ', collBtn:'コレクション',
     master:'日韓駅名マスター', masterSub:'全路線のバッジを全部集めた！',
@@ -985,7 +985,7 @@ const TXT = {
     lv0:'미학습', lv1:'학습함', lv2:'외움', lvVoid:'아직 역이 없음',
     gL:'자음', gV:'모음', gT:'받침', gRare:'희귀',
     gBase:'청음', gDaku:'탁음·반탁음', gYoon:'요음', gSmall:'작은 つ',
-    timeUp:'시간 종료!', quitT:'끝', newBadges:n=>'새 배지 '+n+'개',
+    timeUp:'시간 종료!', quitT:'끝', allDone:'모든 역 정답!', leftT:'남은 시간', newBadges:n=>'새 배지 '+n+'개',
     statOk:'정답', statClose:'아깝다', statNg:'틀림', newBest:'최고 기록!',
     lineClear:l=>l+' 클리어!', again:'다시 하기', toLinesBtn:'노선 고르기', collBtn:'컬렉션',
     master:'한일 역 이름 마스터', masterSub:'모든 노선의 배지를 모두 모았어요!',
@@ -1170,7 +1170,7 @@ function buildQueue(excludeIdx) {
 }
 function startRun(id) {
   applyTally();
-  S = { view:'play', line:id, queue:[], score:0, streak:0, stats:{ ok:0, close:0, ng:0 }, newB:[], tally:{}, lang:D.lang,
+  S = { view:'play', line:id, queue:[], score:0, streak:0, stats:{ ok:0, close:0, ng:0 }, newB:[], right:new Set(), tally:{}, lang:D.lang,
         s1Before: stage1Done(), clearedBefore: isCleared(id), t0: Date.now(), over:false, pauseAt:null };
   S.end = S.t0 + RUN_MS;
   S.queue = buildQueue(-1);
@@ -1190,6 +1190,8 @@ function stopTimer() { if (S && S.timer) clearInterval(S.timer); if (S) S.timer 
 
 function nextQ() {
   if (S.over) return;
+  // every station of the line answered right in this run: stop here
+  if (S.right && S.right.size >= LINES[S.line].stations.length) { endRun('all'); return; }
   if (!S.queue.length) S.queue = buildQueue(S.cur ? S.cur.idx : -1);
   S.cur = LINES[S.line].stations[S.queue.shift()];
   if (S.pauseAt) { S.end += Date.now() - S.pauseAt; S.pauseAt = null; }
@@ -1340,6 +1342,7 @@ function answer(r, raw) {
   if (r === 'ok' || r === 'close' || r === 'meaning') {
     S.stats[r === 'meaning' ? 'ok' : r]++;
     S.streak++;
+    S.right.add(st.idx);
     let g = r === 'ok' ? 10 : 5;  // a meaning answer scores like "close" 
     if (S.hintUsed) g = Math.floor(g / 2);
     if (S.streak >= 3) g += 2;
@@ -1383,6 +1386,7 @@ document.addEventListener('keydown', e => {
 
 function endRun(why) {
   if (S.over) return;
+  const leftMs = S.end - (S.pauseAt || Date.now());
   S.over = true; stopTimer(); applyTally();
   const T = t(), id = S.line, L = LINES[id];
   const bests = D.best[D.lang];
@@ -1396,7 +1400,8 @@ function endRun(why) {
   const sh = $('sheet'); sh.replaceChildren(); sh.className = 'sheet result';
   sh.append(
     h('span', { style:'--c:' + L.color }, symEl(id)),
-    h('div', { class:'big' }, why === 'time' ? T.timeUp : T.quitT),
+    h('div', { class:'big' }, why === 'time' ? T.timeUp : why === 'all' ? '🎊 ' + T.allDone : T.quitT),
+    why === 'all' ? h('div', { class:'sub' }, T.leftT + ' ' + fmt(leftMs)) : null,
     scored ? h('div', { class:'score' }, S.score, h('small', { style:'font-size:1.2rem' }, T.pt))
            : h('div', { class:'score' }, S.stats.ok + S.stats.close, h('small', { style:'font-size:1.2rem' }, T.qUnit)),
     scored ? null : h('div', { class:'sub' }, T.practice),
