@@ -140,6 +140,8 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline
 .code.kr .cn{font-size:1.15rem}
 .code .hide{color:var(--muted)}
 .q{font-weight:900;font-size:clamp(2.2rem,10vw,4.4rem);line-height:1.2;text-align:center;overflow-wrap:anywhere;word-break:keep-all;letter-spacing:.02em}
+.qwrap{display:grid;gap:2px;min-width:0}
+.qsub{text-align:center;font-weight:700;font-size:clamp(1rem,3.8vw,1.45rem);color:var(--muted);line-height:1.3;overflow-wrap:anywhere}
 .q.long{font-size:clamp(1.6rem,7vw,3rem)}
 .q.xlong{font-size:clamp(1.3rem,5.4vw,2.4rem)}
 .sign-foot{border-top:1px solid var(--rule);padding:10px 18px;display:flex;flex-wrap:wrap;gap:6px 18px;justify-content:center;align-items:baseline;min-height:46px}
@@ -929,10 +931,10 @@ const stationBadge = (L, st, got) => h('div', { class:'sb' + (got ? '' : ' no') 
   stationMark(L, st, { size:'46px', off:!got }),
   h('span', { class:'nm glyph', lang: got ? (L.country === 'jp' ? 'ja' : 'ko') : null }, got ? st.name : '？'));
 const symEl = (id, extra) => h('span', { class:'sym' + (SYM[id].length > 1 ? ' two' : '') + (extra || ''), style: extra ? null : null }, SYM[id]);
-const RUN_MS = 3 * 60 * 1000;
+const RUN_MS = 60 * 1000;
 /* flags drawn as SVG (emoji flags do not show on Windows) */
 const FLAG_SRC = { jp:'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20900%20600%22%3E%3Crect%20fill%3D%22%23fff%22%20width%3D%22900%22%20height%3D%22600%22/%3E%3Ccircle%20fill%3D%22%23bc002d%22%20cx%3D%22450%22%20cy%3D%22300%22%20r%3D%22180%22/%3E%3C/svg%3E', kr:'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20xmlns%3Axlink%3D%22http%3A//www.w3.org/1999/xlink%22%20viewBox%3D%22-36%20-24%2072%2048%22%3E%3Crect%20fill%3D%22%23fff%22%20x%3D%22-36%22%20y%3D%22-24%22%20width%3D%2272%22%20height%3D%2248%22/%3E%3Cg%20transform%3D%22rotate%28-56.3099325%29%22%3E%3Cg%20id%3D%22b2%22%3E%3Cpath%20id%3D%22b%22%20d%3D%22M-6-25H6M-6-22H6M-6-19H6%22%20stroke%3D%22%23000%22%20stroke-width%3D%222%22/%3E%3Cuse%20xlink%3Ahref%3D%22%23b%22%20y%3D%2244%22/%3E%3C/g%3E%3Cpath%20stroke%3D%22%23fff%22%20stroke-width%3D%221%22%20d%3D%22M0%2C17v10%22/%3E%3Ccircle%20fill%3D%22%23cd2e3a%22%20r%3D%2212%22/%3E%3Cpath%20fill%3D%22%230047a0%22%20d%3D%22M0-12A6%2C6%200%200%200%200%2C0A6%2C6%200%200%201%200%2C12A12%2C12%200%200%2C1%200-12z%22/%3E%3C/g%3E%3Cg%20transform%3D%22rotate%28-123.6900675%29%22%3E%3Cuse%20xlink%3Ahref%3D%22%23b2%22/%3E%3Cpath%20stroke%3D%22%23fff%22%20stroke-width%3D%221%22%20d%3D%22M0-23.5v3M0%2C17v3.5M0%2C23.5v3%22/%3E%3C/g%3E%3C/svg%3E' };
-const APP_VERSION = 'v0.20';  // shown after the logo; bump with every release
+const APP_VERSION = 'v0.22';  // shown after the logo; bump with every release
 const APP_ICON = 'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Cdefs%3E%3CclipPath%20id%3D%22r%22%3E%3Crect%20x%3D%222%22%20y%3D%222%22%20width%3D%2260%22%20height%3D%2260%22%20rx%3D%2212%22/%3E%3C/clipPath%3E%3C/defs%3E%3Cg%20clip-path%3D%22url%28%23r%29%22%3E%3Crect%20x%3D%220%22%20y%3D%220%22%20width%3D%2232%22%20height%3D%2264%22%20fill%3D%22%23F39700%22/%3E%3Crect%20x%3D%2232%22%20y%3D%220%22%20width%3D%2232%22%20height%3D%2264%22%20fill%3D%22%2300A84D%22/%3E%3C/g%3E%3Cpath%20d%3D%22M9%209H25M17%209V24M8%2024H26%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%224.5%22%20stroke-linecap%3D%22round%22/%3E%3Cpath%20d%3D%22M8%2037H26M7%2047H27M15%2031L19%2057%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%224.5%22%20stroke-linecap%3D%22round%22/%3E%3Ccircle%20cx%3D%2241.5%22%20cy%3D%2217%22%20r%3D%226.5%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%224.5%22/%3E%3Cpath%20d%3D%22M57%209V35M49%2016H57M49%2028H57%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%224.5%22%20stroke-linecap%3D%22round%22/%3E%3Cpath%20d%3D%22M37%2043H57V57%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%224.5%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22/%3E%3C/svg%3E';
 const flag = c => h('img', { class:'flag', src: FLAG_SRC[c === 'ja' ? 'jp' : c === 'ko' ? 'kr' : c], alt:'' });
 // learning points per letter: settled once per run (see applyTally)
@@ -987,7 +989,7 @@ const TXT = {
     master:'日韓駅名マスター', masterSub:'全路線のバッジを全部集めた！',
     unlock:'ステージ2がひらいた！韓国の駅、読んでみよう',
     howTitle:'あそびかた',
-    how:'1回3分。駅名標のハングルを、かな・漢字・ローマ字で答える。正解した駅はバッジになって、路線のバッジを全部集めるとクリア。何度も正解した文字は「覚えた」になって、ヒントに出なくなる。'
+    how:'1回60秒。駅名標のハングルを、かな・漢字・ローマ字で答える。正解した駅はバッジになって、路線のバッジを全部集めるとクリア。何度も正解した文字は「覚えた」になって、ヒントに出なくなる。'
   },
   ko:{
     coll:'컬렉션', set:'설정', lang:'日本語',
@@ -1022,7 +1024,7 @@ const TXT = {
     master:'한일 역 이름 마스터', masterSub:'모든 노선의 배지를 모두 모았어요!',
     unlock:'2단계가 열렸어요! 일본의 역을 읽어 봐요',
     howTitle:'하는 방법',
-    how:'한 번에 3분. 역 표지판의 가타카나를 한글이나 로마자로 답해요. 맞힌 역은 배지가 되고, 노선의 배지를 모두 모으면 클리어. 여러 번 맞힌 글자는 「외움」이 되어 힌트에 나오지 않아요.'
+    how:'한 번에 60초. 역 표지판의 가타카나를 한글이나 로마자로 답해요. 맞힌 역은 배지가 되고, 노선의 배지를 모두 모으면 클리어. 여러 번 맞힌 글자는 「외움」이 되어 힌트에 나오지 않아요.'
   }
 };
 
@@ -1091,6 +1093,13 @@ const level = u => { const p = know()[u] || 0; return p >= PTS.mastered ? 2 : p 
 function question(st) {
   if (D.lang === 'ja') return { text: st.hangul, lang: 'ko' };
   return { text: kanaDisp(st.country === 'jp' ? st.kana : st.kata), lang: 'ja' };
+}
+/* Korean screen, Japanese station: the other kana form and the kanji, small under the question */
+function qSub(st) {
+  if (D.lang !== 'ko' || st.country !== 'jp') return null;
+  const other = D.kana === 'hira' ? E.toKata(st.kana) : E.toHira(st.kana);
+  const kanji = [st.name, ...st.alt].find(n => /[一-龯々]/.test(n));
+  return h('div', { class:'qsub glyph', lang:'ja' }, kanji ? other + '／' + kanji : other);
 }
 function answerText(st) {
   if (D.lang === 'ja') return st.country === 'jp' ? st.kana : E.toKata(st.kata);
@@ -1219,7 +1228,7 @@ function startTimer() {
     if (S.view !== 'play' || S.over || S.pauseAt) return;  // the clock stops while the result is shown
     const left = S.end - Date.now();
     const el = $('htime');
-    if (el) { el.textContent = fmt(left); el.parentNode.classList.toggle('low', left < 20000); }
+    if (el) { el.textContent = fmt(left); el.parentNode.classList.toggle('low', left < 10000); }
     if (left <= 0) endRun('time');
   }, 250);
 }
@@ -1250,7 +1259,7 @@ function renderPlay() {
 
   const left = S.end - (S.pauseAt || Date.now());
   m.append(h('div', { class:'hud' },
-    h('div', { class: left < 20000 ? 'low' : null }, h('small', null, T.time), h('b', { id:'htime' }, fmt(left))),
+    h('div', { class: left < 10000 ? 'low' : null }, h('small', null, T.time), h('b', { id:'htime' }, fmt(left))),
     D.answer === 'choice' ? h('div', null, h('small', null, T.correctN), h('b', null, S.stats.ok + S.stats.close)) : h('div', null, h('small', null, T.score), h('b', null, S.score)),
     h('div', null, h('small', null, T.streak), h('b', null, S.streak)),
     h('div', null, h('small', null, T.got), h('b', null, badgeCount(S.line) + '/' + L.stations.length))));
@@ -1279,7 +1288,9 @@ function renderPlay() {
   } else foot.append(h('span', { class:'hidden' }, '・・・'));
   m.append(h('div', { class:'sign flip', style:'--c:' + L.color },
     h('div', { class:'sign-band' }),
-    h('div', { class:'sign-body' }, codeEl, h('div', { class:'q glyph' + (len > 9 ? ' xlong' : len > 5 ? ' long' : ''), lang:q.lang }, q.text)),
+    h('div', { class:'sign-body' }, codeEl, h('div', { class:'qwrap' },
+      h('div', { class:'q glyph' + (len > 9 ? ' xlong' : len > 5 ? ' long' : ''), lang:q.lang }, q.text),
+      qSub(st))),
     foot));
 
   // action area right under the sign: answer UI, or the result with a big Next button
