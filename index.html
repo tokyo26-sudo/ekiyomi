@@ -269,6 +269,8 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline
 .cert .ttl{font-size:1.4rem;font-weight:900}
 .review{width:100%;text-align:left;border:1px solid var(--rule);border-radius:8px;background:var(--panel);padding:6px 12px}
 .review summary{cursor:pointer;font-weight:700;list-style:none}
+.coll .review{border-left:5px solid var(--c,var(--accent))}
+.coll .review summary{font-size:.9rem}
 .review summary::-webkit-details-marker{display:none}
 .rvlist{display:grid;gap:4px;margin-top:8px}
 .rvrow{display:grid;grid-template-columns:1.6em minmax(0,1.2fr) minmax(0,1fr) minmax(0,1.2fr);gap:6px;align-items:baseline;border-top:1px solid var(--rule);padding-top:4px;font-size:.9rem;overflow-wrap:anywhere}
@@ -915,6 +917,14 @@ const nearMora = (x, targets) => targets.some(t => { const B = morae(toHira(t));
 const nearSyl = (xs, targets) => targets.some(t => { const B = looseH(t).split('|'); return B.length >= 3 && xs.some(x => lev1(looseH(x).split('|'), B)); });
 const tenseIn = s => hangulSyls(s).some(d => [1, 4, 8, 13].includes(d.L));  // ㄲㄸㅃㅉ (ㅆ is used for つ)
 
+/* ん + a vowel read as one sound, like Korean 연음 (신오쿠보 sounds 시노쿠보): しんおおくぼ -> しのくぼ */
+const LINK_N = { あ:'な', い:'に', う:'ぬ', え:'ね', お:'の' };
+const linkN = k => k.replace(/ん([あいうえお])/g, (_, v) => LINK_N[v]);
+function isLinked(st, a) {
+  if (st.country !== 'jp' || !hasKana(a) || !/ん[あいうえお]/.test(toHira(st.kana))) return false;
+  const want = linkN(collapseKana(st.kana));
+  return want !== collapseKana(st.kana) && collapseKana(a) === want;
+}
 function judge(mode, st, raw) {
   const a = (raw || '').trim();
   if (!a) return null;
@@ -947,6 +957,7 @@ function judge(mode, st, raw) {
       if (mode === 'ja' && sv.some(x => looseH(kanaToHangul(a)) === looseH(x))) return 'close';
     }
     if (hv.some(v => sv.some(x => looseH(v, true) === looseH(x, true)))) return tenseIn(a) && !tenseIn(st.hangul) ? 'near' : 'close';
+    if (isLinked(st, a)) return 'near';   // しのくぼ: read the Hangul with the ㄴ carried over (신오 -> 시노)
     if (hasKana(a) && nearMora(collapseKana(a), [collapseKana(st.kana)])) return 'near';
     if (hv.length && nearSyl(hv, sv)) return 'near';
     return 'ng';
@@ -1000,7 +1011,7 @@ function moraHangul(m) {
   return e ? (Array.isArray(e) ? e[0] + '/' + e[1] : e) : '';
 }
 
-G.EKI = { toHira, toKata, morae, hepburn, romaDisplay, kanaChunks, kanaToHangul, decompose, blockInfo,
+G.EKI = { isLinked, toHira, toKata, morae, hepburn, romaDisplay, kanaChunks, kanaToHangul, decompose, blockInfo,
   looseH, collapseKana, strictKana, looseKanaKR, romaJP, romaKR, buildLines, judge, meaningMatch, isLiteralReading, hangulLiteralKana, hangulUnits, kanaUnits, moraeAny, moraHangul, L_J, V_J, T_J, L_SND, V_KANA, T_KANA };
 })(typeof window !== 'undefined' ? window : globalThis);
 
@@ -1036,7 +1047,7 @@ const symEl = (id, extra) => h('span', { class:'sym' + (SYM[id].length > 1 ? ' t
 const RUN_MS = 60 * 1000;
 /* flags drawn as SVG (emoji flags do not show on Windows) */
 const FLAG_SRC = { jp:'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20900%20600%22%3E%3Crect%20fill%3D%22%23fff%22%20width%3D%22900%22%20height%3D%22600%22/%3E%3Ccircle%20fill%3D%22%23bc002d%22%20cx%3D%22450%22%20cy%3D%22300%22%20r%3D%22180%22/%3E%3C/svg%3E', kr:'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20xmlns%3Axlink%3D%22http%3A//www.w3.org/1999/xlink%22%20viewBox%3D%22-36%20-24%2072%2048%22%3E%3Crect%20fill%3D%22%23fff%22%20x%3D%22-36%22%20y%3D%22-24%22%20width%3D%2272%22%20height%3D%2248%22/%3E%3Cg%20transform%3D%22rotate%28-56.3099325%29%22%3E%3Cg%20id%3D%22b2%22%3E%3Cpath%20id%3D%22b%22%20d%3D%22M-6-25H6M-6-22H6M-6-19H6%22%20stroke%3D%22%23000%22%20stroke-width%3D%222%22/%3E%3Cuse%20xlink%3Ahref%3D%22%23b%22%20y%3D%2244%22/%3E%3C/g%3E%3Cpath%20stroke%3D%22%23fff%22%20stroke-width%3D%221%22%20d%3D%22M0%2C17v10%22/%3E%3Ccircle%20fill%3D%22%23cd2e3a%22%20r%3D%2212%22/%3E%3Cpath%20fill%3D%22%230047a0%22%20d%3D%22M0-12A6%2C6%200%200%200%200%2C0A6%2C6%200%200%201%200%2C12A12%2C12%200%200%2C1%200-12z%22/%3E%3C/g%3E%3Cg%20transform%3D%22rotate%28-123.6900675%29%22%3E%3Cuse%20xlink%3Ahref%3D%22%23b2%22/%3E%3Cpath%20stroke%3D%22%23fff%22%20stroke-width%3D%221%22%20d%3D%22M0-23.5v3M0%2C17v3.5M0%2C23.5v3%22/%3E%3C/g%3E%3C/svg%3E' };
-const APP_VERSION = 'v0.39';  // shown after the logo; bump with every release
+const APP_VERSION = 'v0.41';  // shown after the logo; bump with every release
 const APP_ICON = 'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Cdefs%3E%3CclipPath%20id%3D%22r%22%3E%3Crect%20x%3D%222%22%20y%3D%222%22%20width%3D%2260%22%20height%3D%2260%22%20rx%3D%2212%22/%3E%3C/clipPath%3E%3C/defs%3E%3Cg%20clip-path%3D%22url%28%23r%29%22%3E%3Crect%20x%3D%220%22%20y%3D%220%22%20width%3D%2232%22%20height%3D%2264%22%20fill%3D%22%23F39700%22/%3E%3Crect%20x%3D%2232%22%20y%3D%220%22%20width%3D%2232%22%20height%3D%2264%22%20fill%3D%22%2300A84D%22/%3E%3C/g%3E%3Cpath%20d%3D%22M9%209H25M17%209V24M8%2024H26%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%224.5%22%20stroke-linecap%3D%22round%22/%3E%3Cpath%20d%3D%22M8%2037H26M7%2047H27M15%2031L19%2057%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%224.5%22%20stroke-linecap%3D%22round%22/%3E%3Ccircle%20cx%3D%2241.5%22%20cy%3D%2217%22%20r%3D%226.5%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%224.5%22/%3E%3Cpath%20d%3D%22M57%209V35M49%2016H57M49%2028H57%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%224.5%22%20stroke-linecap%3D%22round%22/%3E%3Cpath%20d%3D%22M37%2043H57V57%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%224.5%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22/%3E%3C/svg%3E';
 const flag = c => h('img', { class:'flag', src: FLAG_SRC[c === 'ja' ? 'jp' : c === 'ko' ? 'kr' : c], alt:'' });
 // learning points per letter: settled once per run (see applyTally)
@@ -1074,7 +1085,7 @@ const TXT = {
     prompt:'この駅名、なんて読む？', ph:'かな・漢字・ローマ字で', go:'答える',
     hintBtn:'ヒント', hintClose:'ヒントをとじる', cut:'2つ消す', skip:'スキップ', next:'次へ', quit:'やめる', toLines:'路線',
     enter:'Enterでも進む',
-    ok:'正解！', close:'ほぼ正解！', near:'おしい！', ng:'不正解', meaning:'正解！（意味訳）', nearPre:'あと一歩！ 答えは', banned:a=>'その文字では答えられない（問題に出ている字だから）。'+a+'答えてね',
+    ok:'正解！', close:'ほぼ正解！', near:'おしい！', ng:'不正解', meaning:'正解！（意味訳）', nearPre:'あと一歩！ 答えは', linkMsg:'ハングルはパッチムのㄴが次の母音とつながって「ノ」のように聞こえる（連音）。でも日本の駅名は「ン」と「オ」を分けて読むよ。', banned:a=>'その文字では答えられない（問題に出ている字だから）。'+a+'答えてね',
     meaningMsg:a=>'意味で読めた。音で読むと「'+a+'」。', subL:'副駅名',
     literalMsg:a=>'字どおりに読めてる！ でもハングルは、となりの音で発音が変わることがある（ㅇ・ㄴ・ㅁの後のㄹ→ㄴ、ㄱ・ㅂの後のㅅ→ッ など）。駅名は「'+a+'」。',
     closeMsg:a=>'読みは合ってる。駅名は「'+a+'」。', ngMsg:a=>'答えは「'+a+'」。',
@@ -1085,10 +1096,10 @@ const TXT = {
     kanaOpt:'かなの表示', kata:'カタカナ', hira:'ひらがな',
     ansOpt:'答え方', input:'入力', choice:'4択',
     fjOpt:'日本語の文字のフォント', fkOpt:'ハングルのフォント',
-    reset:'記録を消す（日本語版・韓国語版とも）', reset2:'日本語版・韓国語版の記録（バッジ・図鑑・ベスト・路線・切符・半券）を全部消す？（もう一度押す）', resetDone:'記録を消した', impWrong:'これは韓国語版の記録。韓国語の画面で読みこんでね',
+    reset:'記録を消す（日本語版・韓国語版とも）', reset2:'日本語版・韓国語版の記録（バッジ・図鑑・ベスト・路線・切符・半券・履歴）を全部消す？（もう一度押す）', resetDone:'記録を消した', impWrong:'これは韓国語版の記録。韓国語の画面で読みこんでね',
     close_:'閉じる',
     tStations:'駅', tHangul:'ハングル', tKata:'カタカナ', tHira:'ひらがな',
-    lv0:'未学習', lv1:'学習済み', lv2:'覚えた', lvVoid:'まだ駅がない',
+    lv0:'未学習', lv1:'学習済み', lv2:'覚えた', lvVoid:'まだ駅がない', tHist:'履歴', histNone:'まだ履歴がない。プレイすると最近100回ぶん残る', histMiss:'×と△だけ', histNote:'最近100プレイまで（古いものから消える）', pracName:'練習',
     gL:'子音', gV:'母音', gT:'パッチム', gRare:'レア枠',
     gBase:'清音', gDaku:'濁音・半濁音', gYoon:'拗音', gSmall:'小さいつ',
     coming:'工事中（いずれ追加）', prac:'練習', pracSub:'やさしい駅を10問。時間制限なし・ヒントつき・点数なし', qNo:'問題', pracEnd:'練習おわり', pracScore:n=>'10問中 '+n+'問 正解', timeUp:'タイムアップ！', quitT:'おしまい', allDone:'全駅正解！', leftT:'のこり時間', newBadges:n=>'新しいバッジ '+n+'個',
@@ -1110,7 +1121,7 @@ const TXT = {
     prompt:'이 역 이름, 어떻게 읽을까요?', ph:'한글 또는 로마자로', go:'확인',
     hintBtn:'힌트', hintClose:'힌트 닫기', cut:'2개 지우기', skip:'건너뛰기', next:'다음', quit:'그만하기', toLines:'노선',
     enter:'Enter로도 넘어가요',
-    ok:'정답!', close:'거의 정답!', near:'아깝다!', ng:'오답', meaning:'정답! (의미 번역)', nearPre:'한 끗 차이! 정답은', banned:a=>'그 글자로는 답할 수 없어요 (문제에 나온 글자예요). '+a+' 답해 주세요',
+    ok:'정답!', close:'거의 정답!', near:'아깝다!', ng:'오답', meaning:'정답! (의미 번역)', nearPre:'한 끗 차이! 정답은', linkMsg:'', banned:a=>'그 글자로는 답할 수 없어요 (문제에 나온 글자예요). '+a+' 답해 주세요',
     meaningMsg:a=>'뜻으로 읽었어요. 소리대로는 「'+a+'」.', subL:'부역명',
     literalMsg:a=>'글자대로 읽었어요. 실제 발음은 「'+a+'」.',
     closeMsg:a=>'읽기는 맞았어요. 표기는 「'+a+'」.', ngMsg:a=>'정답은 「'+a+'」.',
@@ -1121,10 +1132,10 @@ const TXT = {
     kanaOpt:'가나 표시', kata:'가타카나', hira:'히라가나',
     ansOpt:'답하는 방법', input:'입력', choice:'4지선다',
     fjOpt:'일본어 글자 글꼴', fkOpt:'한글 글꼴',
-    reset:'기록 지우기 (한국어판·일본어판 모두)', reset2:'한국어판·일본어판 기록(배지·도감·최고 기록·노선·표·표 조각)을 모두 지울까요? (한 번 더 누르기)', resetDone:'기록을 지웠어요', impWrong:'이건 일본어판 기록이에요. 일본어 화면에서 불러와 주세요',
+    reset:'기록 지우기 (한국어판·일본어판 모두)', reset2:'한국어판·일본어판 기록(배지·도감·최고 기록·노선·표·표 조각·이력)을 모두 지울까요? (한 번 더 누르기)', resetDone:'기록을 지웠어요', impWrong:'이건 일본어판 기록이에요. 일본어 화면에서 불러와 주세요',
     close_:'닫기',
     tStations:'역', tHangul:'한글', tKata:'가타카나', tHira:'히라가나',
-    lv0:'미학습', lv1:'학습함', lv2:'외움', lvVoid:'아직 역이 없음',
+    lv0:'미학습', lv1:'학습함', lv2:'외움', lvVoid:'아직 역이 없음', tHist:'이력', histNone:'아직 이력이 없어요. 플레이하면 최근 100번까지 남아요', histMiss:'×와 △만', histNote:'최근 100판까지 (오래된 것부터 지워져요)', pracName:'연습',
     gL:'자음', gV:'모음', gT:'받침', gRare:'희귀',
     gBase:'청음', gDaku:'탁음·반탁음', gYoon:'요음', gSmall:'작은 つ',
     coming:'준비 중 (곧 추가)', prac:'연습', pracSub:'쉬운 역 10문제. 시간 제한 없음·힌트 있음·점수 없음', qNo:'문제', pracEnd:'연습 끝', pracScore:n=>'10문제 중 '+n+'개 정답', timeUp:'시간 종료!', quitT:'끝', allDone:'모든 역 정답!', leftT:'남은 시간', newBadges:n=>'새 배지 '+n+'개',
@@ -1138,6 +1149,20 @@ const TXT = {
 };
 
 HOW_TOP.ja.ja = TXT.ja.how; HOW_TOP.ko.ko = TXT.ko.how;
+/* ---------- play history (latest 100 plays per language, own key) ---------- */
+const HKEY = 'ekiyomi.hist', HIST_MAX = 100;
+let HIST = { ja:[], ko:[] };
+try { const x = JSON.parse(localStorage.getItem(HKEY) || 'null'); if (x) HIST = { ja:x.ja || [], ko:x.ko || [] }; } catch(e) {}
+const saveHist = () => { try { localStorage.setItem(HKEY, JSON.stringify(HIST)); } catch(e) {} };
+function pushHist(score) {
+  if (!S.log || !S.log.length || S.histSaved) return;
+  S.histSaved = true;
+  const list = HIST[S.lang] ||= [];
+  list.unshift({ at:Date.now(), line: S.practice ? 'practice' : S.line, sc: score, ch: !!(S.usedChoice || S.pracChoice),
+    rows: S.log.map(x => ({ q:x.q, m:x.mine, a:x.ans, r:x.r })) });
+  if (list.length > HIST_MAX) list.length = HIST_MAX;
+  saveHist();
+}
 /* ---------- storage ---------- */
 const KEY = 'ekiyomi.v2';
 let D = { lang:null, ui:null, theme:'light', kana:'kata', answer:'input', fja:'goth', fko:'goth', openAll:false,
@@ -1499,7 +1524,7 @@ function renderPlay() {
     act.append(h('div', { class:'fb ' + (r === 'meaning' || r === 'close' ? 'ok' : r === 'near' ? 'close' : r), role:'status' },
       h('div', { class:'v' }, r === 'ok' ? T.ok : r === 'meaning' ? T.meaning : r === 'close' ? T.close : r === 'near' ? T.near : T.ng, S.gain ? h('small', null, '+' + S.gain) : null),
       S.myAns ? h('div', { class:'msg mine' }, T.yourAns + '：', h('b', { class:'glyph', lang: S.myLang }, S.myAns)) : null,
-      r === 'near' ? h('div', { class:'msg' }, T.nearPre + '「', diffMark(a, S.lastInput || ''), '」') :
+      r === 'near' ? h('div', { class:'msg' }, T.nearPre + '「', diffMark(a, S.lastInput || ''), '」', E.isLinked(st, S.lastInput || '') && T.linkMsg ? h('div', null, T.linkMsg) : null) :
       r === 'meaning' ? h('div', { class:'msg' }, T.meaningMsg(a)) : r === 'close' ? h('div', { class:'msg' }, (E.isLiteralReading(st, S.lastInput || '') ? T.literalMsg : T.closeMsg)(a)) : r === 'ng' ? h('div', { class:'msg' }, T.ngMsg(a)) : h('div', { class:'msg' }),
       h('button', { class:'next', type:'button', id:'nextBtn', onclick:nextQ }, T.next + ' ›', h('span', { class:'kbd' }, T.enter))));
   } else {
@@ -1668,15 +1693,20 @@ function logQ(st, r, mine) {
   S.log.push({ q:q.text, ql:q.lang, mine, ans:answerText(st), al: D.lang === 'ja' ? 'ja' : 'ko', r });
 }
 const RV_MARK = { ok:'◎', meaning:'◎', close:'○', near:'△', ng:'×', skip:'—' };
+const glyphLang = s => /[가-힣ㄱ-ㅣ]/.test(s || '') ? 'ko' : 'ja';
+function rvRows(rows) {  // rows: { q, m, a, r }
+  const T = t();
+  return h('div', { class:'rvlist' }, rows.map(x => h('div', { class:'rvrow rv-' + x.r },
+    h('span', { class:'rvm' }, RV_MARK[x.r]),
+    h('span', { class:'rvq glyph', lang:glyphLang(x.q) }, x.q),
+    h('span', { class:'rva' }, x.r === 'skip' ? T.rvSkip : h('span', { class:'glyph', lang:glyphLang(x.m) }, x.m || '—')),
+    h('span', { class:'rvc' }, '→ ', h('span', { class:'glyph', lang:glyphLang(x.a) }, x.a)))));
+}
 function reviewEl() {
   const T = t();
   if (!S.log || !S.log.length) return null;
   return h('details', { class:'review' }, h('summary', null, '▼ ' + T.review + '（' + S.log.length + '）'),
-    h('div', { class:'rvlist' }, S.log.map(x => h('div', { class:'rvrow rv-' + x.r },
-      h('span', { class:'rvm' }, RV_MARK[x.r]),
-      h('span', { class:'rvq glyph', lang:x.ql }, x.q),
-      h('span', { class:'rva' }, x.r === 'skip' ? T.rvSkip : h('span', { class:'glyph', lang: /[가-힣]/.test(x.mine) ? 'ko' : 'ja' }, x.mine || '—')),
-      h('span', { class:'rvc' }, '→ ', h('span', { class:'glyph', lang:x.al }, x.ans))))));
+    rvRows(S.log.map(x => ({ q:x.q, m:x.mine, a:x.ans, r:x.r }))));
 }
 
 /* settle the run's letter points once: correct only -> up, both -> no change, missed only -> one step down */
@@ -1703,7 +1733,7 @@ document.addEventListener('keydown', e => {
 function endRun(why) {
   if (S.over) return;
   if (S.practice) {
-    S.over = true; applyTally();
+    S.over = true; applyTally(); pushHist(null);
     const T = t(), sh = $('sheet'); sh.replaceChildren(); sh.className = 'sheet result';
     sh.append(h('div', { class:'big' }, '🔰 ' + T.pracEnd),
       h('div', { class:'score' }, S.stats.ok, h('small', { style:'font-size:1.2rem' }, '/' + S.pq.length)),
@@ -1731,6 +1761,7 @@ function endRun(why) {
   const stubTk = stubs ? addStubs(stubs) : 0;
   const newBest = scored && (bests[id] == null || S.score > bests[id]);
   if (newBest && (S.score > 0 || why === 'time')) bests[id] = S.score;
+  pushHist(scored ? S.score : null);
   save();
   const nowCleared = isCleared(id) && !S.clearedBefore;
   const all = ORDER[D.lang].every(isCleared);
@@ -2056,10 +2087,11 @@ const BKEY = 'ekiyomi.backup';
 const PREF_KEYS = ['theme', 'kana', 'answer', 'fja', 'fko', 'saveName'];
 function snapshot() {
   const prefs = {}; PREF_KEYS.forEach(k => { if (D[k] != null) prefs[k] = D[k]; });
-  return { ja:langData('ja'), ko:langData('ko'), prefs };
+  return { ja:langData('ja'), ko:langData('ko'), prefs, hist:HIST };
 }
 function restore(x) {
   ['ja', 'ko'].forEach(l => { if (x[l]) setLangData(l, x[l]); });
+  if (x.hist && typeof x.hist === 'object') { HIST = { ja:(x.hist.ja || []).slice(0, HIST_MAX), ko:(x.hist.ko || []).slice(0, HIST_MAX) }; saveHist(); }
   if (x.prefs) { PREF_KEYS.forEach(k => { if (x.prefs[k] != null) D[k] = x.prefs[k]; }); save(); applyLook(); }
 }
 function langData(l) {
@@ -2122,6 +2154,7 @@ function showSettings() {
   const rst = h('button', { class:'danger', type:'button', onclick:() => {
     if (!armed) { armed = true; rst.textContent = T.reset2; return; }
     ['ja', 'ko'].forEach(l => setLangData(l, {}));
+    HIST = { ja:[], ko:[] }; saveHist();
     closeOv(); if (D.lang) viewLines(T.resetDone); else viewStart();
   } }, T.reset);
   const redraw = () => {
@@ -2164,11 +2197,30 @@ function availableUnits() {
 }
 function showColl(tab) {
   const T = t(), sh = $('sheet'); sh.replaceChildren(); sh.className = 'sheet coll';
-  const tabs = D.lang === 'ja' ? [['st', ['🚉 ', T.tStations]], ['hg', [flag('kr'), T.tHangul]]] : [['st', ['🚉 ', T.tStations]], ['K', [flag('jp'), T.tKata]], ['H', [flag('jp'), T.tHira]]];
+  const tabs = (D.lang === 'ja' ? [['st', ['🚉 ', T.tStations]], ['hg', [flag('kr'), T.tHangul]]] : [['st', ['🚉 ', T.tStations]], ['K', [flag('jp'), T.tKata]], ['H', [flag('jp'), T.tHira]]]).concat([['hist', ['📜 ', T.tHist]]]);
   tab = tab || S.collTab || 'st'; S.collTab = tab;
   sh.append(h('h3', null, T.coll, h('button', { class:'tbtn', type:'button', onclick:closeOv }, T.close_)),
     h('div', { class:'tabs' }, tabs.map(([k, l]) => h('button', { type:'button', 'aria-pressed': String(k === tab), onclick:() => showColl(k) }, l))));
-  if (tab === 'st') {
+  if (tab === 'hist') {
+    const list = HIST[D.lang] || [];
+    const only = h('input', { type:'checkbox', checked: !!S.histMiss, onchange:e => { S.histMiss = e.target.checked; showColl('hist'); } });
+    sh.append(h('div', { class:'devbar', style:'margin:0' }, h('label', { class:'devchk' }, only, ' ' + T.histMiss), h('span', { class:'muted', style:'font-size:.75rem' }, T.histNote)));
+    if (!list.length) sh.append(h('p', { class:'muted' }, T.histNone));
+    const p2 = n => String(n).padStart(2, '0');
+    list.forEach(pl => {
+      const rows = S.histMiss ? pl.rows.filter(x => x.r === 'near' || x.r === 'ng') : pl.rows;
+      if (S.histMiss && !rows.length) return;
+      const d = new Date(pl.at), L = LINES[pl.line];
+      const cnt = k => pl.rows.filter(x => k.includes(x.r)).length;
+      sh.append(h('details', { class:'review', style: L ? '--c:' + L.color : null },
+        h('summary', null,
+          p2(d.getMonth() + 1) + '/' + p2(d.getDate()) + ' ' + p2(d.getHours()) + ':' + p2(d.getMinutes()) + '　',
+          L ? lineName(pl.line) : '🔰 ' + T.pracName,
+          pl.sc != null ? '　' + pl.sc + T.pt : '',
+          '　◎' + cnt(['ok', 'meaning']) + ' ○' + cnt(['close']) + ' △' + cnt(['near']) + ' ×' + cnt(['ng'])),
+        rvRows(rows)));
+    });
+  } else if (tab === 'st') {
     ORDER[D.lang].forEach(id => {
       const L = LINES[id], got = badges(id);
       sh.append(h('h4', null, lineName(id), h('span', null, badgeCount(id) + '/' + L.stations.length)),
