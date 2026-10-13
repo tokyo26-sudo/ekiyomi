@@ -192,6 +192,10 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline
 .jm.known small{color:var(--ok);font-weight:700}
 .blk .shape{font-size:.66rem;color:var(--muted)}
 .blk .kk{font-size:.9rem;font-weight:700}
+.alrow{flex-basis:100%;display:flex;flex-wrap:wrap;gap:6px;justify-content:center;align-items:center;margin-top:6px}
+.alc{display:grid;justify-items:center;padding:2px 8px;border:1px solid var(--rule);border-radius:6px;background:var(--sign);line-height:1.25}
+.alc b{font-size:1.3rem}
+.alc small{font-size:.75rem;color:var(--muted)}
 .hint-note{flex-basis:100%;text-align:center;font-size:.8rem;color:var(--muted)}
 
 /* overlays */
@@ -926,6 +930,8 @@ function judge(mode, st, raw) {
   } else {
     const ok =
       (hasHangul(a) && st.koAlt.some(k => looseH(k) === looseH(a))) ||
+      // the kana read exactly as written (종하분동장 / 존하분돈잔 for チョンハブンドンジャン)
+      (hasHangul(a) && [st.kata, ...(st.kataAlt || [])].some(k => looseKanaKR(hangulLiteralKana(a.replace(/\d/g, d => SINO[d] || d))) === looseKanaKR(k))) ||
       (isRoma && st.rrAlt.some(r => rrStrict(r) === rrStrict(a))) ||
       (hasKana(a) && [st.kata, ...(st.kataAlt || [])].some(k => looseKanaKR(k) === looseKanaKR(a)));
     if (ok) return 'ok';
@@ -1007,7 +1013,7 @@ const symEl = (id, extra) => h('span', { class:'sym' + (SYM[id].length > 1 ? ' t
 const RUN_MS = 60 * 1000;
 /* flags drawn as SVG (emoji flags do not show on Windows) */
 const FLAG_SRC = { jp:'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20900%20600%22%3E%3Crect%20fill%3D%22%23fff%22%20width%3D%22900%22%20height%3D%22600%22/%3E%3Ccircle%20fill%3D%22%23bc002d%22%20cx%3D%22450%22%20cy%3D%22300%22%20r%3D%22180%22/%3E%3C/svg%3E', kr:'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20xmlns%3Axlink%3D%22http%3A//www.w3.org/1999/xlink%22%20viewBox%3D%22-36%20-24%2072%2048%22%3E%3Crect%20fill%3D%22%23fff%22%20x%3D%22-36%22%20y%3D%22-24%22%20width%3D%2272%22%20height%3D%2248%22/%3E%3Cg%20transform%3D%22rotate%28-56.3099325%29%22%3E%3Cg%20id%3D%22b2%22%3E%3Cpath%20id%3D%22b%22%20d%3D%22M-6-25H6M-6-22H6M-6-19H6%22%20stroke%3D%22%23000%22%20stroke-width%3D%222%22/%3E%3Cuse%20xlink%3Ahref%3D%22%23b%22%20y%3D%2244%22/%3E%3C/g%3E%3Cpath%20stroke%3D%22%23fff%22%20stroke-width%3D%221%22%20d%3D%22M0%2C17v10%22/%3E%3Ccircle%20fill%3D%22%23cd2e3a%22%20r%3D%2212%22/%3E%3Cpath%20fill%3D%22%230047a0%22%20d%3D%22M0-12A6%2C6%200%200%200%200%2C0A6%2C6%200%200%201%200%2C12A12%2C12%200%200%2C1%200-12z%22/%3E%3C/g%3E%3Cg%20transform%3D%22rotate%28-123.6900675%29%22%3E%3Cuse%20xlink%3Ahref%3D%22%23b2%22/%3E%3Cpath%20stroke%3D%22%23fff%22%20stroke-width%3D%221%22%20d%3D%22M0-23.5v3M0%2C17v3.5M0%2C23.5v3%22/%3E%3C/g%3E%3C/svg%3E' };
-const APP_VERSION = 'v0.28';  // shown after the logo; bump with every release
+const APP_VERSION = 'v0.30';  // shown after the logo; bump with every release
 const APP_ICON = 'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Cdefs%3E%3CclipPath%20id%3D%22r%22%3E%3Crect%20x%3D%222%22%20y%3D%222%22%20width%3D%2260%22%20height%3D%2260%22%20rx%3D%2212%22/%3E%3C/clipPath%3E%3C/defs%3E%3Cg%20clip-path%3D%22url%28%23r%29%22%3E%3Crect%20x%3D%220%22%20y%3D%220%22%20width%3D%2232%22%20height%3D%2264%22%20fill%3D%22%23F39700%22/%3E%3Crect%20x%3D%2232%22%20y%3D%220%22%20width%3D%2232%22%20height%3D%2264%22%20fill%3D%22%2300A84D%22/%3E%3C/g%3E%3Cpath%20d%3D%22M9%209H25M17%209V24M8%2024H26%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%224.5%22%20stroke-linecap%3D%22round%22/%3E%3Cpath%20d%3D%22M8%2037H26M7%2047H27M15%2031L19%2057%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%224.5%22%20stroke-linecap%3D%22round%22/%3E%3Ccircle%20cx%3D%2241.5%22%20cy%3D%2217%22%20r%3D%226.5%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%224.5%22/%3E%3Cpath%20d%3D%22M57%209V35M49%2016H57M49%2028H57%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%224.5%22%20stroke-linecap%3D%22round%22/%3E%3Cpath%20d%3D%22M37%2043H57V57%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%224.5%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22/%3E%3C/svg%3E';
 const flag = c => h('img', { class:'flag', src: FLAG_SRC[c === 'ja' ? 'jp' : c === 'ko' ? 'kr' : c], alt:'' });
 // learning points per letter: settled once per run (see applyTally)
@@ -1044,7 +1050,7 @@ const TXT = {
     literalMsg:a=>'字どおりに読めてる！ でもハングルは、となりの音で発音が変わることがある（ㅇ・ㄴ・ㅁの後のㄹ→ㄴ、ㄱ・ㅂの後のㅅ→ッ など）。駅名は「'+a+'」。',
     closeMsg:a=>'読みは合ってる。駅名は「'+a+'」。', ngMsg:a=>'答えは「'+a+'」。',
     hintNote:'青＝子音 緑＝母音 黄＝パッチム ／ ✓は覚えた部品',
-    hintNoteKR:'ㅓとㅗはどちらも「オ」、ㅡとㅜはどちらも「ウ」に聞こえる',
+    hintNoteKR:'ㅓとㅗはどちらも「オ」、ㅡとㅜはどちらも「ウ」に聞こえる', hintNoteFin:'', alLabel:'1字ずつ読むと',
     shape:{lr:'左右型',tb:'上下型',mix:'組合せ型'}, fin:'＋パッチム', known:'✓',
     setTitle:'設定', themeOpt:'画面', light:'白地に黒文字', dark:'黒地に白文字', paper:'かみ',
     kanaOpt:'かなの表示', kata:'カタカナ', hira:'ひらがな',
@@ -1079,7 +1085,7 @@ const TXT = {
     literalMsg:a=>'글자대로 읽었어요. 실제 발음은 「'+a+'」.',
     closeMsg:a=>'읽기는 맞았어요. 표기는 「'+a+'」.', ngMsg:a=>'정답은 「'+a+'」.',
     hintNote:'일본어 장음(ー, う)은 한글로 쓰지 않아요. ッ는 받침 ㅅ, ン은 받침 ㄴ. ✓는 외운 글자',
-    hintNoteKR:'オ는 ㅓ도 ㅗ도 될 수 있고, ウ는 ㅜ도 ㅡ도 될 수 있어요',
+    hintNoteKR:'オ는 ㅓ도 ㅗ도 될 수 있고, ウ는 ㅜ도 ㅡ도 될 수 있어요', hintNoteFin:'ン·ム·ク·ル·プ·ッ는 받침(아래 자음)이 될 때가 많아요', alLabel:'한 글자씩 읽으면',
     shape:{lr:'',tb:'',mix:''}, fin:'', known:'✓',
     setTitle:'설정', themeOpt:'화면', light:'흰 바탕에 검은 글씨', dark:'검은 바탕에 흰 글씨', paper:'종이',
     kanaOpt:'가나 표시', kata:'가타카나', hira:'히라가나',
@@ -1488,6 +1494,10 @@ function allowedScripts(st) {
   if (D.lang === 'ko') return '한글 또는 로마자로';
   return st.country === 'jp' ? 'かな・漢字・ローマ字で' : 'かな・ローマ字で';
 }
+/* kana hint for Korean station names: kana written for a final consonant (patchim) can stand for it */
+const KR_FIN = { 'ン':'ㄴ·ㅁ·ㅇ', 'ッ':'ㄱ·ㅂ·ㅅ', 'ム':'무/ㅁ', 'ク':'구/ㄱ', 'グ':'구/ㄱ', 'ル':'루/ㄹ', 'プ':'푸/ㅂ', 'ブ':'부/ㅂ',
+  'ムォ':'ㅁ+워', 'ルォ':'ㄹ+워', 'ムィ':'ㅁ+위' };
+const krHint = (st, mo) => (st.country === 'kr' && KR_FIN[E.toKata(mo)]) || E.moraHangul(mo);
 function toggleHint() {
   S.hintOpen = !S.hintOpen;
   D.hintPinned = S.hintOpen; save();
@@ -1520,14 +1530,22 @@ function renderHint(st) {
     if (st.country === 'kr') box.append(h('span', { class:'hint-note' }, T.hintNoteKR));
   } else {
     const q = question(st).text;
-    E.moraeAny(q).forEach(mo => {
+    E.moraeAny(q).filter(mo => !/^[()（）・･]$/.test(mo)).forEach(mo => {
       const unit = (/[ァ-ヺ]/.test(mo) ? 'K:' : 'H:') + mo;
       const k = mo !== 'ー' && level(unit) === 2 && !S.done;
       box.append(h('div', { class:'blk' },
         h('span', { class:'g glyph', lang:'ja', style:'font-size:1.6rem' }, mo),
-        h('span', { class:'jm L' + (k ? ' known' : ''), lang:'ko', style:'font-size:1.2rem' }, k ? T.known : E.moraHangul(mo))));
+        h('span', { class:'jm L' + (k ? ' known' : ''), lang:'ko', style:'font-size:1.2rem' }, k ? T.known : krHint(st, mo))));
     });
     box.append(h('span', { class:'hint-note' }, st.country === 'kr' ? T.hintNoteKR : T.hintNote));
+    if (st.country === 'kr') box.append(h('span', { class:'hint-note' }, T.hintNoteFin));
+  }
+  // after answering a Korean station: each Hangul letter with its letter-by-letter reading (종|합|운 = チョン|ハプ|ウン)
+  if (S.done && st.country === 'kr') {
+    const row = h('div', { class:'alrow' }, h('span', { class:'hint-note' }, T.alLabel));
+    [...st.name].filter(c => E.decompose(c)).forEach(c => row.append(h('span', { class:'alc' },
+      h('b', { class:'glyph', lang:'ko' }, c), h('small', { lang:'ja' }, E.toKata(E.hangulLiteralKana(c))))));
+    box.append(row);
   }
   return box;
 }
