@@ -196,6 +196,14 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline
 .alc{display:grid;justify-items:center;padding:2px 8px;border:1px solid var(--rule);border-radius:6px;background:var(--sign);line-height:1.25}
 .alc b{font-size:1.3rem}
 .alc small{font-size:.75rem;color:var(--muted)}
+.wallet{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:14px}
+.tk{display:inline-flex;align-items:baseline;gap:6px;padding:5px 16px;font-weight:700;font-size:.88rem;color:var(--ink);
+  background:color-mix(in srgb,var(--accent) 12%,var(--sign));border:1.5px solid var(--accent);border-radius:5px;
+  -webkit-mask:radial-gradient(circle 6px at 0 50%,#0000 97%,#000) left/51% 100% no-repeat,radial-gradient(circle 6px at 100% 50%,#0000 97%,#000) right/51% 100% no-repeat;
+  mask:radial-gradient(circle 6px at 0 50%,#0000 97%,#000) left/51% 100% no-repeat,radial-gradient(circle 6px at 100% 50%,#0000 97%,#000) right/51% 100% no-repeat}
+.tk b{font-family:var(--f-num);font-size:1.15rem}
+.tk.stub{-webkit-mask:none;mask:none;border-left:2px dashed var(--accent);border-radius:0 5px 5px 0;padding-left:12px}
+.tk.zero{opacity:.45}
 .hint-note{flex-basis:100%;text-align:center;font-size:.8rem;color:var(--muted)}
 
 /* overlays */
@@ -326,6 +334,7 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline
   <button class="logo" id="logo" type="button">えきよみ <small lang="ko">역읽기</small></button>
   <div class="bar-btns">
     <button class="tbtn" id="bColl" type="button" hidden></button>
+    <button class="tbtn" id="bHelp" type="button"></button>
     <button class="tbtn" id="bSet" type="button"></button>
   </div>
 </div></header>
@@ -987,7 +996,7 @@ G.EKI = { toHira, toKata, morae, hepburn, romaDisplay, kanaChunks, kanaToHangul,
 'use strict';
 const E = window.EKI;
 const LINES = E.buildLines();
-const ORDER = { ja:['ginza','marunouchi','yurakucho','midosuji','higashiyama','fukuoka','monorail','yamanote','tokaido','seoul1','seoul2','seoul3','seoul4','seoul8','busan1','arex','ktx'], ko:['seoul1','seoul2','seoul3','seoul4','seoul8','busan1','arex','ktx','ginza','marunouchi','yurakucho','midosuji','higashiyama','fukuoka','monorail','yamanote','tokaido'] };
+const ORDER = { ja:['yamanote','ginza','marunouchi','yurakucho','midosuji','higashiyama','fukuoka','monorail','tokaido','seoul4','seoul1','seoul2','seoul3','seoul8','busan1','arex','ktx'], ko:['seoul4','seoul1','seoul2','seoul3','seoul8','busan1','arex','ktx','yamanote','ginza','marunouchi','yurakucho','midosuji','higashiyama','fukuoka','monorail','tokaido'] };
 const SYM = { ginza:'G', marunouchi:'M', yurakucho:'Y', midosuji:'M', higashiyama:'H', fukuoka:'K', monorail:'MO', seoul1:'1', seoul2:'2', seoul3:'3', seoul4:'4', seoul8:'8', busan1:'1', daegu1:'1', arex:'A', yamanote:'JY', tokaido:'新', ktx:'K' };
 /* lines under construction: shown greyed out, not playable yet.
    Daegu 1: 115 설화명곡 – 149 하양 (35 stations, 하양 opened 2024-12-21); katakana to be taken from namu.wiki station pages */
@@ -1013,7 +1022,7 @@ const symEl = (id, extra) => h('span', { class:'sym' + (SYM[id].length > 1 ? ' t
 const RUN_MS = 60 * 1000;
 /* flags drawn as SVG (emoji flags do not show on Windows) */
 const FLAG_SRC = { jp:'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20900%20600%22%3E%3Crect%20fill%3D%22%23fff%22%20width%3D%22900%22%20height%3D%22600%22/%3E%3Ccircle%20fill%3D%22%23bc002d%22%20cx%3D%22450%22%20cy%3D%22300%22%20r%3D%22180%22/%3E%3C/svg%3E', kr:'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20xmlns%3Axlink%3D%22http%3A//www.w3.org/1999/xlink%22%20viewBox%3D%22-36%20-24%2072%2048%22%3E%3Crect%20fill%3D%22%23fff%22%20x%3D%22-36%22%20y%3D%22-24%22%20width%3D%2272%22%20height%3D%2248%22/%3E%3Cg%20transform%3D%22rotate%28-56.3099325%29%22%3E%3Cg%20id%3D%22b2%22%3E%3Cpath%20id%3D%22b%22%20d%3D%22M-6-25H6M-6-22H6M-6-19H6%22%20stroke%3D%22%23000%22%20stroke-width%3D%222%22/%3E%3Cuse%20xlink%3Ahref%3D%22%23b%22%20y%3D%2244%22/%3E%3C/g%3E%3Cpath%20stroke%3D%22%23fff%22%20stroke-width%3D%221%22%20d%3D%22M0%2C17v10%22/%3E%3Ccircle%20fill%3D%22%23cd2e3a%22%20r%3D%2212%22/%3E%3Cpath%20fill%3D%22%230047a0%22%20d%3D%22M0-12A6%2C6%200%200%200%200%2C0A6%2C6%200%200%201%200%2C12A12%2C12%200%200%2C1%200-12z%22/%3E%3C/g%3E%3Cg%20transform%3D%22rotate%28-123.6900675%29%22%3E%3Cuse%20xlink%3Ahref%3D%22%23b2%22/%3E%3Cpath%20stroke%3D%22%23fff%22%20stroke-width%3D%221%22%20d%3D%22M0-23.5v3M0%2C17v3.5M0%2C23.5v3%22/%3E%3C/g%3E%3C/svg%3E' };
-const APP_VERSION = 'v0.30';  // shown after the logo; bump with every release
+const APP_VERSION = 'v0.34';  // shown after the logo; bump with every release
 const APP_ICON = 'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Cdefs%3E%3CclipPath%20id%3D%22r%22%3E%3Crect%20x%3D%222%22%20y%3D%222%22%20width%3D%2260%22%20height%3D%2260%22%20rx%3D%2212%22/%3E%3C/clipPath%3E%3C/defs%3E%3Cg%20clip-path%3D%22url%28%23r%29%22%3E%3Crect%20x%3D%220%22%20y%3D%220%22%20width%3D%2232%22%20height%3D%2264%22%20fill%3D%22%23F39700%22/%3E%3Crect%20x%3D%2232%22%20y%3D%220%22%20width%3D%2232%22%20height%3D%2264%22%20fill%3D%22%2300A84D%22/%3E%3C/g%3E%3Cpath%20d%3D%22M9%209H25M17%209V24M8%2024H26%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%224.5%22%20stroke-linecap%3D%22round%22/%3E%3Cpath%20d%3D%22M8%2037H26M7%2047H27M15%2031L19%2057%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%224.5%22%20stroke-linecap%3D%22round%22/%3E%3Ccircle%20cx%3D%2241.5%22%20cy%3D%2217%22%20r%3D%226.5%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%224.5%22/%3E%3Cpath%20d%3D%22M57%209V35M49%2016H57M49%2028H57%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%224.5%22%20stroke-linecap%3D%22round%22/%3E%3Cpath%20d%3D%22M37%2043H57V57%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%224.5%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22/%3E%3C/svg%3E';
 const flag = c => h('img', { class:'flag', src: FLAG_SRC[c === 'ja' ? 'jp' : c === 'ko' ? 'kr' : c], alt:'' });
 // learning points per letter: settled once per run (see applyTally)
@@ -1039,7 +1048,7 @@ const TXT = {
     coll:'コレクション', set:'設定', lang:'한국어',
     st1:'ステージ1 日本の駅', st2:'ステージ2 韓国の駅',
     st1sub:'知ってる駅名でハングルを覚える', st2sub:'知らない駅名を、ハングルだけで読む',
-    locked:'ステージ1の3路線のバッジを全部集めると出てくる',
+    locked:'ステージ1の路線を全部ひらくと、ソウル4号線から始まる', tickets:n=>'🎫 好きな路線を1つひらける（のこり '+n+'）', pickL:'🎫 ひらく', closedL:'路線をクリアするともらえる🎫でひらく', newTicket:'クリアのごほうび！ 好きな路線を1つひらける🎫', help:'遊び方', stubN:'半券', ticketN:'切符', exch:'半券3枚 → 切符に交換', stubGot:n=>'半券 +'+n, stubNext:p=>'あと '+p+' 点で半券もう1枚', stubToTicket:'半券3枚で🎫1枚になった！', hintCost:'ヒント　半券 −1', pracStub:'全問正解！ 半券 +1',
     badges:'バッジ', best:'ベスト', cleared:'クリア', pt:'点',
     time:'のこり', score:'スコア', correctN:'正解数', qUnit:'問', practice:'4択は練習モード（スコアなし）', streak:'連続', got:'バッジ',
     prompt:'この駅名、なんて読む？', ph:'かな・漢字・ローマ字で', go:'答える',
@@ -1074,7 +1083,7 @@ const TXT = {
     coll:'컬렉션', set:'설정', lang:'日本語',
     st1:'1단계 한국의 역', st2:'2단계 일본의 역',
     st1sub:'아는 역 이름으로 가타카나 익히기', st2sub:'모르는 역 이름을 가나만 보고 읽기',
-    locked:'1단계 3개 노선의 배지를 모두 모으면 열려요',
+    locked:'1단계 노선을 모두 열면 야마노테선부터 시작해요', tickets:n=>'🎫 원하는 노선 하나를 열 수 있어요 (남은 수 '+n+')', pickL:'🎫 열기', closedL:'노선을 클리어하면 받는 🎫으로 열 수 있어요', newTicket:'클리어 보상! 원하는 노선 하나를 열 수 있어요🎫', help:'하는 방법', stubN:'표 조각', ticketN:'표', exch:'표 조각 3개 → 표로 교환', stubGot:n=>'표 조각 +'+n, stubNext:p=>p+'점 더 받으면 표 조각 1개 더', stubToTicket:'표 조각 3개가 🎫 1장이 됐어요!', hintCost:'힌트　표 조각 −1', pracStub:'모두 정답! 표 조각 +1',
     badges:'배지', best:'최고', cleared:'클리어', pt:'점',
     time:'남은 시간', score:'점수', correctN:'맞힌 수', qUnit:'문제', practice:'4지선다는 연습 모드 (점수 없음)', streak:'연속', got:'배지',
     prompt:'이 역 이름, 어떻게 읽을까요?', ph:'한글 또는 로마자로', go:'확인',
@@ -1162,6 +1171,38 @@ const badgeCount = id => Object.keys(badges(id)).length;
 const isCleared = id => badgeCount(id) >= LINES[id].stations.length;
 const stageOf = id => (D.lang === 'ja') === (LINES[id].country === 'jp') ? 1 : 2;
 const stage1Done = () => ORDER[D.lang].filter(id => stageOf(id) === 1).every(isCleared);
+/* unlocking: start with one line; each cleared line gives a ticket to open any line you like.
+   The other country opens (from its first line) once every line of your own country is open. */
+const START = { ja:'yamanote', ko:'seoul4' }, START2 = { ja:'seoul4', ko:'yamanote' };
+function openList(l) {
+  D.open = D.open || {}; D.tickets = D.tickets || {};
+  if (!D.open[l]) {  // first run of v0.31: keep lines already played, give tickets for lines already cleared
+    const b = (D.badge[l] || {});
+    D.open[l] = [START[l], ...ORDER[l].filter(id => id !== START[l] && b[id] && Object.keys(b[id]).length)];
+    const cleared = ORDER[l].filter(id => b[id] && Object.keys(b[id]).length >= LINES[id].stations.length).length;
+    D.tickets[l] = Math.max(0, cleared - (D.open[l].length - 1));
+  }
+  const own = ORDER[l].filter(id => (l === 'ja') === (LINES[id].country === 'jp'));
+  if (own.every(id => D.open[l].includes(id)) && !D.open[l].includes(START2[l])) D.open[l].push(START2[l]);
+  return D.open[l];
+}
+const isOpen = id => D.openAll || openList(D.lang).includes(id);
+const ownAllOpen = () => ORDER[D.lang].filter(id => stageOf(id) === 1).every(id => openList(D.lang).includes(id));
+/* half tickets: 3 make a ticket */
+function addStubs(n) {
+  D.stubs = D.stubs || {}; D.tickets = D.tickets || {};
+  D.stubs[D.lang] = (D.stubs[D.lang] || 0) + n; save();
+  return 0;  // kept as half tickets; the player trades 3 for a ticket when they want
+}
+function exchangeStubs() {
+  if (stubCount() < 3) return;
+  D.stubs[D.lang] -= 3; D.tickets[D.lang] = (D.tickets[D.lang] || 0) + 1; save(); viewLines();
+}
+const stubCount = () => (D.stubs && D.stubs[D.lang]) || 0;
+function pickLine(id) {
+  if (!(D.tickets[D.lang] > 0) || isOpen(id)) return;
+  D.tickets[D.lang]--; openList(D.lang).push(id); openList(D.lang); save(); viewLines();
+}
 const lineName = id => LINES[id].name[D.lang];
 const fmt = ms => { const s = Math.max(0, Math.ceil(ms / 1000)); return Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0'); };
 const kanaDisp = k => D.kana === 'hira' ? E.toHira(k) : E.toKata(k);
@@ -1212,7 +1253,7 @@ function renderBar() {
   lg.replaceChildren(h('img', { class:'appicon', src:APP_ICON, alt:'' }), ko ? h('span', { lang:'ko' }, '역읽기') : h('span', { lang:'ja' }, 'えきよみ'), h('small', { lang: ko ? 'ja' : 'ko' }, ko ? 'えきよみ' : '역읽기'), h('span', { class:'ver' }, APP_VERSION));
   document.title = ko ? '역읽기 えきよみ' : 'えきよみ 역읽기';
   $('bColl').hidden = !inGame;
-  $('bColl').textContent = '👑 ' + T.coll; $('bSet').textContent = '⚙️ ' + T.set;
+  $('bColl').textContent = '👑 ' + T.coll; $('bSet').textContent = '⚙️ ' + T.set; $('bHelp').textContent = '❓ ' + T.help;
   applyLook();
 }
 
@@ -1233,8 +1274,8 @@ function viewStart() {
       h('span', { class:'ans' }, a)),
     h('span', { class:'what' }, what),
     lang !== main ? h('span', { class:'pnote' }, NOTE[lang]) : null);
-  const jaPick = pickBtn('ja', '日本語で遊ぶ', '駅名のハングルを読む。銀座線・丸ノ内線・御堂筋線から', '긴자', 'ぎんざ？', LINES.ginza.color);
-  const koPick = pickBtn('ko', '한국어로 하기', '역 이름의 가타카나 읽기. 서울 1·2호선, 부산 1호선부터', 'ミョンドン', '명동?', LINES.seoul2.color);
+  const jaPick = pickBtn('ja', '日本語で遊ぶ', '駅名のハングルを読む。山手線から', '긴자', 'ぎんざ？', LINES.ginza.color);
+  const koPick = pickBtn('ko', '한국어로 하기', '역 이름의 가타카나 읽기. 서울 4호선부터', 'ミョンドン', '명동?', LINES.seoul2.color);
   // the title names only the other country's script; the second line is its translation
   const H = {
     ja: { main:'ハングルの駅名ぐらいはサッと読めるようになるための練習アプリ', sub:'한글 역 이름 정도는 바로 읽을 수 있게 되는 연습 앱' },
@@ -1260,6 +1301,13 @@ function viewLines(flash) {
   stopTimer(); S = { view:'lines' }; renderBar();
   const T = t(), m = $('main'); m.replaceChildren();
   if (flash) m.append(h('div', { class:'fb ok', style:'margin-top:16px' }, h('div', { class:'v' }, flash)));
+  openList(D.lang);
+  if (D.tickets[D.lang] > 0 && !D.openAll) m.append(h('div', { class:'fb close', style:'margin-top:16px' }, h('div', { class:'v', style:'font-size:1rem' }, T.tickets(D.tickets[D.lang]))));
+  const tkn = D.tickets[D.lang] || 0, sbn = stubCount();
+  m.append(h('div', { class:'wallet' },
+    h('span', { class:'tk' + (tkn ? '' : ' zero') }, T.ticketN, h('b', null, '×' + tkn)),
+    h('span', { class:'tk stub' + (sbn ? '' : ' zero') }, T.stubN, h('b', null, '×' + sbn)),
+    sbn >= 3 ? h('button', { class:'sbtn', type:'button', onclick:exchangeStubs }, T.exch) : null));
   m.append(h('section', { class:'stage' }, h('div', { class:'lines' },
     h('button', { type:'button', class:'lcard', style:'--c:var(--accent)', onclick:startPractice },
       h('span', { class:'sym' }, '🔰'),
@@ -1267,19 +1315,22 @@ function viewLines(flash) {
       h('span', { class:'lstat' }, '10' + T.qUnit)))));
   [1, 2].forEach(stg => {
     const ids = ORDER[D.lang].filter(id => stageOf(id) === stg);
-    const locked = stg === 2 && !stage1Done() && !D.openAll;
+    const locked = stg === 2 && !ownAllOpen() && !D.openAll;
+    const tk = D.tickets[D.lang] || 0;
     const sec = h('section', { class:'stage' },
       h('h2', null, flag((stg === 1) === (D.lang === 'ja') ? 'jp' : 'kr'), stg === 1 ? T.st1 : T.st2),
-      h('p', { class:'lock' }, locked ? '🔒 ' + T.locked : (stg === 1 ? T.st1sub : T.st2sub)));
+      h('p', { class:'lock' }, locked ? '🔒 ' + T.locked : (stg === 1 ? T.st1sub : T.st2sub) + (ids.some(id => !isOpen(id)) ? ' · ' + T.closedL : '')));
     const list = h('div', { class:'lines' });
     ids.forEach(id => {
       const L = LINES[id], n = L.stations.length, c = badgeCount(id), b = D.best[D.lang][id];
-      list.append(h('button', { type:'button', class:'lcard', style:'--c:' + L.color, disabled:locked, onclick:() => startRun(id) },
+      const op = isOpen(id), canPick = !op && !locked && tk > 0;
+      list.append(h('button', { type:'button', class:'lcard', style:'--c:' + L.color, disabled: !op && !canPick, onclick:() => op ? startRun(id) : pickLine(id) },
         symEl(id),
         h('span', { style:'min-width:0' },
           h('span', { class:'lname' }, flag(L.country), lineName(id)),
           h('span', { class:'lsub' }, ' ' + T.badges + ' ' + c + '/' + n),
           h('span', { class:'meter' }, h('i', { style:'width:' + (c / n * 100) + '%' }))),
+        !op ? h('span', { class:'lstat' }, canPick ? T.pickL : '🔒') :
         h('span', { class:'lstat' }, c >= n ? h('span', { class:'done-badge' }, '✓ ' + T.cleared) : c + '/' + n,
           b != null ? h('small', null, T.best + ' ' + b + T.pt) : null)));
     });
@@ -1328,7 +1379,7 @@ function startPractice() {
 }
 function startRun(id) {
   applyTally();
-  S = { view:'play', line:id, queue:[], score:0, streak:0, stats:{ ok:0, close:0, near:0, ng:0 }, newB:[], right:new Set(), tally:{}, lang:D.lang,
+  S = { view:'play', line:id, queue:[], score:0, streak:0, stats:{ ok:0, close:0, near:0, ng:0 }, newB:[], right:new Set(), hintPaid:false, tally:{}, lang:D.lang,
         s1Before: stage1Done(), clearedBefore: isCleared(id), t0: Date.now(), over:false, pauseAt:null };
   S.end = S.t0 + RUN_MS;
   S.queue = buildQueue(-1);
@@ -1360,7 +1411,7 @@ function nextQ() {
   S.cur = LINES[S.line].stations[S.queue.shift()];
   if (S.pauseAt) { S.end += Date.now() - S.pauseAt; S.pauseAt = null; }
   // the hint stays open from question to question until it is closed
-  Object.assign(S, { done:false, hintOpen:!!D.hintPinned, hintUsed:!!D.hintPinned, cut:false, choiceSet:null, picked:null, lastInput:null, result:null, gain:0 });
+  Object.assign(S, { done:false, hintOpen:!!(D.hintPinned && S.hintPaid), hintUsed:!!(D.hintPinned && S.hintPaid), cut:false, choiceSet:null, picked:null, lastInput:null, result:null, gain:0 });
   renderPlay();
 }
 
@@ -1454,7 +1505,9 @@ function renderPlay() {
         inp, h('button', { class:'go', type:'submit' }, T.go)), warn);
     }
     const sub = h('div', { class:'subrow' },
-      S.practice ? null : h('button', { class:'sbtn', type:'button', 'aria-pressed': String(S.hintOpen), onclick:toggleHint }, S.hintOpen ? T.hintClose : '💡 ' + T.hintBtn));
+      S.practice ? null : S.hintPaid
+        ? h('button', { class:'sbtn', type:'button', 'aria-pressed': String(S.hintOpen), onclick:toggleHint }, S.hintOpen ? T.hintClose : '💡 ' + T.hintBtn)
+        : h('button', { class:'sbtn', type:'button', disabled: stubCount() < 1, onclick:() => { D.stubs[D.lang]--; save(); S.hintPaid = true; toggleHint(); } }, '💡 ' + T.hintCost));
     if (D.answer === 'choice' && S.hintUsed) sub.append(h('button', { class:'sbtn', type:'button', disabled:S.cut, onclick:() => { S.cut = true; renderPlay(); } }, '✂ ' + T.cut));
     sub.append(h('button', { class:'sbtn', type:'button', onclick:skip }, '⏭ ' + T.skip));
     act.append(sub);
@@ -1610,6 +1663,8 @@ function endRun(why) {
     sh.append(h('div', { class:'big' }, '🔰 ' + T.pracEnd),
       h('div', { class:'score' }, S.stats.ok, h('small', { style:'font-size:1.2rem' }, '/' + S.pq.length)),
       h('div', { class:'sub' }, T.pracScore(S.stats.ok)),
+      ...(() => { if (S.stats.ok + S.stats.close < S.pq.length) return [];
+        const g = addStubs(1); return [h('div', { class:'fb ok', style:'width:100%' }, h('div', { class:'v', style:'font-size:1rem' }, T.pracStub))]; })(),
       h('div', { class:'stats' },
         h('span', null, T.statOk + ' ', h('b', null, S.stats.ok)),
         h('span', null, T.statClose + ' ', h('b', null, S.stats.close)),
@@ -1625,12 +1680,15 @@ function endRun(why) {
   const T = t(), id = S.line, L = LINES[id];
   const bests = D.best[D.lang];
   const scored = !S.usedChoice;
+  const stubs = scored ? (S.score >= 100 ? 2 : S.score >= 50 ? 1 : 0) : 0;
+  const stubTk = stubs ? addStubs(stubs) : 0;
   const newBest = scored && (bests[id] == null || S.score > bests[id]);
   if (newBest && (S.score > 0 || why === 'time')) bests[id] = S.score;
   save();
   const nowCleared = isCleared(id) && !S.clearedBefore;
   const all = ORDER[D.lang].every(isCleared);
-  const unlocked = !S.s1Before && stage1Done() && !D.openAll;
+  if (nowCleared) { openList(D.lang); D.tickets[D.lang] = (D.tickets[D.lang] || 0) + 1; save(); }
+  const unlocked = nowCleared && !D.openAll && ORDER[D.lang].some(x => !isOpen(x));
   const sh = $('sheet'); sh.replaceChildren(); sh.className = 'sheet result';
   sh.append(...[  // DOM append would print null as text, so drop the empty parts
     h('span', { style:'--c:' + L.color }, symEl(id)),
@@ -1646,9 +1704,11 @@ function endRun(why) {
       h('span', null, T.statNear + ' ', h('b', null, S.stats.near)), h('span', null, T.statNg + ' ', h('b', null, S.stats.ng))),
     h('div', { class:'sub' }, T.newBadges(S.newB.length) + ' · ' + T.badges + ' ' + badgeCount(id) + '/' + L.stations.length)].filter(Boolean));
   if (S.newB.length) sh.append(h('div', { class:'sbgrid', style:'width:100%' }, S.newB.map(i => stationBadge(L, L.stations[i], true))));
+  if (scored) sh.append(h('div', { class:'sub', style:'font-weight:700' }, (stubs ? T.stubGot(stubs) + '　' : '') +
+    (S.score < 100 ? T.stubNext((S.score < 50 ? 50 : 100) - S.score) : '')));
   if (nowCleared) sh.append(h('div', { class:'fb ok', style:'width:100%' }, h('div', { class:'v' }, '🎉 ' + T.lineClear(lineName(id)))));
   if (all && nowCleared) sh.append(h('div', { class:'cert' }, h('div', { class:'ttl' }, '🏅 ' + T.master), h('div', { class:'sub' }, T.masterSub)));
-  else if (unlocked) sh.append(h('div', { class:'fb ok', style:'width:100%' }, h('div', { class:'v', style:'font-size:1rem' }, T.unlock)));
+  else if (unlocked) sh.append(h('div', { class:'fb ok', style:'width:100%' }, h('div', { class:'v', style:'font-size:1rem' }, T.newTicket)));
   sh.append(h('div', { class:'rowbtns' },
     h('button', { class:'pbtn', type:'button', onclick:() => { closeOv(); startRun(id); } }, T.again),
     h('button', { class:'gbtn', type:'button', onclick:() => { closeOv(); showColl(); } }, T.collBtn),
@@ -1913,13 +1973,41 @@ function seg(label, val, opts, onpick, langAttr) {
     h('div', { class:'seg' }, opts.map(([v, l, fam]) => h('button', { type:'button', 'aria-pressed': String(v === val), lang:langAttr || null,
       style: fam ? 'font-family:"' + fam + '",inherit' : null, onclick:() => onpick(v) }, l))));
 }
+const HELP = {
+  ja:[
+    ['あそびかた', '1回60秒。駅名標の文字を読んで答える。日本の駅はハングルで、韓国の駅もハングルで出てくる。'],
+    ['答え方', '入力か4択（設定で切りかえ）。問題に出ている字では答えられない。日本の駅は かな・漢字・ローマ字、韓国の駅は かな・ローマ字で。'],
+    ['判定', '正解：ぴったり（10点）。ほぼ正解：長音ぬけ・字どおり読みなど（5点）。正解（意味訳）：意味で答えた（5点）。おしい：濁点や1字だけちがう（0点）。不正解（0点）。3連続から1問 +2点。'],
+    ['路線をひらく', '最初は山手線だけ。🎫で好きな路線を1つひらける。日本の路線を全部ひらくとソウル4号線から韓国の駅へ。'],
+    ['🎫と半券', '路線を初めてクリア（バッジ全部）で切符🎫1枚。50点で半券1枚、100点で2枚。半券3枚は、一覧の上の交換ボタンで切符1枚にできる（自動ではないので、ヒント用に取っておける）。4択は点数なしなので半券もなし。'],
+    ['ヒント', '本番は半券1枚で、そのプレイの間ずっとヒントが使える（ヒントを見た問題は点数半分）。'],
+    ['練習', 'やさしい駅を10問。時間なし・ヒントつき・点数なし。10問全部正解で半券1枚。'],
+    ['図鑑', 'ヒントなしで読めた字にポイント。学習済み→覚えた、と育つ。覚えた字はヒントで✓になる。']
+  ],
+  ko:[
+    ['하는 방법', '한 번에 60초. 역 표지판의 글자를 읽고 답해요. 한국의 역도 일본의 역도 가나로 나와요.'],
+    ['답하는 방법', '입력 또는 4지선다(설정에서 바꾸기). 문제에 나온 글자로는 답할 수 없어요. 한글 또는 로마자로 답해요.'],
+    ['판정', '정답: 딱 맞음(10점). 거의 정답: 발음대로 쓰기 등(5점). 정답(의미 번역): 뜻으로 답함(5점). 아깝다: 한 글자만 다름(0점). 오답(0점). 3연속부터 한 문제에 +2점.'],
+    ['노선 열기', '처음에는 서울 4호선만. 🎫으로 원하는 노선 하나를 열 수 있어요. 한국 노선을 모두 열면 야마노테선부터 일본의 역으로.'],
+    ['🎫과 표 조각', '노선을 처음 클리어(배지 전부)하면 표🎫 1장. 50점이면 표 조각 1개, 100점이면 2개. 표 조각 3개는 목록 위의 교환 버튼으로 표 1장으로 바꿀 수 있어요(자동이 아니라서 힌트용으로 모아 둘 수 있어요). 4지선다는 점수가 없어서 표 조각도 없어요.'],
+    ['힌트', '본 게임에서는 표 조각 1개로 그 판 동안 힌트를 쓸 수 있어요(힌트를 본 문제는 점수 절반).'],
+    ['연습', '쉬운 역 10문제. 시간 제한 없음·힌트 있음·점수 없음. 10문제 모두 정답이면 표 조각 1개.'],
+    ['도감', '힌트 없이 읽은 글자에 포인트. 학습함→외움 으로 자라요. 외운 글자는 힌트에서 ✓가 돼요.']
+  ]
+};
+function showHelp() {
+  const T = t(), sh = $('sheet'); sh.replaceChildren(); sh.className = 'sheet';
+  sh.append(h('h3', null, '❓ ' + T.help, h('button', { class:'tbtn', type:'button', onclick:closeOv }, T.close_)),
+    ...HELP[uiLang()].map(([k, v]) => h('div', { class:'opt' }, h('span', { class:'ol', style:'font-size:.9rem;color:var(--ink)' }, k), h('span', null, v))));
+  openOv();
+}
 function showSettings() {
   const T = t(), sh = $('sheet'); sh.replaceChildren(); sh.className = 'sheet';
   let armed = false;
   const rst = h('button', { class:'danger', type:'button', onclick:() => {
     if (!armed) { armed = true; rst.textContent = T.reset2; return; }
     const l = D.lang || 'ja';
-    D.badge[l] = {}; D.know[l] = {}; D.best[l] = {}; save(); closeOv(); if (D.lang) viewLines(T.resetDone);
+    D.badge[l] = {}; D.know[l] = {}; D.best[l] = {}; if (D.open) delete D.open[l]; if (D.tickets) D.tickets[l] = 0; save(); closeOv(); if (D.lang) viewLines(T.resetDone);
   } }, T.reset);
   const redraw = () => {
     save(); applyLook(); showSettings();
@@ -1993,6 +2081,7 @@ function showColl(tab) {
 }
 
 $('bSet').addEventListener('click', showSettings);
+$('bHelp').addEventListener('click', showHelp);
 $('bColl').addEventListener('click', () => showColl());
 let taps = [];
 $('logo').addEventListener('click', () => {
