@@ -588,6 +588,9 @@ const JP = {
     ['亀島','かめじま'],['名古屋','なごや'],['伏見','ふしみ'],['栄','さかえ'],['新栄町','しんさかえまち'],['千種','ちくさ'],['今池','いまいけ'],
     ['池下','いけした'],['覚王山','かくおうざん'],['本山','もとやま'],['東山公園','ひがしやまこうえん'],['星ヶ丘','ほしがおか'],['一社','いっしゃ'],
     ['上社','かみやしろ'],['本郷','ほんごう'],['藤が丘','ふじがおか','藤ヶ丘'] ]}]},
+  fukuoka: { name:{ja:'福岡 空港線',ko:'후쿠오카 공항선'}, color:'#F07D1F', country:'jp', prefix:'K', start:1, sections:[{ st:[
+    ['姪浜','めいのはま'],['室見','むろみ'],['藤崎','ふじさき'],['西新','にしじん'],['唐人町','とうじんまち'],['大濠公園','おおほりこうえん'],
+    ['赤坂','あかさか'],['天神','てんじん'],['中洲川端','なかすかわばた'],['祇園','ぎおん'],['博多','はかた'],['東比恵','ひがしひえ'],['福岡空港','ふくおかくうこう'] ]}]},
   monorail: { name:{ja:'東京モノレール',ko:'도쿄 모노레일'}, color:'#0072BC', country:'jp', prefix:'MO', start:1, sections:[{ st:[
     ['モノレール浜松町','ものれーるはままつちょう','浜松町'],['天王洲アイル','てんのうずあいる'],['大井競馬場前','おおいけいばじょうまえ'],['流通センター','りゅうつうせんたー'],
     ['昭和島','しょうわじま'],['整備場','せいびじょう'],['天空橋','てんくうばし'],['羽田空港第3ターミナル','はねだくうこうだいさんたーみなる'],
@@ -623,6 +626,12 @@ const KR = {
     ['고속터미널','コソクターミナル','gosokteomineol'],['교대','キョデ','gyodae'],['남부터미널','ナンブターミナル','nambuteomineol'],['양재','ヤンジェ','yangjae'],
     ['매봉','メボン','maebong'],['도곡','トゴク','dogok'],['대치','テチ','daechi'],['학여울','ハンニョウル','hangnyeoul'],['대청','テチョン','daecheong'],
     ['일원','イルォン','irwon'],['수서','スソ','suseo'],['가락시장','カラク・シジャン','garaksijang'],['경찰병원','キョンチャル・ピョンウォン','gyeongchalbyeongwon'],['오금','オグム','ogeum'] ]}]},
+  seoul8: { name:{ja:'ソウル8号線',ko:'서울 8호선'}, color:'#E6186C', country:'kr', prefix:'', start:0, sections:[{ nocode:true, st:[
+    ['암사역사공원','アムサヨクサゴンウォン','amsayeoksagongwon'],['암사','アムサ','amsa'],['천호','チョンホ','cheonho'],['강동구청','カンドングチョン','gangdonggucheong'],
+    ['몽촌토성','モンチョントソン','mongchontoseong'],['잠실','チャムシル','jamsil'],['석촌','ソクチョン','seokchon'],['송파','ソンパ','songpa'],
+    ['가락시장','カラク・シジャン','garaksijang'],['문정','ムンジョン','munjeong'],['장지','チャンジ','jangji'],['복정','ポクチョン','bokjeong'],
+    ['남위례','ナムィレ','namwirye'],['산성','サンソン','sanseong'],['남한산성입구','ナムハンサンソンイック','namhansanseongipgu'],
+    ['단대오거리','タンデオゴリ','dandaeogeori'],['신흥','シンフン','sinheung'],['수진','スジン','sujin'],['모란','モラン','moran'] ]}]},
   seoul4: { name:{ja:'ソウル4号線',ko:'서울 4호선'}, color:'#00A5DE', country:'kr', prefix:'', start:409, sections:[{ st:[
     ['불암산','プラムサン','buramsan'],['상계','サンゲ','sanggye'],['노원','ノウォン','nowon'],['창동','チャンドン','changdong'],
     ['쌍문','サンムン','ssangmun'],['수유','スユ','suyu'],['미아','ミア','mia'],['미아사거리','ミアサゴリ','miasageori'],['길음','キルム','gireum'],
@@ -665,7 +674,7 @@ const OFFICIAL_KATA = {
 const MEANING_JP = {  // Japanese station -> Korean meaning-translation
   '国会議事堂前':['국회의사당','국회의사당앞'], '動物園前':['동물원앞','동물원'],
   'モノレール浜松町':['모노레일하마마쓰초'], '天王洲アイル':['덴노즈아일'], '流通センター':['류쓰센터'],
-  '高輪ゲートウェイ':['다카나와게이트웨이'],
+  '高輪ゲートウェイ':['다카나와게이트웨이'], '大濠公園':['오호리공원'], '福岡空港':['후쿠오카공항'],
   '羽田空港第3ターミナル':['하네다공항제3터미널'], '羽田空港第1ターミナル':['하네다공항제1터미널'], '羽田空港第2ターミナル':['하네다공항제2터미널']
 };
 const MEANING_KR = {  // Korean station -> Japanese kanji / meaning (official Japanese map, namu.wiki)
@@ -691,6 +700,8 @@ const MEANING_KR = {  // Korean station -> Japanese kanji / meaning (official Ja
   '동대입구':['東大入口','東国大入口'],'약수':['薬水'],'금호':['金湖'],'옥수':['玉水'],'압구정':['狎鴎亭'],'신사':['新沙'],'잠원':['蚕院'],
   '고속터미널':['高速ターミナル'],'남부터미널':['南部ターミナル'],'양재':['良才'],'도곡':['道谷'],'대치':['大峙'],'일원':['逸院'],'수서':['水西'],
   '가락시장':['可楽市場'],'경찰병원':['警察病院'],'오금':['梧琴'],
+  '암사역사공원':['岩寺歴史公園'],'암사':['岩寺'],'천호':['千戸'],'강동구청':['江東区庁'],'몽촌토성':['夢村土城'],'석촌':['石村'],'송파':['松坡'],
+  '문정':['文井'],'장지':['長旨'],'복정':['福井'],'남위례':['南慰礼'],'산성':['山城'],'남한산성입구':['南漢山城入口'],'신흥':['新興'],'수진':['寿進'],'모란':['牡丹'],
   '공덕':['孔徳'],'마곡나루':['麻谷渡口','麻谷ナル'],'김포공항':['金浦空港','キンポ空港'],'계양':['桂陽'],'검암':['黔岩'],
   '청라국제도시':['青羅国際都市'],'영종':['永宗'],'운서':['雲西'],'공항화물청사':['空港貨物ターミナル'],
   '인천공항1터미널':['仁川国際空港1ターミナル'],'인천공항2터미널':['仁川国際空港2ターミナル']
@@ -699,6 +710,7 @@ const MEANING_KR = {  // Korean station -> Japanese kanji / meaning (official Ja
 const SUB_KR = { '수유':'강북구청','미아':'서울사이버대학','성신여대입구':'돈암','한성대입구':'삼선교','회현':'남대문시장','숙대입구':'갈월',
   '이촌':'국립중앙박물관','동작':'현충원','총신대입구':'이수','청량리':'서울시립대입구','왕십리':'성동구청','구의':'광진구청','강변':'동서울터미널',
   '잠실':'송파구청','삼성':'무역센터','교대':'법원·검찰청','낙성대':'강감찬','서울대입구':'관악구청','대림':'구로구청','신촌':'지하','충정로':'경기대입구','용두':'동대문구청', '울산':'통도사',
+  '천호':'풍납토성','몽촌토성':'평화의문','남한산성입구':'성남법원·검찰청',
   '경복궁':'정부서울청사','남부터미널':'예술의전당','양재':'서초구청' };
 /* sub-station names shown after answering (Korean Wikipedia) */
 const SUB_JP = {
@@ -708,6 +720,25 @@ const SUB_JP = {
 };
 /* Hangul as written by Korean Wikipedia where the rule conversion differs */
 const HANGUL_JP = { '飯田橋':'이다바시', '銀座一丁目':'긴자 1초메' };
+/* Japanese screen: these stations are asked in their Korean (meaning) form.
+   Reading that Hangul as Korean = correct, the Japanese name = meaning, letter-by-letter = close.
+   k: how the Hangul sounds, in hiragana (Claude's knowledge, unverified) */
+const KO_SIGN = {
+  '国会議事堂前':{ h:'국회의사당', k:['くっけいさだん','くっけうぃさだん','くっくぇいさだん','くっくぇうぃさだん'] },
+  '動物園前':{ h:'동물원앞', k:['とんむるぉなぷ','とんむろなぷ','とんむるうぉなぷ','とんむうぉなぷ'] },
+  '大濠公園':{ h:'오호리 공원', k:['おほりごんうぉん','おほりごんおん'] },
+  '福岡空港':{ h:'후쿠오카 공항', k:['ふくおかごんはん','ふくおかごんあん'] },
+  'モノレール浜松町':{ h:'모노레일하마마쓰초', k:['ものれいるはまますちょ','ものれいるはままっすちょ'] },
+  '天王洲アイル':{ h:'덴노즈아일', k:['てんのじゅあいる','でんのじゅあいる','てんのずあいる','でんのずあいる'] },
+  '流通センター':{ h:'류쓰센터', k:['りゅっすせんと','りゅすせんと'] },
+  '高輪ゲートウェイ':{ h:'다카나와게이트웨이', k:['たかなわげいとぅうぇい','たかなわげいとうぇい','たかなわけいとぅうぇい'] },
+  '羽田空港第3ターミナル':{ h:'하네다공항제3터미널', k:['はねだごんはんじぇさむとみのる','はねだごんあんじぇさむとみのる'] },
+  '羽田空港第1ターミナル':{ h:'하네다공항제1터미널', k:['はねだごんはんじぇいるとみのる','はねだごんあんじぇいるとみのる'] },
+  '羽田空港第2ターミナル':{ h:'하네다공항제2터미널', k:['はねだごんはんじぇいとみのる','はねだごんあんじぇいとみのる'] }
+};
+/* light kana key: dakuten kept; spaces, long marks, small tsu and small vowels folded; Korean numbers read out */
+const kanaKeyKR = s => collapseKana(toHira(s).replace(/1/g, 'いる').replace(/2/g, 'い').replace(/3/g, 'さむ'))
+  .replace(/[\sー・･っ()（）]/g, '').replace(/[ぁぃぅぇぉゃゅょ]/g, c => String.fromCharCode(c.charCodeAt(0) + 1));
 const SINO = { 1:'일', 2:'이', 3:'삼', 4:'사', 5:'오' };
 const SINO_R = { 1:'il', 2:'i', 3:'sam', 4:'sa', 5:'o' };
 const SINO_K = { 1:'イル', 2:'イ', 3:'サム', 4:'サ', 5:'オ' };
@@ -733,7 +764,8 @@ function buildLines() {
           const chunks = ov ? [] : kanaChunks(kana);
           let roma = romaAlt[0] || romaDisplay(kana);
           if (!romaAlt.length && kanji.length >= 3 && kanji[0] === '新' && /^Shin/.test(roma)) roma = 'Shin-' + roma.charAt(4).toUpperCase() + roma.slice(5);  // Shin-Osaka
-          s = { country:'jp', name:kanji, kana, alt, romaAlt, hangul: ov || chunks.map(c => c.h).join(''), chunks, roma,
+          const sg = KO_SIGN[kanji];
+          s = { country:'jp', name:kanji, kana, alt, romaAlt, signH: sg ? sg.h : null, signK: sg ? sg.k : null, hangul: ov || chunks.map(c => c.h).join(''), chunks, roma,
                 meaning: MEANING_JP[kanji] || [], sub: SUB_JP[kanji] || null };
         } else {
           const [ko, kata, rr, extra = {}] = row;
@@ -824,6 +856,7 @@ function digitVariants(a) {
 }
 const normMeaning = s => normKanji(s).replace(/[・･·\s]/g, '').replace(/역$/, '');
 function isLiteralReading(st, a) {
+  if (st.signH) return hasKana(a) && looseKanaKR(kanaKeyKR(hangulLiteralKana(st.signH))) === looseKanaKR(kanaKeyKR(a));
   return st.country === 'kr' && hasKana(a) && st.koAlt.some(k => looseKanaKR(hangulLiteralKana(k)) === looseKanaKR(a));
 }
 function meaningMatch(st, a) {
@@ -836,6 +869,16 @@ function judge(mode, st, raw) {
   const a = (raw || '').trim();
   if (!a) return null;
   const isRoma = /[a-z]/i.test(a) && !hasKana(a) && !hasHangul(a);
+  if (st.country === 'jp' && mode === 'ja' && st.signH) {
+    // asked as Korean Hangul: reading it is right, the Japanese name is the meaning
+    if (hasKana(a) && st.signK.some(k => kanaKeyKR(k) === kanaKeyKR(a))) return 'ok';
+    if (hasHangul(a) && looseH(a) === looseH(st.signH)) return 'ok';
+    if ((hasKana(a) && collapseKana(a) === collapseKana(st.kana)) || [st.name, ...st.alt].some(n => normKanji(n) === normKanji(a)) ||
+        (isRoma && [hepburn(st.kana), ...(st.romaAlt || [])].some(r => romaJP(r) === romaJP(a)))) return 'meaning';
+    if (isLiteralReading(st, a)) return 'close';
+    if (hasKana(a) && st.signK.some(k => looseKanaKR(k) === looseKanaKR(a))) return 'close';
+    return 'ng';
+  }
   if (st.country === 'jp') {
     const hv = hasHangul(a) ? (/\d/.test(a) ? digitVariants(a) : [a]) : [];
     const sv = /\d/.test(st.hangul) ? digitVariants(st.hangul) : [st.hangul];
@@ -908,8 +951,8 @@ G.EKI = { toHira, toKata, morae, hepburn, romaDisplay, kanaChunks, kanaToHangul,
 'use strict';
 const E = window.EKI;
 const LINES = E.buildLines();
-const ORDER = { ja:['ginza','marunouchi','yurakucho','midosuji','higashiyama','monorail','yamanote','tokaido','seoul1','seoul2','seoul3','seoul4','busan1','arex','ktx'], ko:['seoul1','seoul2','seoul3','seoul4','busan1','arex','ktx','ginza','marunouchi','yurakucho','midosuji','higashiyama','monorail','yamanote','tokaido'] };
-const SYM = { ginza:'G', marunouchi:'M', yurakucho:'Y', midosuji:'M', higashiyama:'H', monorail:'MO', seoul1:'1', seoul2:'2', seoul3:'3', seoul4:'4', busan1:'1', daegu1:'1', arex:'A', yamanote:'JY', tokaido:'新', ktx:'K' };
+const ORDER = { ja:['ginza','marunouchi','yurakucho','midosuji','higashiyama','fukuoka','monorail','yamanote','tokaido','seoul1','seoul2','seoul3','seoul4','seoul8','busan1','arex','ktx'], ko:['seoul1','seoul2','seoul3','seoul4','seoul8','busan1','arex','ktx','ginza','marunouchi','yurakucho','midosuji','higashiyama','fukuoka','monorail','yamanote','tokaido'] };
+const SYM = { ginza:'G', marunouchi:'M', yurakucho:'Y', midosuji:'M', higashiyama:'H', fukuoka:'K', monorail:'MO', seoul1:'1', seoul2:'2', seoul3:'3', seoul4:'4', seoul8:'8', busan1:'1', daegu1:'1', arex:'A', yamanote:'JY', tokaido:'新', ktx:'K' };
 /* lines under construction: shown greyed out, not playable yet.
    Daegu 1: 115 설화명곡 – 149 하양 (35 stations, 하양 opened 2024-12-21); katakana to be taken from namu.wiki station pages */
 const COMING = [ { id:'daegu1', country:'kr', color:'#D93F5C', name:{ ja:'大邱1号線', ko:'대구 1호선' } } ];
@@ -934,7 +977,7 @@ const symEl = (id, extra) => h('span', { class:'sym' + (SYM[id].length > 1 ? ' t
 const RUN_MS = 60 * 1000;
 /* flags drawn as SVG (emoji flags do not show on Windows) */
 const FLAG_SRC = { jp:'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20900%20600%22%3E%3Crect%20fill%3D%22%23fff%22%20width%3D%22900%22%20height%3D%22600%22/%3E%3Ccircle%20fill%3D%22%23bc002d%22%20cx%3D%22450%22%20cy%3D%22300%22%20r%3D%22180%22/%3E%3C/svg%3E', kr:'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20xmlns%3Axlink%3D%22http%3A//www.w3.org/1999/xlink%22%20viewBox%3D%22-36%20-24%2072%2048%22%3E%3Crect%20fill%3D%22%23fff%22%20x%3D%22-36%22%20y%3D%22-24%22%20width%3D%2272%22%20height%3D%2248%22/%3E%3Cg%20transform%3D%22rotate%28-56.3099325%29%22%3E%3Cg%20id%3D%22b2%22%3E%3Cpath%20id%3D%22b%22%20d%3D%22M-6-25H6M-6-22H6M-6-19H6%22%20stroke%3D%22%23000%22%20stroke-width%3D%222%22/%3E%3Cuse%20xlink%3Ahref%3D%22%23b%22%20y%3D%2244%22/%3E%3C/g%3E%3Cpath%20stroke%3D%22%23fff%22%20stroke-width%3D%221%22%20d%3D%22M0%2C17v10%22/%3E%3Ccircle%20fill%3D%22%23cd2e3a%22%20r%3D%2212%22/%3E%3Cpath%20fill%3D%22%230047a0%22%20d%3D%22M0-12A6%2C6%200%200%200%200%2C0A6%2C6%200%200%201%200%2C12A12%2C12%200%200%2C1%200-12z%22/%3E%3C/g%3E%3Cg%20transform%3D%22rotate%28-123.6900675%29%22%3E%3Cuse%20xlink%3Ahref%3D%22%23b2%22/%3E%3Cpath%20stroke%3D%22%23fff%22%20stroke-width%3D%221%22%20d%3D%22M0-23.5v3M0%2C17v3.5M0%2C23.5v3%22/%3E%3C/g%3E%3C/svg%3E' };
-const APP_VERSION = 'v0.22';  // shown after the logo; bump with every release
+const APP_VERSION = 'v0.24';  // shown after the logo; bump with every release
 const APP_ICON = 'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Cdefs%3E%3CclipPath%20id%3D%22r%22%3E%3Crect%20x%3D%222%22%20y%3D%222%22%20width%3D%2260%22%20height%3D%2260%22%20rx%3D%2212%22/%3E%3C/clipPath%3E%3C/defs%3E%3Cg%20clip-path%3D%22url%28%23r%29%22%3E%3Crect%20x%3D%220%22%20y%3D%220%22%20width%3D%2232%22%20height%3D%2264%22%20fill%3D%22%23F39700%22/%3E%3Crect%20x%3D%2232%22%20y%3D%220%22%20width%3D%2232%22%20height%3D%2264%22%20fill%3D%22%2300A84D%22/%3E%3C/g%3E%3Cpath%20d%3D%22M9%209H25M17%209V24M8%2024H26%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%224.5%22%20stroke-linecap%3D%22round%22/%3E%3Cpath%20d%3D%22M8%2037H26M7%2047H27M15%2031L19%2057%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%224.5%22%20stroke-linecap%3D%22round%22/%3E%3Ccircle%20cx%3D%2241.5%22%20cy%3D%2217%22%20r%3D%226.5%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%224.5%22/%3E%3Cpath%20d%3D%22M57%209V35M49%2016H57M49%2028H57%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%224.5%22%20stroke-linecap%3D%22round%22/%3E%3Cpath%20d%3D%22M37%2043H57V57%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%224.5%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22/%3E%3C/svg%3E';
 const flag = c => h('img', { class:'flag', src: FLAG_SRC[c === 'ja' ? 'jp' : c === 'ko' ? 'kr' : c], alt:'' });
 // learning points per letter: settled once per run (see applyTally)
@@ -1091,7 +1134,7 @@ const know = () => D.know[D.lang] ||= {};
 const level = u => { const p = know()[u] || 0; return p >= PTS.mastered ? 2 : p >= PTS.learned ? 1 : 0; };
 
 function question(st) {
-  if (D.lang === 'ja') return { text: st.hangul, lang: 'ko' };
+  if (D.lang === 'ja') return { text: st.signH || st.hangul, lang: 'ko' };
   return { text: kanaDisp(st.country === 'jp' ? st.kana : st.kata), lang: 'ja' };
 }
 /* Korean screen, Japanese station: the other kana form and the kanji, small under the question */
@@ -1102,11 +1145,12 @@ function qSub(st) {
   return h('div', { class:'qsub glyph', lang:'ja' }, kanji ? other + '／' + kanji : other);
 }
 function answerText(st) {
+  if (D.lang === 'ja' && st.signK) return st.signK[0];
   if (D.lang === 'ja') return st.country === 'jp' ? st.kana : E.toKata(st.kata);
   return st.hangul;
 }
 function unitsOf(st) {
-  const u = D.lang === 'ja' ? E.hangulUnits(st.hangul) : E.kanaUnits(question(st).text);
+  const u = D.lang === 'ja' ? E.hangulUnits(st.signH || st.hangul) : E.kanaUnits(question(st).text);
   return [...new Set(u)];
 }
 
@@ -1281,7 +1325,7 @@ function renderPlay() {
   const codeEl = stationMark(L, st, { hide: !S.done, size:'68px' });
   const foot = h('div', { class:'sign-foot' });
   if (S.done) {
-    if (st.country === 'jp') foot.append(flag('jp'), h('span', { class:'k glyph', lang:'ja' }, st.name), h('span', { class:'s glyph', lang:'ja' }, D.lang === 'ja' ? st.kana : kanaDisp(st.kana)), flag('kr'), h('span', { class:'s glyph', lang:'ko' }, st.hangul));
+    if (st.country === 'jp') foot.append(flag('jp'), h('span', { class:'k glyph', lang:'ja' }, st.name), h('span', { class:'s glyph', lang:'ja' }, D.lang === 'ja' ? st.kana : kanaDisp(st.kana)), flag('kr'), h('span', { class:'s glyph', lang:'ko' }, st.signH && D.lang === 'ja' ? st.signH : st.hangul));
     else foot.append(flag('kr'), h('span', { class:'k glyph', lang:'ko' }, st.name), flag('jp'), h('span', { class:'s glyph', lang:'ja' }, D.lang === 'ja' ? E.toKata(st.kata) : kanaDisp(st.kata)));
     foot.append(h('span', { class:'r' }, st.roma));
     if (st.sub) foot.append(h('span', { class:'s sub' }, T.subL + '：', st.sub[0] ? [h('span', { class:'glyph', lang:'ja' }, st.sub[0]), ' ／ '] : null, h('span', { class:'glyph', lang:'ko' }, st.sub[1])));
@@ -1351,14 +1395,14 @@ function toggleHint() {
 function renderHint(st) {
   const T = t(), box = h('div', { class:'hint' });
   if (D.lang === 'ja') {
-    const chars = [...st.hangul].filter(c => E.decompose(c));
+    const chars = [...(st.signH || st.hangul)].filter(c => E.decompose(c));
     chars.forEach((c, i) => {
       const b = E.blockInfo(c);
       const part = (cls, j, snd, unit) => {
         const k = level(unit) === 2 && !S.done;
         return h('span', { class:'jm ' + cls + (k ? ' known' : ''), lang:'ko' }, j, h('small', null, k ? T.known : snd));
       };
-      const kk = st.country === 'jp' && st.chunks[i] && S.done ? E.toKata(st.chunks[i].k) : null;
+      const kk = st.country === 'jp' && !st.signH && st.chunks[i] && S.done ? E.toKata(st.chunks[i].k) : null;
       box.append(h('div', { class:'blk' },
         h('span', { class:'g glyph', lang:'ko' }, c),
         h('span', { class:'parts' },
@@ -1504,7 +1548,7 @@ function examples(st) {
   if (st.country === 'jp') {
     const hep = E.hepburn(st.kana);
     const mac = hep.replace(/ou/g, 'ō').replace(/oo/g, 'ō').replace(/uu/g, 'ū');
-    okC = [st.kana, E.toKata(st.kana), longBar(st.kana), E.toKata(longBar(st.kana)), st.name, ...st.alt, st.roma, hep, cap(mac), ...hangulVariants(st.hangul)];
+    okC = [...(st.signK || []), st.signH, st.kana, E.toKata(st.kana), longBar(st.kana), E.toKata(longBar(st.kana)), st.name, ...st.alt, st.roma, hep, cap(mac), ...hangulVariants(st.hangul)];
     closeC = [dropLong(st.kana), E.toKata(dropLong(st.kana)), swapFirstVoice(st.kana), E.kanaChunks(st.kana, true).map(c => c.h).join(''), dropBatchimS(st.hangul)];
   } else {
     okC = [st.name, ...st.koAlt, st.kata, E.toHira(st.kata), st.roma, ...st.rrAlt];
@@ -1518,13 +1562,13 @@ function examples(st) {
 const KNOW = 'Claudeの知識';
 const SRC_ICON = { ok:'✅', diff:'⚠️', unk:'❓' };
 const NAMU_PART = new Set(['다대포해수욕장','부산역','부산대','청라국제도시','인천공항1터미널','인천공항2터미널']);
-const KR_CSV_KATA = new Set(['seoul1','seoul2','seoul3','seoul4']);
+const KR_CSV_KATA = new Set(['seoul1','seoul2','seoul3','seoul4','seoul8']);
 const AREX_CSV = new Set(['서울역','공덕','홍대입구','디지털미디어시티','김포공항']);
 function srcOf(id, st) {
   const out = [];
   const add = (f, state, src, off) => out.push({ f, state, src, off });
   if (st.country === 'jp') {
-    const wiki = { ginza:'韓国語版Wikipedia', marunouchi:'韓国語版Wikipedia＋公式韓国語路線図', yurakucho:'韓国語版Wikipedia', higashiyama:'韓国語版Wikipedia', midosuji:'韓国語版Wikipedia', monorail:'韓国語版Wikipedia' }[id];
+    const wiki = { ginza:'韓国語版Wikipedia', marunouchi:'韓国語版Wikipedia＋公式韓国語路線図', yurakucho:'韓国語版Wikipedia', higashiyama:'韓国語版Wikipedia', fukuoka:'韓国語版Wikipedia', midosuji:'韓国語版Wikipedia', monorail:'韓国語版Wikipedia' }[id];
     if (!wiki) {  // lines added without a checked source yet (Yamanote, Tokaido-Sanyo Shinkansen)
       add('駅リスト', 'unk', KNOW);
       add('かな', 'unk', KNOW);
@@ -1538,6 +1582,7 @@ function srcOf(id, st) {
     const mean = st.meaning && st.meaning.length ? '（意味訳：' + st.meaning[0] + '）' : '';
     add('ハングル', 'ok', 'ルール変換 → ' + wiki + 'と一致' + mean);
     add('ローマ字', 'unk', 'ルール変換（駅名標式：b・m・p の前は m）');
+    if (st.signH) add('出題', 'unk', '意味訳ハングル「' + st.signH + '」で出題。発音かなは' + KNOW);
   } else {
     if (id === 'ktx') {
       add('駅リスト', 'ok', 'Wikipedia（韓国語版、2023年に신경주→경주）');
@@ -1748,7 +1793,7 @@ function showSettings() {
 function availableUnits() {
   const set = new Set();
   for (const id in LINES) for (const s of LINES[id].stations) {
-    if (D.lang === 'ja') E.hangulUnits(s.hangul).forEach(u => set.add(u));
+    if (D.lang === 'ja') E.hangulUnits(s.signH || s.hangul).forEach(u => set.add(u));
     else { const k = s.country === 'jp' ? s.kana : s.kata;
       E.kanaUnits(E.toKata(k)).forEach(u => set.add(u)); E.kanaUnits(E.toHira(k)).forEach(u => set.add(u)); }
   }
