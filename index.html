@@ -708,6 +708,10 @@ const MEANING_KR = {  // Korean station -> Japanese kanji / meaning (official Ja
   '인천공항1터미널':['仁川国際空港1ターミナル'],'인천공항2터미널':['仁川国際空港2ターミナル']
 };
 /* sub-station names of Korean stations (Seoul Metro CSV), Korean only */
+/* hanja shown under Korean station names on the Japanese screen (Korean mixed script, traditional forms).
+   Seoul: Seoul Metro CSV hanja column; others written by Claude (unverified) */
+const HANJA_SEOUL = {"서울역": "서울驛", "시청": "市廳", "종각": "鐘閣", "종로3가": "鍾路3街", "종로5가": "鍾路5街", "동대문": "東大門", "동묘앞": "東廟앞", "신설동": "新設洞", "제기동": "祭基洞", "청량리": "淸凉里", "을지로입구": "乙支路入口", "을지로3가": "乙支路3街", "을지로4가": "乙支路4街", "동대문역사문화공원": "東大門歷史文化公園", "신당": "新堂", "상왕십리": "上往十里", "왕십리": "往十里", "한양대": "漢陽大", "성수": "聖水", "건대입구": "建大入口", "구의": "九宜", "강변": "江邊", "잠실나루": "蠶室나루", "잠실": "蠶室", "종합운동장": "綜合運動場", "삼성": "三成", "선릉": "宣陵", "역삼": "驛三", "강남": "江南", "교대": "敎大", "서초": "瑞草", "방배": "方背", "사당": "舍堂", "낙성대": "落星垈", "서울대입구": "서울大入口", "봉천": "奉天", "신림": "新林", "신대방": "新大方", "구로디지털단지": "九老디지털團地", "대림": "大林", "신도림": "新道林", "문래": "文來", "영등포구청": "永登浦區廳", "당산": "堂山", "합정": "合井", "홍대입구": "弘大入口", "신촌": "新村", "이대": "梨大", "아현": "阿峴", "충정로": "忠正路", "용답": "龍踏", "신답": "新踏", "용두": "龍頭", "도림천": "道林川", "양천구청": "陽川區廳", "신정네거리": "新亭네거리", "까치산": "까치山", "지축": "紙杻", "구파발": "舊把撥", "불광": "佛光", "녹번": "碌磻", "홍제": "弘濟", "무악재": "毋岳재", "독립문": "獨立門", "경복궁": "景福宮", "안국": "安國", "충무로": "忠武路", "동대입구": "東大入口", "약수": "藥水", "금호": "金湖", "옥수": "玉水", "압구정": "狎鷗亭", "신사": "新沙", "잠원": "蠶院", "고속터미널": "高速터미널", "남부터미널": "南部터미널", "양재": "良才", "도곡": "道谷", "대치": "大峙", "학여울": "鶴여울", "일원": "逸院", "수서": "水西", "가락시장": "可樂市場", "경찰병원": "警察病院", "오금": "梧琴", "불암산": "佛巖山", "상계": "上溪", "노원": "蘆原", "창동": "倉洞", "쌍문": "雙門", "수유": "水踰", "미아": "彌阿", "미아사거리": "彌阿사거리", "길음": "吉音", "성신여대입구": "誠信女大入口", "한성대입구": "漢城大入口", "혜화": "惠化", "명동": "明洞", "회현": "會賢", "숙대입구": "淑大入口", "삼각지": "三角地", "신용산": "新龍山", "이촌": "二村", "동작": "銅雀", "총신대입구": "總神大入口", "남태령": "南泰嶺", "암사": "岩寺", "천호": "千戶", "강동구청": "江東區廳", "몽촌토성": "夢村土城", "석촌": "石村", "송파": "松坡", "문정": "文井", "장지": "長旨", "복정": "福井", "남위례": "南慰禮", "산성": "山城", "남한산성입구": "南漢山城入口", "단대오거리": "丹垈오거리", "신흥": "新興", "수진": "壽進", "모란": "牡丹", "암사역사공원": "岩寺歷史公園"};
+const HANJA_OTHER = {"다대포해수욕장": "多大浦海水浴場", "다대포항": "多大浦港", "신장림": "新長林", "장림": "長林", "동매": "東梅", "신평": "新平", "하단": "下端", "당리": "堂里", "사하": "沙下", "괴정": "槐亭", "대티": "大峙", "서대신": "西大新", "동대신": "東大新", "토성": "土城", "남포": "南浦", "중앙": "中央", "부산역": "釜山驛", "초량": "草梁", "부산진": "釜山鎭", "좌천": "佐川", "범일": "凡一", "범내골": "凡내골", "서면": "西面", "부전": "釜田", "양정": "楊亭", "연산": "蓮山", "동래": "東萊", "명륜": "明倫", "온천장": "溫泉場", "부산대": "釜山大", "장전": "長箭", "구서": "久瑞", "두실": "斗實", "남산": "南山", "범어사": "梵魚寺", "노포": "老圃", "공덕": "孔德", "마곡나루": "麻谷나루", "김포공항": "金浦空港", "계양": "桂陽", "검암": "黔岩", "청라국제도시": "靑羅國際都市", "영종": "永宗", "운서": "雲西", "공항화물청사": "空港貨物廳舍", "인천공항1터미널": "仁川空港1터미널", "인천공항2터미널": "仁川空港2터미널", "광명": "光明", "천안아산": "天安牙山", "오송": "五松", "대전": "大田", "김천(구미)": "金泉(龜尾)", "서대구": "西大邱", "동대구": "東大邱", "경주": "慶州", "울산": "蔚山", "부산": "釜山"};
 const SUB_KR = { '수유':'강북구청','미아':'서울사이버대학','성신여대입구':'돈암','한성대입구':'삼선교','회현':'남대문시장','숙대입구':'갈월',
   '이촌':'국립중앙박물관','동작':'현충원','총신대입구':'이수','청량리':'서울시립대입구','왕십리':'성동구청','구의':'광진구청','강변':'동서울터미널',
   '잠실':'송파구청','삼성':'무역센터','교대':'법원·검찰청','낙성대':'강감찬','서울대입구':'관악구청','대림':'구로구청','신촌':'지하','충정로':'경기대입구','용두':'동대문구청', '울산':'통도사',
@@ -777,7 +781,8 @@ function buildLines() {
           }
           const off = OFFICIAL_KATA[id] && OFFICIAL_KATA[id][ko];
           s = { country:'kr', name:ko, kata: off || kata, kataAlt: (off ? [kata] : []).concat(extra.kata || []), koAlt, rrAlt, hangul: ko,
-                roma: rr.charAt(0).toUpperCase() + rr.slice(1), meaning: MEANING_KR[ko] || [], official: !!off,
+                roma: rr.charAt(0).toUpperCase() + rr.slice(1),
+                hanja: (id.startsWith('seoul') ? HANJA_SEOUL[ko] : HANJA_OTHER[ko]) || '', hanjaOfficial: id.startsWith('seoul') && !!HANJA_SEOUL[ko], meaning: MEANING_KR[ko] || [], official: !!off,
                 sub: SUB_KR[ko] ? [null, SUB_KR[ko]] : null };
         }
         s.code = code; s.section = si; s.idx = stations.length;
@@ -1002,7 +1007,7 @@ const symEl = (id, extra) => h('span', { class:'sym' + (SYM[id].length > 1 ? ' t
 const RUN_MS = 60 * 1000;
 /* flags drawn as SVG (emoji flags do not show on Windows) */
 const FLAG_SRC = { jp:'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20900%20600%22%3E%3Crect%20fill%3D%22%23fff%22%20width%3D%22900%22%20height%3D%22600%22/%3E%3Ccircle%20fill%3D%22%23bc002d%22%20cx%3D%22450%22%20cy%3D%22300%22%20r%3D%22180%22/%3E%3C/svg%3E', kr:'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20xmlns%3Axlink%3D%22http%3A//www.w3.org/1999/xlink%22%20viewBox%3D%22-36%20-24%2072%2048%22%3E%3Crect%20fill%3D%22%23fff%22%20x%3D%22-36%22%20y%3D%22-24%22%20width%3D%2272%22%20height%3D%2248%22/%3E%3Cg%20transform%3D%22rotate%28-56.3099325%29%22%3E%3Cg%20id%3D%22b2%22%3E%3Cpath%20id%3D%22b%22%20d%3D%22M-6-25H6M-6-22H6M-6-19H6%22%20stroke%3D%22%23000%22%20stroke-width%3D%222%22/%3E%3Cuse%20xlink%3Ahref%3D%22%23b%22%20y%3D%2244%22/%3E%3C/g%3E%3Cpath%20stroke%3D%22%23fff%22%20stroke-width%3D%221%22%20d%3D%22M0%2C17v10%22/%3E%3Ccircle%20fill%3D%22%23cd2e3a%22%20r%3D%2212%22/%3E%3Cpath%20fill%3D%22%230047a0%22%20d%3D%22M0-12A6%2C6%200%200%200%200%2C0A6%2C6%200%200%201%200%2C12A12%2C12%200%200%2C1%200-12z%22/%3E%3C/g%3E%3Cg%20transform%3D%22rotate%28-123.6900675%29%22%3E%3Cuse%20xlink%3Ahref%3D%22%23b2%22/%3E%3Cpath%20stroke%3D%22%23fff%22%20stroke-width%3D%221%22%20d%3D%22M0-23.5v3M0%2C17v3.5M0%2C23.5v3%22/%3E%3C/g%3E%3C/svg%3E' };
-const APP_VERSION = 'v0.26';  // shown after the logo; bump with every release
+const APP_VERSION = 'v0.28';  // shown after the logo; bump with every release
 const APP_ICON = 'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Cdefs%3E%3CclipPath%20id%3D%22r%22%3E%3Crect%20x%3D%222%22%20y%3D%222%22%20width%3D%2260%22%20height%3D%2260%22%20rx%3D%2212%22/%3E%3C/clipPath%3E%3C/defs%3E%3Cg%20clip-path%3D%22url%28%23r%29%22%3E%3Crect%20x%3D%220%22%20y%3D%220%22%20width%3D%2232%22%20height%3D%2264%22%20fill%3D%22%23F39700%22/%3E%3Crect%20x%3D%2232%22%20y%3D%220%22%20width%3D%2232%22%20height%3D%2264%22%20fill%3D%22%2300A84D%22/%3E%3C/g%3E%3Cpath%20d%3D%22M9%209H25M17%209V24M8%2024H26%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%224.5%22%20stroke-linecap%3D%22round%22/%3E%3Cpath%20d%3D%22M8%2037H26M7%2047H27M15%2031L19%2057%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%224.5%22%20stroke-linecap%3D%22round%22/%3E%3Ccircle%20cx%3D%2241.5%22%20cy%3D%2217%22%20r%3D%226.5%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%224.5%22/%3E%3Cpath%20d%3D%22M57%209V35M49%2016H57M49%2028H57%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%224.5%22%20stroke-linecap%3D%22round%22/%3E%3Cpath%20d%3D%22M37%2043H57V57%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%224.5%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22/%3E%3C/svg%3E';
 const flag = c => h('img', { class:'flag', src: FLAG_SRC[c === 'ja' ? 'jp' : c === 'ko' ? 'kr' : c], alt:'' });
 // learning points per letter: settled once per run (see applyTally)
@@ -1034,7 +1039,7 @@ const TXT = {
     prompt:'この駅名、なんて読む？', ph:'かな・漢字・ローマ字で', go:'答える',
     hintBtn:'ヒント', hintClose:'ヒントをとじる', cut:'2つ消す', skip:'スキップ', next:'次へ', quit:'やめる', toLines:'路線',
     enter:'Enterでも進む',
-    ok:'正解！', close:'ほぼ正解！', near:'おしい！', ng:'不正解', meaning:'正解！（意味訳）', nearPre:'あと一歩！ 答えは',
+    ok:'正解！', close:'ほぼ正解！', near:'おしい！', ng:'不正解', meaning:'正解！（意味訳）', nearPre:'あと一歩！ 答えは', banned:a=>'その文字では答えられない（問題に出ている字だから）。'+a+'答えてね',
     meaningMsg:a=>'意味で読めた。音で読むと「'+a+'」。', subL:'副駅名',
     literalMsg:a=>'字どおりに読めてる！ でもハングルは、となりの音で発音が変わることがある（ㅇ・ㄴ・ㅁの後のㄹ→ㄴ、ㄱ・ㅂの後のㅅ→ッ など）。駅名は「'+a+'」。',
     closeMsg:a=>'読みは合ってる。駅名は「'+a+'」。', ngMsg:a=>'答えは「'+a+'」。',
@@ -1069,7 +1074,7 @@ const TXT = {
     prompt:'이 역 이름, 어떻게 읽을까요?', ph:'한글 또는 로마자로', go:'확인',
     hintBtn:'힌트', hintClose:'힌트 닫기', cut:'2개 지우기', skip:'건너뛰기', next:'다음', quit:'그만하기', toLines:'노선',
     enter:'Enter로도 넘어가요',
-    ok:'정답!', close:'거의 정답!', near:'아깝다!', ng:'오답', meaning:'정답! (의미 번역)', nearPre:'한 끗 차이! 정답은',
+    ok:'정답!', close:'거의 정답!', near:'아깝다!', ng:'오답', meaning:'정답! (의미 번역)', nearPre:'한 끗 차이! 정답은', banned:a=>'그 글자로는 답할 수 없어요 (문제에 나온 글자예요). '+a+' 답해 주세요',
     meaningMsg:a=>'뜻으로 읽었어요. 소리대로는 「'+a+'」.', subL:'부역명',
     literalMsg:a=>'글자대로 읽었어요. 실제 발음은 「'+a+'」.',
     closeMsg:a=>'읽기는 맞았어요. 표기는 「'+a+'」.', ngMsg:a=>'정답은 「'+a+'」.',
@@ -1164,6 +1169,7 @@ function question(st) {
 }
 /* Korean screen, Japanese station: the other kana form and the kanji, small under the question */
 function qSub(st) {
+  if (D.lang === 'ja' && st.country === 'kr') return h('div', { class:'qsub glyph', lang:'ko' }, st.hanja || st.name);  // no hanja: the Hangul again, small
   if (D.lang !== 'ko' || st.country !== 'jp') return null;
   const other = D.kana === 'hira' ? E.toKata(st.kana) : E.toHira(st.kana);
   const kanji = [st.name, ...st.alt].find(n => /[一-龯々]/.test(n));
@@ -1433,9 +1439,13 @@ function renderPlay() {
       });
       act.append(box);
     } else {
-      const inp = h('input', { id:'ans', type:'text', autocomplete:'off', autocapitalize:'off', spellcheck:'false', placeholder:T.ph, lang: D.lang === 'ja' ? 'ja' : 'ko', 'aria-label':T.prompt });
-      act.append(h('form', { class:'ansrow', onsubmit:e => { e.preventDefault(); const r = E.judge(D.lang, st, inp.value); if (r) answer(r, inp.value); } },
-        inp, h('button', { class:'go', type:'submit' }, T.go)));
+      const inp = h('input', { id:'ans', type:'text', autocomplete:'off', autocapitalize:'off', spellcheck:'false', placeholder:allowedScripts(st), lang: D.lang === 'ja' ? 'ja' : 'ko', 'aria-label':T.prompt });
+      const warn = h('p', { class:'prompt', style:'color:var(--ng)', role:'status' });
+      act.append(h('form', { class:'ansrow', onsubmit:e => {
+          e.preventDefault();
+          if (bannedScript(st, inp.value) && !D.devFree) { warn.textContent = T.banned(allowedScripts(st)); inp.focus(); return; }
+          const r = E.judge(D.lang, st, inp.value); if (r) answer(r, inp.value); } },
+        inp, h('button', { class:'go', type:'submit' }, T.go)), warn);
     }
     const sub = h('div', { class:'subrow' },
       S.practice ? null : h('button', { class:'sbtn', type:'button', 'aria-pressed': String(S.hintOpen), onclick:toggleHint }, S.hintOpen ? T.hintClose : '💡 ' + T.hintBtn));
@@ -1467,6 +1477,16 @@ function diffMark(ans, input) {
     else { out.push(h('b', { class:'dmark' }, A[i])); i++; }
   }
   return out;
+}
+/* letters already on the screen can't be used to answer (no copy and paste) */
+const HAS_HANGUL = /[가-힣ㄱ-ㅣ]/, HAS_KANA = /[ぁ-ゖァ-ヺ]/, HAS_KANJI = /[一-鿿々]/;
+function bannedScript(st, v) {
+  if (D.lang === 'ja') return HAS_HANGUL.test(v) || (st.country === 'kr' && HAS_KANJI.test(v));
+  return HAS_KANA.test(v) || HAS_KANJI.test(v);
+}
+function allowedScripts(st) {
+  if (D.lang === 'ko') return '한글 또는 로마자로';
+  return st.country === 'jp' ? 'かな・漢字・ローマ字で' : 'かな・ローマ字で';
 }
 function toggleHint() {
   S.hintOpen = !S.hintOpen;
@@ -1693,6 +1713,7 @@ function srcOf(id, st) {
       add('ハングル', 'ok', 'ナムウィキ（各駅ページ）');
       add('カタカナ', 'ok', 'ナムウィキ（各駅ページ）');
       add('ローマ字', 'unk', KNOW + '（RR式、未確認）');
+      if (st.hanja) add('漢字', 'unk', KNOW + '（旧字体、未確認）');
       return out;
     }
     if (id === 'arex') add('駅リスト', 'ok', 'Wikipedia（韓国語版）');
@@ -1708,6 +1729,7 @@ function srcOf(id, st) {
     else if (NAMU_PART.has(st.name)) add('カタカナ', 'ok', 'ナムウィキ（地名部分のカタカナと一致、残りは意味訳）');
     else add('カタカナ', 'ok', 'ナムウィキ' + fixed);
     add('ローマ字', 'unk', KNOW + '（RR式、未確認）');
+    if (st.hanja) add('漢字', st.hanjaOfficial ? 'ok' : 'unk', st.hanjaOfficial ? 'ソウル交通公社の公式CSV' : KNOW + '（旧字体、未確認）');
   }
   return out;
 }
@@ -1841,6 +1863,12 @@ function viewDev() {
     msg.textContent = D.openAll ? 'ステージ2を全部ひらいた' : 'カギをもどした';
   } }, keyLbl());
 
+  const freeLbl = () => D.devFree ? '🔤 文字制限なし（テスト用・押すと元にもどす）' : '🔤 文字制限あり';
+  const freeBtn = h('button', { class:'sbtn', type:'button', 'aria-pressed': String(!!D.devFree), onclick:() => {
+    D.devFree = !D.devFree; save(); freeBtn.textContent = freeLbl(); freeBtn.setAttribute('aria-pressed', String(D.devFree));
+    msg.textContent = D.devFree ? 'どの文字でも答えられるようにした' : '文字制限をもどした';
+  } }, freeLbl());
+
   m.append(
     h('div', { class:'ptop' },
       h('button', { class:'back', type:'button', onclick:() => viewStart() }, '‹ タイトル'),
@@ -1849,7 +1877,7 @@ function viewDev() {
     srcSummary(),
     memoAll,
     h('div', { class:'devbar' }, sel, srcSel, q, test, onlyNotes),
-    h('div', { class:'devbar' }, sum, keyBtn, copyNotes, copyTsv, msg),
+    h('div', { class:'devbar' }, sum, keyBtn, freeBtn, copyNotes, copyTsv, msg),
     ta, grid);
   draw();
 }
