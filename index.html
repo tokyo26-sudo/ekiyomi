@@ -150,11 +150,36 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline
 .sign-foot .s{color:var(--muted)}
 .sign-foot .hidden{color:var(--muted);letter-spacing:.3em}
 
-.act{margin-top:12px;display:grid;gap:8px}
+.act{margin-top:12px;display:grid;gap:8px;grid-template-columns:minmax(0,1fr)}
+.play{display:flex;flex-direction:column;gap:10px;padding-top:2px}
+.play>*{min-width:0}
+.play .hud,.play .strip{margin-bottom:0}
+.play .act{margin-top:0}
+.play .s-prompt:empty,.play .s-strip:empty,.play .s-hint:empty{display:none}
+.ansrow+.warn{margin-top:6px}
+.warn{color:var(--ng)}
+.warn:empty{display:none}
+@media (max-width:600px){
+  .play{gap:8px}
+  .play .s-top{order:1}.play .s-hud{order:2}.play .s-form{order:3}.play .s-sign{order:4}
+  .play .s-act{order:5}.play .s-hint{order:6}.play .s-strip{order:7}.play .s-prompt{display:none}
+  .play .ptop{padding-block:8px 0}
+  .play .hud div{padding:2px 8px}
+  .play .hud b{font-size:1.2rem}
+  .play .sign-band{height:8px}
+  .play .sign-body{padding:10px 12px 8px;gap:10px}
+  .play .sign .mark{--ms:48px!important}
+  .play .q{font-size:clamp(1.8rem,9vw,2.6rem)}
+  .play .q.long{font-size:clamp(1.4rem,6.5vw,2.1rem)}
+  .play .q.xlong{font-size:clamp(1.15rem,5vw,1.7rem)}
+  .play .sign-foot{padding:6px 10px;min-height:0}
+  .play .fb{padding:8px 10px}
+  .play .fb .next{padding:10px 16px}
+}
 .ansrow{display:flex;gap:8px}
-.ansrow input{flex:1;min-width:0;font:inherit;font-size:1.25rem;padding:10px 14px;border:2px solid var(--rule);border-radius:8px;background:var(--sign);color:var(--ink)}
+.ansrow input{flex:1;min-width:0;width:0;font:inherit;font-size:1.25rem;padding:10px 14px;border:2px solid var(--rule);border-radius:8px;background:var(--sign);color:var(--ink)}
 .ansrow input:focus{border-color:var(--accent);outline:none}
-.go{border:0;border-radius:8px;background:var(--accent);color:var(--sign);font-weight:900;padding:0 20px}
+.go{border:0;border-radius:8px;background:var(--accent);color:var(--sign);font-weight:900;padding:0 16px;flex:none;white-space:nowrap}
 .choices{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .choices button{border:2px solid var(--rule);background:var(--sign);border-radius:8px;padding:12px 8px;font-size:1.25rem;font-weight:700;overflow-wrap:anywhere}
 .choices button:hover:not(:disabled){border-color:var(--accent)}
@@ -338,6 +363,17 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline
 .dtlbl.mean{color:var(--accent)}
 .dex.mean{background:color-mix(in srgb,var(--accent) 12%,var(--sign));border:1px solid color-mix(in srgb,var(--accent) 40%,transparent)}
 .sign-foot .sub{flex-basis:100%;text-align:center;font-size:.85rem}
+.blk .rm{font-family:var(--f-num);font-size:1.2rem;letter-spacing:.03em}
+.blk .fin{font-size:.8rem;font-weight:700;color:var(--close)}
+/* test book */
+.tbtab{border-collapse:collapse;font-size:.82rem;width:100%;min-width:640px}
+.tbtab td,.tbtab th{padding:4px 6px;border-bottom:1px solid var(--rule);text-align:left}
+.tbtab th{font-size:.72rem;color:var(--muted)}
+.tbtab tr.pass td:first-child{color:var(--ok);font-weight:900}
+.tbtab tr.fail{background:var(--ngbg)}.tbtab tr.fail td:first-child{color:var(--ng);font-weight:900}
+.tbtab tr.wait{background:var(--closebg)}
+.tbsum{font-weight:900}.tbsum.fail{color:var(--ng)}.tbsum.pass{color:var(--ok)}
+.tadd{border:1px solid var(--rule);background:var(--panel);border-radius:999px;padding:0 8px;font-size:.72rem}
 @media (prefers-reduced-motion:no-preference){
   .sign.flip{animation:flip .3s ease}
   @keyframes flip{from{transform:translateY(6px);opacity:.4}to{transform:none;opacity:1}}
@@ -388,7 +424,7 @@ function morae(h) {
   return out;
 }
 const SMALLV_ROMA = { うぃ:'wi',うぇ:'we',うぉ:'wo',てぃ:'ti',でぃ:'di',とぅ:'tu',どぅ:'du',ふぁ:'fa',ふぃ:'fi',ふぇ:'fe',ふぉ:'fo',
-  しぇ:'she',じぇ:'je',ちぇ:'che',くぁ:'kwa',ぐぁ:'gwa',くぇ:'kwe',ぐぇ:'gwe',つぁ:'tsa',ゔぁ:'va' };
+  しぇ:'she',じぇ:'je',ちぇ:'che',くぁ:'kwa',ぐぁ:'gwa',くぇ:'kwe',ぐぇ:'gwe',つぁ:'tsa',ゔぁ:'va',むぉ:'mwo',るぉ:'rwo',むぃ:'mwi',くぉ:'kwo' };
 function moraRoma(m) {
   if (m.length === 2 && 'ぁぃぅぇぉ'.includes(m[1])) return SMALLV_ROMA[m] || (ROMA[m[0]] || '');
   if (m.length === 2) {
@@ -753,18 +789,17 @@ const SUB_JP = {
   '大手町':['サンケイ前','산케이 앞'], '新宿御苑前':['新宿御苑','신주쿠 교엔'], '国会議事堂前':['国会議事堂','국회의사당']
 };
 /* Hangul as written by Korean Wikipedia where the rule conversion differs */
-const HANGUL_JP = { '飯田橋':'이다바시', '銀座一丁目':'긴자 1초메' };
+const HANGUL_JP = { '飯田橋':'이다바시' };
 /* Japanese screen: these stations are asked in their Korean (meaning) form.
    Reading that Hangul as Korean = correct, the Japanese name = meaning, letter-by-letter = close.
    k: how the Hangul sounds, in hiragana (Claude's knowledge, unverified) */
 const KO_SIGN = {
-  '国会議事堂前':{ h:'국회의사당', k:['くっけいさだん','くっけうぃさだん','くっくぇいさだん','くっくぇうぃさだん'] },
   '動物園前':{ h:'동물원앞', k:['とんむるぉなぷ','とんむろなぷ','とんむるうぉなぷ','とんむうぉなぷ'] },
   '大濠公園':{ h:'오호리 공원', k:['おほりごんうぉん','おほりごんおん'] },
   '福岡空港':{ h:'후쿠오카 공항', k:['ふくおかごんはん','ふくおかごんあん'] },
-  'モノレール浜松町':{ h:'모노레일하마마쓰초', k:['ものれいるはまますちょ','ものれいるはままっすちょ'] },
+  'モノレール浜松町':{ h:'모노레일하마마쓰초', k:['ものれいるはままつちょ','ものれいるはままっつちょ'] },
   '天王洲アイル':{ h:'덴노즈아일', k:['てんのじゅあいる','でんのじゅあいる','てんのずあいる','でんのずあいる'] },
-  '流通センター':{ h:'류쓰센터', k:['りゅっすせんと','りゅすせんと'] },
+  '流通センター':{ h:'류쓰센터', k:['りゅっつせんと','りゅつせんと'] },
   '高輪ゲートウェイ':{ h:'다카나와게이트웨이', k:['たかなわげいとぅうぇい','たかなわげいとうぇい','たかなわけいとぅうぇい'] },
   '羽田空港第3ターミナル':{ h:'하네다공항제3터미널', k:['はねだごんはんじぇさむとみのる','はねだごんあんじぇさむとみのる'] },
   '羽田空港第1ターミナル':{ h:'하네다공항제1터미널', k:['はねだごんはんじぇいるとみのる','はねだごんあんじぇいるとみのる'] },
@@ -773,7 +808,23 @@ const KO_SIGN = {
 /* light kana key: dakuten kept; spaces, long marks, small tsu and small vowels folded; Korean numbers read out */
 const kanaKeyKR = s => collapseKana(toHira(s).replace(/1/g, 'いる').replace(/2/g, 'い').replace(/3/g, 'さむ'))
   .replace(/[\sー・･っ()（）]/g, '').replace(/[ぁぃぅぇぉゃゅょ]/g, c => String.fromCharCode(c.charCodeAt(0) + 1));
-const SINO = { 1:'일', 2:'이', 3:'삼', 4:'사', 5:'오' };
+const SINO = { 1:'일', 2:'이', 3:'삼', 4:'사', 5:'오', 6:'육', 7:'칠', 8:'팔', 9:'구' };
+const SINO_H = { 1:'いる', 2:'い', 3:'さむ', 4:'さ', 5:'お', 6:'ゆく', 7:'ちる', 8:'ぱる', 9:'く' };
+const digitsKana = s => toHira(s).replace(/\d/g, d => SINO_H[d] || d);
+/* meaning-sign stations: ㅈ read ち or じ, 쓰 read す or つ — all the same key */
+const signKey = s => kanaKeyKR(s).replace(/ち/g, 'じ').replace(/つ/g, 'す');
+/* loanwords: the Hangul reading and the Japanese katakana word both count (터미널 = とみのる / たーみなる) */
+const LOAN_H = [['とみのる','たーみなる'],['せんと','せんたー'],['ものれいる','ものれーる'],['げいとぅうぇい','げーとうぇい'],['げいとうぇい','げーとうぇい']];
+const LOAN_K = [['トミノル','ターミナル']];
+function loanVariants(list, pairs) {
+  const out = new Set(list);
+  for (const x of list) for (const [p, q] of pairs) { if (x.includes(p)) out.add(x.split(p).join(q)); if (x.includes(q)) out.add(x.split(q).join(p)); }
+  return [...out];
+}
+/* patchim ㅁ written ン (サムガ = サンガ, ガイドブック式) */
+const mVariants = list => [...new Set(list.flatMap(k => [k, k.replace(/ム(?![アイウエオァィゥェォャュョヤユヨワヲンッー])/g, 'ン')]))];
+const kataPlain = st => mVariants([st.kata, ...(st.kataAlt || [])]);
+const kataList = st => mVariants(loanVariants([st.kata, ...(st.kataAlt || [])], LOAN_K));
 const SINO_R = { 1:'il', 2:'i', 3:'sam', 4:'sa', 5:'o' };
 const SINO_K = { 1:'イル', 2:'イ', 3:'サム', 4:'サ', 5:'オ' };
 
@@ -879,6 +930,71 @@ function strictKana(s) {
   }
   return out;
 }
+/* long vowel written out in Hangul: 우 after ㅗㅛㅜㅠㅡ, 오 after ㅗㅛ (no patchim) */
+function dropLongH(s) {
+  const out = []; let prev = null;
+  for (const ch of s.replace(/\s/g, '')) {
+    const d = decompose(ch);
+    if (d && prev && !prev.T && !d.T && d.L === 11 &&
+        ((d.V === 13 && [8, 12, 13, 17, 18].includes(prev.V)) || (d.V === 8 && [8, 12].includes(prev.V)))) continue;
+    out.push(ch); prev = d;
+  }
+  return out.join('');
+}
+/* how a Korean name really sounds: ㄹ->ㄴ, nasalisation, ㄹㄹ, linking (선릉 -> 설릉, 잠실나루 -> 잠실라루).
+   weakH: ㅎ after ㄴㄹㅁㅇ goes silent too (금호 -> 그모) */
+const T2L = { 1:0, 2:1, 4:2, 7:3, 8:5, 16:6, 17:7, 19:9, 20:10, 22:12, 23:14, 24:15, 25:16, 26:17, 27:18 };
+function soundHangul(hs, weakH) {
+  const s = hangulSyls(hs).map(d => Object.assign({}, d));
+  for (let i = 1; i < s.length; i++) {
+    const p = s[i - 1], c = s[i];
+    if (weakH && c.L === 18 && [4, 8, 16, 21].includes(p.T)) c.L = 11;
+    if (c.L === 5 && [1, 16, 17, 21].includes(p.T)) c.L = 2;
+    if (c.L === 2 || c.L === 6) {
+      if ([1, 2, 24].includes(p.T)) p.T = 21;
+      else if ([17, 26].includes(p.T)) p.T = 16;
+      else if ([7, 19, 20, 22, 23, 25].includes(p.T)) p.T = 4;
+    }
+    if (p.T === 4 && c.L === 5) p.T = 8;
+    if (p.T === 8 && c.L === 2) c.L = 5;
+  }
+  for (let i = 1; i < s.length; i++) {
+    const p = s[i - 1], c = s[i];
+    if (c.L === 11 && p.T && p.T !== 21 && T2L[p.T] != null) { c.L = T2L[p.T]; p.T = 0; }
+  }
+  return s.map(d => compose(d.L, d.V, d.T)).join('');
+}
+const soundKana = (st, weakH) => st.koAlt.filter(k => !/\d/.test(k)).map(k => hangulLiteralKana(soundHangul(k, weakH)));
+/* the number part read wrong (3街 as おーが, 4가 as 오가): never "near" */
+function numWrong(st, a) {
+  const m = st.koAlt[0].match(/^(.*?)(\d)(.*)$/);
+  if (!m) return false;
+  if (hasHangul(a)) { const x = a.replace(/\s/g, ''); return x.startsWith(m[1]) && x.endsWith(m[3]) && x.length >= m[1].length + m[3].length; }
+  if (!hasKana(a)) return false;
+  const la = looseKanaKR(digitsKana(a)), sk = SINO_K[m[2]], sl = hangulLiteralKana(m[3]).length;
+  return [st.kata, ...(st.kataAlt || [])].some(k => {
+    const at = k.length - sl - sk.length;
+    if (at < 0 || k.substr(at, sk.length) !== sk) return false;
+    const pre = looseKanaKR(k.slice(0, at)), suf = looseKanaKR(k.slice(at + sk.length));
+    return la.startsWith(pre) && la.endsWith(suf) && la.length >= pre.length + suf.length;
+  });
+}
+/* which loanword spelling was used: 'kata' (katakana word, the sign reads it the Korean way) / 'kor' (the other way round) */
+function loanType(st, a) {
+  if (!hasKana(a)) return null;
+  if (st.signH) {
+    const ka = signKey(a);
+    if (st.signK.some(k => signKey(k) === ka)) return null;
+    return loanVariants(st.signK, LOAN_H).some(k => signKey(k) === ka) ? 'kata' : null;
+  }
+  if (st.country !== 'kr') return null;
+  const la = looseKanaKR(digitsKana(a));
+  if (kataPlain(st).some(k => looseKanaKR(k) === la)) return null;
+  if (!kataList(st).some(k => looseKanaKR(k) === la)) return null;
+  return /ターミナル/.test(st.kata) ? 'kor' : 'kata';
+}
+const longWritten = (st, a) => st.country === 'jp' && hasHangul(a) && dropLongH(a) !== a.replace(/\s/g, '');
+const fixTsu = (st, a) => /쓰/.test(st.hangul) ? a.replace(/쯔/g, '쓰') : a;  // 쯔 is the old way to write つ
 const rrStrict = s => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]/g, '');
 
 /* Japanese numbers in a Hangul answer: 신주쿠3초메 -> 신주쿠산초메 */
@@ -892,7 +1008,7 @@ function digitVariants(a) {
 const normMeaning = s => normKanji(s).replace(/[・･·\s]/g, '').replace(/역$/, '');
 function isLiteralReading(st, a) {
   if (st.signH) return hasKana(a) && looseKanaKR(kanaKeyKR(hangulLiteralKana(st.signH))) === looseKanaKR(kanaKeyKR(a));
-  return st.country === 'kr' && hasKana(a) && st.koAlt.some(k => looseKanaKR(hangulLiteralKana(k)) === looseKanaKR(a));
+  return st.country === 'kr' && hasKana(a) && st.koAlt.filter(k => !/\d/.test(k)).some(k => looseKanaKR(hangulLiteralKana(k)) === looseKanaKR(digitsKana(a)));
 }
 function meaningMatch(st, a) {
   if (!st.meaning || !st.meaning.length) return false;
@@ -931,17 +1047,20 @@ function judge(mode, st, raw) {
   const isRoma = /[a-z]/i.test(a) && !hasKana(a) && !hasHangul(a);
   if (st.country === 'jp' && mode === 'ja' && st.signH) {
     // asked as Korean Hangul: reading it is right, the Japanese name is the meaning
-    if (hasKana(a) && st.signK.some(k => kanaKeyKR(k) === kanaKeyKR(a))) return 'ok';
+    // 쓰 = つ or す, ㅈ = じ or ち, and loanwords as katakana words (たーみなる) all count
+    const sk = loanVariants(st.signK, LOAN_H);
+    if (hasKana(a) && sk.some(k => signKey(k) === signKey(a))) return 'ok';
     if (hasHangul(a) && looseH(a) === looseH(st.signH)) return 'ok';
     if ((hasKana(a) && collapseKana(a) === collapseKana(st.kana)) || [st.name, ...st.alt].some(n => normKanji(n) === normKanji(a)) ||
         (isRoma && [hepburn(st.kana), ...(st.romaAlt || [])].some(r => romaJP(r) === romaJP(a)))) return 'meaning';
     if (isLiteralReading(st, a)) return 'close';
-    if (hasKana(a) && st.signK.some(k => looseKanaKR(k) === looseKanaKR(a))) return 'close';
-    if (hasKana(a) && nearMora(collapseKana(a), st.signK.map(collapseKana))) return 'near';
+    if (hasKana(a) && sk.some(k => looseKanaKR(k) === looseKanaKR(a))) return 'close';
+    if (hasKana(a) && nearMora(collapseKana(a), sk.map(collapseKana))) return 'near';
     return 'ng';
   }
   if (st.country === 'jp') {
-    const hv = hasHangul(a) ? (/\d/.test(a) ? digitVariants(a) : [a]) : [];
+    const hv = hasHangul(a) ? [...new Set([a, dropLongH(a)])].flatMap(x => /\d/.test(x) ? digitVariants(x) : [x]) : [];
+    const aTs = fixTsu(st, a);
     const sv = /\d/.test(st.hangul) ? digitVariants(st.hangul) : [st.hangul];
     const ok =
       (hasKana(a) && strictKana(a) === strictKana(st.kana)) ||
@@ -949,30 +1068,34 @@ function judge(mode, st, raw) {
       (isRoma && [hepburn(st.kana), ...(st.romaAlt || [])].some(r => romaJP(r) === romaJP(a)));
     if (ok) return 'ok';
     if (hv.some(v => sv.some(x => looseH(v) === looseH(x))))
-      return tenseIn(a) && !tenseIn(st.hangul) ? 'near' : 'ok';   // 낀자: tense consonants are never used for Japanese
+      return tenseIn(aTs) && !tenseIn(st.hangul) ? 'near' : 'ok';   // 낀자: tense consonants are never used for Japanese
     if (meaningMatch(st, a)) return 'meaning';
     if (/^[ぁ-ゖァ-ヺー\s・･]+$/.test(a)) {
       if (collapseKana(a) === collapseKana(st.kana)) return 'close';
       if (stripDaku(collapseKana(a)) === stripDaku(collapseKana(st.kana))) return 'near';  // がんだ for かんだ
       if (mode === 'ja' && sv.some(x => looseH(kanaToHangul(a)) === looseH(x))) return 'close';
     }
-    if (hv.some(v => sv.some(x => looseH(v, true) === looseH(x, true)))) return tenseIn(a) && !tenseIn(st.hangul) ? 'near' : 'close';
+    if (hv.some(v => sv.some(x => looseH(v, true) === looseH(x, true)))) return tenseIn(aTs) && !tenseIn(st.hangul) ? 'near' : 'close';
     if (isLinked(st, a)) return 'near';   // しのくぼ: read the Hangul with the ㄴ carried over (신오 -> 시노)
     if (hasKana(a) && nearMora(collapseKana(a), [collapseKana(st.kana)])) return 'near';
     if (hv.length && nearSyl(hv, sv)) return 'near';
     return 'ng';
   } else {
+    const kl = kataList(st), la = hasKana(a) ? looseKanaKR(digitsKana(a)) : '';  // digits read the Korean way (3 = さむ)
     const ok =
       (hasHangul(a) && st.koAlt.some(k => looseH(k) === looseH(a))) ||
       // the kana read exactly as written (종하분동장 / 존하분돈잔 for チョンハブンドンジャン)
-      (hasHangul(a) && [st.kata, ...(st.kataAlt || [])].some(k => looseKanaKR(hangulLiteralKana(a.replace(/\d/g, d => SINO[d] || d))) === looseKanaKR(k))) ||
+      (hasHangul(a) && kl.some(k => looseKanaKR(hangulLiteralKana(a.replace(/\d/g, d => SINO[d] || d))) === looseKanaKR(k))) ||
       (isRoma && st.rrAlt.some(r => rrStrict(r) === rrStrict(a))) ||
-      (hasKana(a) && [st.kata, ...(st.kataAlt || [])].some(k => looseKanaKR(k) === looseKanaKR(a)));
+      (hasKana(a) && (kl.some(k => looseKanaKR(k) === la) ||          // katakana word or Hangul reading, ム or ン
+        soundKana(st).some(k => looseKanaKR(k) === la)));              // the real sound (そるるん, ちゃむしるらる)
     if (ok) return 'ok';
     if (meaningMatch(st, a)) return 'meaning';
     if (isRoma && st.rrAlt.some(r => romaKR(r) === romaKR(a))) return 'close'; // older McCune-Reischauer etc.
     if (hasKana(a) && isLiteralReading(st, a)) return 'close';                  // read letter by letter (チョンリャンリ)
+    if (hasKana(a) && soundKana(st, true).some(k => looseKanaKR(k) === la)) return 'close';  // ㅎ dropped (くも for 금호)
     if (hasHangul(a) && st.koAlt.some(k => looseH(k, true) === looseH(a, true))) return 'close';
+    if (numWrong(st, a)) return 'ng';                                           // 3街 as おーが
     if (hasKana(a) && nearMora(looseKanaKR(a), [st.kata, ...(st.kataAlt || [])].map(looseKanaKR))) return 'near';  // わんしむり
     if (hasHangul(a) && nearSyl([a], st.koAlt)) return 'near';
     return 'ng';
@@ -1011,7 +1134,7 @@ function moraHangul(m) {
   return e ? (Array.isArray(e) ? e[0] + '/' + e[1] : e) : '';
 }
 
-G.EKI = { isLinked, toHira, toKata, morae, hepburn, romaDisplay, kanaChunks, kanaToHangul, decompose, blockInfo,
+G.EKI = { loanType, longWritten, isLinked, toHira, toKata, morae, hepburn, romaDisplay, kanaChunks, kanaToHangul, decompose, blockInfo,
   looseH, collapseKana, strictKana, looseKanaKR, romaJP, romaKR, buildLines, judge, meaningMatch, isLiteralReading, hangulLiteralKana, hangulUnits, kanaUnits, moraeAny, moraHangul, L_J, V_J, T_J, L_SND, V_KANA, T_KANA };
 })(typeof window !== 'undefined' ? window : globalThis);
 
@@ -1047,7 +1170,7 @@ const symEl = (id, extra) => h('span', { class:'sym' + (SYM[id].length > 1 ? ' t
 const RUN_MS = 60 * 1000;
 /* flags drawn as SVG (emoji flags do not show on Windows) */
 const FLAG_SRC = { jp:'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20900%20600%22%3E%3Crect%20fill%3D%22%23fff%22%20width%3D%22900%22%20height%3D%22600%22/%3E%3Ccircle%20fill%3D%22%23bc002d%22%20cx%3D%22450%22%20cy%3D%22300%22%20r%3D%22180%22/%3E%3C/svg%3E', kr:'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20xmlns%3Axlink%3D%22http%3A//www.w3.org/1999/xlink%22%20viewBox%3D%22-36%20-24%2072%2048%22%3E%3Crect%20fill%3D%22%23fff%22%20x%3D%22-36%22%20y%3D%22-24%22%20width%3D%2272%22%20height%3D%2248%22/%3E%3Cg%20transform%3D%22rotate%28-56.3099325%29%22%3E%3Cg%20id%3D%22b2%22%3E%3Cpath%20id%3D%22b%22%20d%3D%22M-6-25H6M-6-22H6M-6-19H6%22%20stroke%3D%22%23000%22%20stroke-width%3D%222%22/%3E%3Cuse%20xlink%3Ahref%3D%22%23b%22%20y%3D%2244%22/%3E%3C/g%3E%3Cpath%20stroke%3D%22%23fff%22%20stroke-width%3D%221%22%20d%3D%22M0%2C17v10%22/%3E%3Ccircle%20fill%3D%22%23cd2e3a%22%20r%3D%2212%22/%3E%3Cpath%20fill%3D%22%230047a0%22%20d%3D%22M0-12A6%2C6%200%200%200%200%2C0A6%2C6%200%200%201%200%2C12A12%2C12%200%200%2C1%200-12z%22/%3E%3C/g%3E%3Cg%20transform%3D%22rotate%28-123.6900675%29%22%3E%3Cuse%20xlink%3Ahref%3D%22%23b2%22/%3E%3Cpath%20stroke%3D%22%23fff%22%20stroke-width%3D%221%22%20d%3D%22M0-23.5v3M0%2C17v3.5M0%2C23.5v3%22/%3E%3C/g%3E%3C/svg%3E' };
-const APP_VERSION = 'v0.41';  // shown after the logo; bump with every release
+const APP_VERSION = 'v0.43';  // shown after the logo; bump with every release
 const APP_ICON = 'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Cdefs%3E%3CclipPath%20id%3D%22r%22%3E%3Crect%20x%3D%222%22%20y%3D%222%22%20width%3D%2260%22%20height%3D%2260%22%20rx%3D%2212%22/%3E%3C/clipPath%3E%3C/defs%3E%3Cg%20clip-path%3D%22url%28%23r%29%22%3E%3Crect%20x%3D%220%22%20y%3D%220%22%20width%3D%2232%22%20height%3D%2264%22%20fill%3D%22%23F39700%22/%3E%3Crect%20x%3D%2232%22%20y%3D%220%22%20width%3D%2232%22%20height%3D%2264%22%20fill%3D%22%2300A84D%22/%3E%3C/g%3E%3Cpath%20d%3D%22M9%209H25M17%209V24M8%2024H26%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%224.5%22%20stroke-linecap%3D%22round%22/%3E%3Cpath%20d%3D%22M8%2037H26M7%2047H27M15%2031L19%2057%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%224.5%22%20stroke-linecap%3D%22round%22/%3E%3Ccircle%20cx%3D%2241.5%22%20cy%3D%2217%22%20r%3D%226.5%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%224.5%22/%3E%3Cpath%20d%3D%22M57%209V35M49%2016H57M49%2028H57%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%224.5%22%20stroke-linecap%3D%22round%22/%3E%3Cpath%20d%3D%22M37%2043H57V57%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%224.5%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22/%3E%3C/svg%3E';
 const flag = c => h('img', { class:'flag', src: FLAG_SRC[c === 'ja' ? 'jp' : c === 'ko' ? 'kr' : c], alt:'' });
 // learning points per letter: settled once per run (see applyTally)
@@ -1055,7 +1178,7 @@ const PTS = { input:3, choice:2, practice:1, drop:3, learned:2, mastered:15 };
 
 /* top page: how to play for the screen's game, with its translation in the other language */
 const HOW_TOP = {
-  ja: { ja: null, ko:'한 번에 60초. 역 표지판의 한글을 가나·한자·로마자로 답해요. 맞힌 역은 배지가 되고, 노선의 배지를 모두 모으면 클리어. 여러 번 맞힌 글자는 「외움」이 되어 힌트에 나오지 않아요.' },
+  ja: { ja: null, ko:'한 번에 60초. 역 표지판의 한글을 가나·로마자로 답해요. 맞힌 역은 배지가 되고, 노선의 배지를 모두 모으면 클리어. 여러 번 맞힌 글자는 「외움」이 되어 힌트에 나오지 않아요.' },
   ko: { ko: null, ja:'1回60秒。駅名標のカタカナを、ハングルかローマ字で答える。正解した駅はバッジになって、路線のバッジを全部集めるとクリア。何度も正解した文字は「覚えた」になって、ヒントに出なくなる。' }
 };
 const FONTS = {
@@ -1082,10 +1205,11 @@ const TXT = {
     impAsk:(n,d)=>(n?n+' の':'')+'記録（'+d+'）を読みこむ？ 今の記録は上書きされる', impBad:'えきよみの記録ファイルではないので読みこめない', impDone:'記録を読みこんだ', undoDone:'1つ前の記録にもどした', recNote:'うまく保存できない時は Safari や Chrome で開いてね', stubN:'半券', ticketN:'切符', exch:'半券5枚 → 切符に交換', yourAns:'あなたの答え', review:'ふりかえり', rvSkip:'スキップ', pracNoStub:'4択で答えた問題があるので半券はなし（入力で全問正解ならもらえる）', stubGot:n=>'半券 +'+n, stubNext:p=>'あと '+p+' 点で半券もう1枚', stubToTicket:'半券5枚で🎫1枚になった！', hintCost:'ヒント　半券 −1', pracStub:'全問正解！ 半券 +1',
     badges:'バッジ', best:'ベスト', cleared:'クリア', pt:'点',
     time:'のこり', score:'スコア', correctN:'正解数', qUnit:'問', practice:'4択は練習モード（スコアなし）', streak:'連続', got:'バッジ',
-    prompt:'この駅名、なんて読む？', ph:'かな・漢字・ローマ字で', go:'答える',
+    prompt:'この駅名、なんて読む？', ph:'かな・ローマ字で', go:'答える',
     hintBtn:'ヒント', hintClose:'ヒントをとじる', cut:'2つ消す', skip:'スキップ', next:'次へ', quit:'やめる', toLines:'路線',
     enter:'Enterでも進む',
-    ok:'正解！', close:'ほぼ正解！', near:'おしい！', ng:'不正解', meaning:'正解！（意味訳）', nearPre:'あと一歩！ 答えは', linkMsg:'ハングルはパッチムのㄴが次の母音とつながって「ノ」のように聞こえる（連音）。でも日本の駅名は「ン」と「オ」を分けて読むよ。', banned:a=>'その文字では答えられない（問題に出ている字だから）。'+a+'答えてね',
+    ok:'正解！', close:'ほぼ正解！', near:'おしい！', ng:'不正解', meaning:'正解！（意味訳）', nearPre:'あと一歩！ 答えは', linkMsg:'ハングルはパッチムのㄴが次の母音とつながって「ノ」のように聞こえる（連音）。でも日本の駅名は「ン」と「オ」を分けて読むよ。', banned:a=>'その文字では答えられない（問題に出ている字だから）。'+a+'答えてね', noKanji:'漢字は使えないよ。かな・ローマ字で答えてね',
+    longMsg:a=>'', loanKata:a=>'カタカナ語で書いても正解！ ハングルどおりに読むと「'+a+'」。', loanKor:a=>'ハングルどおりに読めてる！ 駅の表記はカタカナ語で「'+a+'」。',
     meaningMsg:a=>'意味で読めた。音で読むと「'+a+'」。', subL:'副駅名',
     literalMsg:a=>'字どおりに読めてる！ でもハングルは、となりの音で発音が変わることがある（ㅇ・ㄴ・ㅁの後のㄹ→ㄴ、ㄱ・ㅂの後のㅅ→ッ など）。駅名は「'+a+'」。',
     closeMsg:a=>'読みは合ってる。駅名は「'+a+'」。', ngMsg:a=>'答えは「'+a+'」。',
@@ -1108,7 +1232,7 @@ const TXT = {
     master:'日韓駅名マスター', masterSub:'全路線のバッジを全部集めた！',
     unlock:'ステージ2がひらいた！韓国の駅、読んでみよう',
     howTitle:'あそびかた',
-    how:'1回60秒。駅名標のハングルを、かな・漢字・ローマ字で答える。正解した駅はバッジになって、路線のバッジを全部集めるとクリア。何度も正解した文字は「覚えた」になって、ヒントに出なくなる。'
+    how:'1回60秒。駅名標のハングルを、かな・ローマ字で答える。正解した駅はバッジになって、路線のバッジを全部集めるとクリア。何度も正解した文字は「覚えた」になって、ヒントに出なくなる。'
   },
   ko:{
     coll:'컬렉션', set:'설정', lang:'日本語',
@@ -1121,12 +1245,13 @@ const TXT = {
     prompt:'이 역 이름, 어떻게 읽을까요?', ph:'한글 또는 로마자로', go:'확인',
     hintBtn:'힌트', hintClose:'힌트 닫기', cut:'2개 지우기', skip:'건너뛰기', next:'다음', quit:'그만하기', toLines:'노선',
     enter:'Enter로도 넘어가요',
-    ok:'정답!', close:'거의 정답!', near:'아깝다!', ng:'오답', meaning:'정답! (의미 번역)', nearPre:'한 끗 차이! 정답은', linkMsg:'', banned:a=>'그 글자로는 답할 수 없어요 (문제에 나온 글자예요). '+a+' 답해 주세요',
+    ok:'정답!', close:'거의 정답!', near:'아깝다!', ng:'오답', meaning:'정답! (의미 번역)', nearPre:'한 끗 차이! 정답은', linkMsg:'', banned:a=>'그 글자로는 답할 수 없어요 (문제에 나온 글자예요). '+a+' 답해 주세요', noKanji:'한자는 쓸 수 없어요. 한글이나 로마자로 답해 주세요',
+    longMsg:a=>'표기법에서는 장음을 쓰지 않아요 → 「'+a+'」', loanKata:a=>'', loanKor:a=>'',
     meaningMsg:a=>'뜻으로 읽었어요. 소리대로는 「'+a+'」.', subL:'부역명',
     literalMsg:a=>'글자대로 읽었어요. 실제 발음은 「'+a+'」.',
     closeMsg:a=>'읽기는 맞았어요. 표기는 「'+a+'」.', ngMsg:a=>'정답은 「'+a+'」.',
-    hintNote:'일본어 장음(ー, う)은 한글로 쓰지 않아요. ッ는 받침 ㅅ, ン은 받침 ㄴ. ✓는 외운 글자',
-    hintNoteKR:'オ는 ㅓ도 ㅗ도 될 수 있고, ウ는 ㅜ도 ㅡ도 될 수 있어요', hintNoteFin:'ン·ム·ク·ル·プ·ッ는 받침(아래 자음)이 될 때가 많아요', alLabel:'한 글자씩 읽으면',
+    hintNote:'일본어 장음(ー, う)은 한글로 쓰지 않아요. 작은 tsu(ッ)는 받침 ㅅ, N(ン)은 받침 ㄴ. ✓는 외운 글자',
+    hintNoteKR:'O는 ㅓ도 ㅗ도 될 수 있고, U는 ㅜ도 ㅡ도 될 수 있어요', hintNoteFin:'N·MU·KU·RU·PU·작은 tsu는 받침(아래 자음)이 될 때가 많아요. 작은 한글이 그 받침이에요', alLabel:'한 글자씩 읽으면',
     shape:{lr:'',tb:'',mix:''}, fin:'', known:'✓',
     setTitle:'설정', themeOpt:'화면', light:'흰 바탕에 검은 글씨', dark:'검은 바탕에 흰 글씨', paper:'종이',
     kanaOpt:'가나 표시', kata:'가타카나', hira:'히라가나',
@@ -1452,9 +1577,11 @@ function nextQ() {
   if (S.practice) {
     if (S.qn >= S.pq.length) { endRun('quit'); return; }
     const q = S.pq[S.qn++]; S.line = q.id; S.cur = LINES[q.id].stations[q.idx];
+    if (S.form) { S.form.inp.value = ''; S.form.warn.textContent = ''; }
     Object.assign(S, { done:false, hintOpen:true, hintUsed:true, cut:false, choiceSet:null, picked:null, lastInput:null, result:null, gain:0 });
     renderPlay(); return;
   }
+  if (S.form) { S.form.inp.value = ''; S.form.warn.textContent = ''; }
   if (!S.queue.length) S.queue = buildQueue(S.cur ? S.cur.idx : -1);
   S.cur = LINES[S.line].stations[S.queue.shift()];
   if (S.pauseAt) { S.end += Date.now() - S.pauseAt; S.pauseAt = null; }
@@ -1463,25 +1590,59 @@ function nextQ() {
   renderPlay();
 }
 
+/* buttons in the play screen never take the focus away from the answer box (the iPhone keyboard would close) */
+function noSteal(el) { el.addEventListener('mousedown', e => e.preventDefault()); el.addEventListener('pointerdown', e => { if (e.pointerType !== 'mouse') e.preventDefault(); }); return el; }
+function playSlots() {
+  if (S.slots && S.slots.root.isConnected) return S.slots;
+  const names = ['top', 'hud', 'strip', 'sign', 'prompt', 'form', 'act', 'hint'], sl = {};
+  names.forEach(n => { sl[n] = h('div', { class:'s-' + n }); });
+  sl.root = h('div', { class:'play' }, names.map(n => sl[n]));
+  $('main').replaceChildren(sl.root);
+  S.slots = sl; return sl;
+}
+function answerForm() {
+  if (S.form) return S.form;
+  const T = t();
+  const inp = h('input', { id:'ans', type:'text', autocomplete:'off', autocapitalize:'off', autocorrect:'off', spellcheck:'false', enterkeyhint:'next',
+    lang: D.lang === 'ja' ? 'ja' : 'ko', 'aria-label':T.prompt });
+  const go = noSteal(h('button', { class:'go', type:'submit' }, T.go));
+  const warn = h('p', { class:'prompt warn', role:'status' });
+  const form = h('form', { class:'ansrow', onsubmit:e => {
+      e.preventDefault();
+      if (S.over) return;
+      if (S.done) { nextQ(); return; }               // Enter again = next question
+      const v = inp.value, st = S.cur;
+      if (bannedScript(st, v) && !D.devFree) { warn.textContent = HAS_KANJI.test(v) ? T.noKanji : T.banned(allowedScripts(st)); return; }
+      warn.textContent = '';
+      const r = E.judge(D.lang, st, v); if (r) answer(r, v); } }, inp, go);
+  S.form = { box: h('div', null, form, warn), inp, go, warn };
+  return S.form;
+}
+/* right, but written another way: long vowels in Hangul, loanwords */
+function okNote(st, a) {
+  const T = t(), x = S.lastInput || '';
+  if (D.lang === 'ko' && E.longWritten(st, x)) return T.longMsg(a);
+  const lt = E.loanType(st, x);
+  return lt === 'kata' ? T.loanKata(a) : lt === 'kor' ? T.loanKor(a) : '';
+}
 function renderPlay() {
-  const T = t(), L = LINES[S.line], st = S.cur, m = $('main');
-  m.replaceChildren();
+  const T = t(), L = LINES[S.line], st = S.cur, sl = playSlots();
   const q = question(st);
   const got = badges(S.line);
 
-  m.append(h('div', { class:'ptop', style:'--c:' + L.color },
+  sl.top.replaceChildren(h('div', { class:'ptop', style:'--c:' + L.color },
     h('button', { class:'back', type:'button', onclick:() => viewLines() }, '‹ ' + T.toLines),
     S.practice ? h('span', { class:'pline' }, '🔰 ' + T.prac, h('span', { class:'lsub' }, ' · ', symEl(S.line), lineName(S.line)))
                : h('span', { class:'pline' }, symEl(S.line), lineName(S.line)),
     h('button', { class:'quit', type:'button', onclick:() => endRun('quit') }, '🏳️ ' + T.quit)));
 
   const left = S.end - (S.pauseAt || Date.now());
-  if (S.practice) m.append(h('div', { class:'hud' },
+  if (S.practice) sl.hud.replaceChildren(h('div', { class:'hud' },
     h('div', null, h('small', null, T.qNo), h('b', null, S.qn + '/' + S.pq.length)),
     h('div', null, h('small', null, T.correctN), h('b', null, S.stats.ok)),
     h('div', null, h('small', null, T.statClose), h('b', null, S.stats.close)),
     h('div', null, h('small', null, T.streak), h('b', null, S.streak))));
-  else m.append(h('div', { class:'hud' },
+  else sl.hud.replaceChildren(h('div', { class:'hud' },
     h('div', { class: left < 10000 ? 'low' : null }, h('small', null, T.time), h('b', { id:'htime' }, fmt(left))),
     D.answer === 'choice' ? h('div', null, h('small', null, T.correctN), h('b', null, S.stats.ok + S.stats.close)) : h('div', null, h('small', null, T.score), h('b', null, S.score)),
     h('div', null, h('small', null, T.streak), h('b', null, S.streak)),
@@ -1497,7 +1658,7 @@ function renderPlay() {
     });
     strip.append(row);
   });
-  if (!S.practice) m.append(strip);
+  sl.strip.replaceChildren(...(S.practice ? [] : [strip]));
 
   // sign: station number hidden until answered
   const len = [...q.text].length;
@@ -1509,7 +1670,7 @@ function renderPlay() {
     foot.append(h('span', { class:'r' }, st.roma));
     if (st.sub) foot.append(h('span', { class:'s sub' }, T.subL + '：', st.sub[0] ? [h('span', { class:'glyph', lang:'ja' }, st.sub[0]), ' ／ '] : null, h('span', { class:'glyph', lang:'ko' }, st.sub[1])));
   } else foot.append(h('span', { class:'hidden' }, '・・・'));
-  m.append(h('div', { class:'sign flip', style:'--c:' + L.color },
+  sl.sign.replaceChildren(h('div', { class:'sign flip', style:'--c:' + L.color },
     h('div', { class:'sign-band' }),
     h('div', { class:'sign-body' }, codeEl, h('div', { class:'qwrap' },
       h('div', { class:'q glyph' + (len > 9 ? ' xlong' : len > 5 ? ' long' : ''), lang:q.lang }, q.text),
@@ -1525,10 +1686,10 @@ function renderPlay() {
       h('div', { class:'v' }, r === 'ok' ? T.ok : r === 'meaning' ? T.meaning : r === 'close' ? T.close : r === 'near' ? T.near : T.ng, S.gain ? h('small', null, '+' + S.gain) : null),
       S.myAns ? h('div', { class:'msg mine' }, T.yourAns + '：', h('b', { class:'glyph', lang: S.myLang }, S.myAns)) : null,
       r === 'near' ? h('div', { class:'msg' }, T.nearPre + '「', diffMark(a, S.lastInput || ''), '」', E.isLinked(st, S.lastInput || '') && T.linkMsg ? h('div', null, T.linkMsg) : null) :
+      r === 'ok' ? h('div', { class:'msg' }, okNote(st, a)) :
       r === 'meaning' ? h('div', { class:'msg' }, T.meaningMsg(a)) : r === 'close' ? h('div', { class:'msg' }, (E.isLiteralReading(st, S.lastInput || '') ? T.literalMsg : T.closeMsg)(a)) : r === 'ng' ? h('div', { class:'msg' }, T.ngMsg(a)) : h('div', { class:'msg' }),
-      h('button', { class:'next', type:'button', id:'nextBtn', onclick:nextQ }, T.next + ' ›', h('span', { class:'kbd' }, T.enter))));
+      noSteal(h('button', { class:'next', type:'button', id:'nextBtn', onclick:nextQ }, T.next + ' ›', h('span', { class:'kbd' }, T.enter)))));
   } else {
-    act.append(h('p', { class:'prompt' }, T.prompt));
     if (D.answer === 'choice') {
       if (!S.choiceSet) {
         const pool = shuffle(L.stations.filter(s => answerText(s) !== answerText(st)));
@@ -1544,30 +1705,32 @@ function renderPlay() {
           onclick:() => { S.picked = s; answer(s === st ? 'ok' : 'ng'); } }, answerText(s)));
       });
       act.append(box);
-    } else {
-      const inp = h('input', { id:'ans', type:'text', autocomplete:'off', autocapitalize:'off', spellcheck:'false', placeholder:allowedScripts(st), lang: D.lang === 'ja' ? 'ja' : 'ko', 'aria-label':T.prompt });
-      const warn = h('p', { class:'prompt', style:'color:var(--ng)', role:'status' });
-      act.append(h('form', { class:'ansrow', onsubmit:e => {
-          e.preventDefault();
-          if (bannedScript(st, inp.value) && !D.devFree) { warn.textContent = T.banned(allowedScripts(st)); inp.focus(); return; }
-          const r = E.judge(D.lang, st, inp.value); if (r) answer(r, inp.value); } },
-        inp, h('button', { class:'go', type:'submit' }, T.go)), warn);
     }
     const sub = h('div', { class:'subrow' },
       S.practice ? null : S.hintPaid
-        ? h('button', { class:'sbtn', type:'button', 'aria-pressed': String(S.hintOpen), onclick:toggleHint }, S.hintOpen ? T.hintClose : '💡 ' + T.hintBtn)
-        : h('button', { class:'sbtn', type:'button', disabled: stubCount() < 1, onclick:() => { D.stubs[D.lang]--; save(); S.hintPaid = true; toggleHint(); } }, '💡 ' + T.hintCost));
+        ? noSteal(h('button', { class:'sbtn', type:'button', 'aria-pressed': String(S.hintOpen), onclick:toggleHint }, S.hintOpen ? T.hintClose : '💡 ' + T.hintBtn))
+        : noSteal(h('button', { class:'sbtn', type:'button', disabled: stubCount() < 1, onclick:() => { D.stubs[D.lang]--; save(); S.hintPaid = true; toggleHint(); } }, '💡 ' + T.hintCost)));
     if (D.answer === 'choice' && S.hintUsed) sub.append(h('button', { class:'sbtn', type:'button', disabled:S.cut, onclick:() => { S.cut = true; renderPlay(); } }, '✂ ' + T.cut));
-    sub.append(h('button', { class:'sbtn', type:'button', onclick:skip }, '⏭ ' + T.skip));
+    sub.append(noSteal(h('button', { class:'sbtn', type:'button', onclick:skip }, '⏭ ' + T.skip)));
     act.append(sub);
   }
-  m.append(act);
-  if (S.hintOpen || S.done) { const hn = renderHint(st); hn.style.marginTop = '12px'; m.append(hn); }
+  sl.act.replaceChildren(act);
+  sl.prompt.replaceChildren(...(S.done ? [] : [h('p', { class:'prompt' }, T.prompt)]));
+  // the answer box: made once per run and kept, so a phone keyboard stays up between questions
+  if (D.answer === 'choice') sl.form.hidden = true;
+  else {
+    const Fm = answerForm();
+    sl.form.hidden = false;
+    if (Fm.box.parentNode !== sl.form) sl.form.replaceChildren(Fm.box);
+    Fm.go.textContent = S.done ? T.next + ' ›' : T.go;
+    Fm.inp.placeholder = allowedScripts(st);
+  }
+  sl.hint.replaceChildren(...(S.hintOpen || S.done ? [renderHint(st)] : []));
 
   setTimeout(() => {
-    if (S.view !== 'play' || !$('ov').hidden) return;
-    if (S.done) { const b = $('nextBtn'); if (b) b.focus({ preventScroll:true }); }
-    else { const i = $('ans'); if (i) i.focus({ preventScroll:true }); }
+    if (S.view !== 'play' || !$('ov').hidden || S.over) return;
+    if (D.answer !== 'choice' && S.form) { if (document.activeElement !== S.form.inp) S.form.inp.focus({ preventScroll:true }); }
+    else if (S.done) { const b = $('nextBtn'); if (b) b.focus({ preventScroll:true }); }
   }, 30);
 }
 
@@ -1588,18 +1751,22 @@ function diffMark(ans, input) {
 }
 /* letters already on the screen can't be used to answer (no copy and paste) */
 const HAS_HANGUL = /[가-힣ㄱ-ㅣ]/, HAS_KANA = /[ぁ-ゖァ-ヺ]/, HAS_KANJI = /[一-鿿々]/;
-function bannedScript(st, v) {
-  if (D.lang === 'ja') return HAS_HANGUL.test(v) || (st.country === 'kr' && HAS_KANJI.test(v));
+/* answers are kana or Hangul plus romaji only: never the script on the sign, never kanji */
+function bannedScript(st, v, lang = D.lang) {
+  if (lang === 'ja') return HAS_HANGUL.test(v) || HAS_KANJI.test(v);
   return HAS_KANA.test(v) || HAS_KANJI.test(v);
 }
-function allowedScripts(st) {
-  if (D.lang === 'ko') return '한글 또는 로마자로';
-  return st.country === 'jp' ? 'かな・漢字・ローマ字で' : 'かな・ローマ字で';
-}
+function allowedScripts(st) { return D.lang === 'ko' ? '한글 또는 로마자로' : 'かな・ローマ字で'; }
 /* kana hint for Korean station names: kana written for a final consonant (patchim) can stand for it */
-const KR_FIN = { 'ン':'ㄴ·ㅁ·ㅇ', 'ッ':'ㄱ·ㅂ·ㅅ', 'ム':'무/ㅁ', 'ク':'구/ㄱ', 'グ':'구/ㄱ', 'ル':'루/ㄹ', 'プ':'푸/ㅂ', 'ブ':'부/ㅂ',
-  'ムォ':'ㅁ+워', 'ルォ':'ㄹ+워', 'ムィ':'ㅁ+위' };
-const krHint = (st, mo) => (st.country === 'kr' && KR_FIN[E.toKata(mo)]) || E.moraHangul(mo);
+/* Korean screen hint: romaji (one Hepburn spelling), and for Korean stations the patchim a kana can stand for */
+const KR_FIN = { 'ン':'ㄴ·ㅁ·ㅇ', 'ッ':'ㄱ·ㅂ·ㅅ', 'ム':'ㅁ', 'ク':'ㄱ', 'グ':'ㄱ', 'ル':'ㄹ', 'プ':'ㅂ', 'ブ':'ㅂ', 'ムォ':'ㅁ', 'ルォ':'ㄹ', 'ムィ':'ㅁ' };
+function hintRoma(mo) {
+  const k = E.toHira(mo);
+  if (k === 'ー') return '길게';
+  if (k === 'っ') return '작은 tsu';
+  if (k === 'ん') return 'N';
+  return E.hepburn(k).toUpperCase();
+}
 function toggleHint() {
   S.hintOpen = !S.hintOpen;
   D.hintPinned = S.hintOpen; save();
@@ -1635,9 +1802,11 @@ function renderHint(st) {
     E.moraeAny(q).filter(mo => !/^[()（）・･]$/.test(mo)).forEach(mo => {
       const unit = (/[ァ-ヺ]/.test(mo) ? 'K:' : 'H:') + mo;
       const k = mo !== 'ー' && level(unit) === 2 && !S.done;
+      const fin = st.country === 'kr' && !k ? KR_FIN[E.toKata(mo)] : '';
       box.append(h('div', { class:'blk' },
         h('span', { class:'g glyph', lang:'ja', style:'font-size:1.6rem' }, mo),
-        h('span', { class:'jm L' + (k ? ' known' : ''), lang:'ko', style:'font-size:1.2rem' }, k ? T.known : krHint(st, mo))));
+        h('span', { class:'jm L rm' + (k ? ' known' : '') }, k ? T.known : hintRoma(mo)),
+        fin ? h('span', { class:'fin', lang:'ko' }, fin) : null));
     });
     box.append(h('span', { class:'hint-note' }, st.country === 'kr' ? T.hintNoteKR : T.hintNote));
     if (st.country === 'kr') box.append(h('span', { class:'hint-note' }, T.hintNoteFin));
@@ -1725,7 +1894,7 @@ window.addEventListener('pagehide', applyTally);
 
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape' && !$('ov').hidden) { closeOv(); return; }
-  if (e.key === 'Enter' && !e.repeat && S.view === 'play' && S.done && !S.over && $('ov').hidden) {
+  if (e.key === 'Enter' && !e.repeat && S.view === 'play' && S.done && !S.over && $('ov').hidden && e.target.id !== 'ans') {
     e.preventDefault(); nextQ();
   }
 });
@@ -1909,6 +2078,168 @@ function srcSummary() {
   return h('details', { class:'devsrc' }, h('summary', null, '📚 出典一覧（路線ごと）　✅確認済み ⚠️公式とちがう ❓未確認'), h('div', { class:'devwrap' }, table));
 }
 
+/* ---------- test book: [line, station, 'ja'|'ko', answer, expected, tag] ---------- */
+const TESTS = [
+  // 0 / 0-1 意味訳ハングル駅
+  ['monorail','モノレール浜松町','ja','ものれいるはままつちょ','ok','0-1'],
+  ['monorail','モノレール浜松町','ja','ものれいるはまますちょ','ok','0-1'],
+  ['monorail','モノレール浜松町','ja','ものれーるはままつちょ','ok','0'],
+  ['monorail','流通センター','ja','りゅっつせんと','ok','0-1'],
+  ['monorail','流通センター','ja','りゅすせんと','ok','0-1'],
+  ['monorail','流通センター','ja','りゅっつせんたー','ok','0'],
+  ['monorail','天王洲アイル','ja','てんのじゅあいる','ok','0'],
+  ['monorail','天王洲アイル','ja','てんのちゅあいる','ok','0'],
+  ['monorail','羽田空港第1ターミナル','ja','はねだごんはんじぇいるとみのる','ok','0'],
+  ['monorail','羽田空港第1ターミナル','ja','はねだごんはんちぇいるとみのる','ok','0'],
+  ['monorail','羽田空港第1ターミナル','ja','はねだごんはんちぇいるたーみなる','ok','0'],
+  ['monorail','羽田空港第1ターミナル','ja','はねだごんはんじぇいるたーみなる','ok','0'],
+  ['monorail','羽田空港第1ターミナル','ja','はねだごんはんじぇ1とみのる','ok','0-3'],
+  ['monorail','羽田空港第2ターミナル','ja','はねだごんはんちぇいたーみなる','ok','0'],
+  ['monorail','羽田空港第3ターミナル','ja','はねだごんはんちぇさむたーみなる','ok','0'],
+  ['monorail','羽田空港第3ターミナル','ja','はねだこんはんじぇさむとみのる','close','0'],
+  ['monorail','羽田空港第3ターミナル','ja','はねだくうこうだいさんたーみなる','meaning','0'],
+  ['yamanote','高輪ゲートウェイ','ja','たかなわげいとぅうぇい','ok','0'],
+  ['yamanote','高輪ゲートウェイ','ja','たかなわげーとうぇい','ok','0'],
+  ['fukuoka','福岡空港','ja','ふくおかごんはん','ok','0'],
+  ['fukuoka','福岡空港','ja','ふくおかくうこう','meaning','0'],
+  ['fukuoka','大濠公園','ja','おほりごんうぉん','ok','0'],
+  ['midosuji','動物園前','ja','とんむるぉなぷ','ok','0'],
+  // 0-5 東京メトロ路線図
+  ['marunouchi','国会議事堂前','ja','こっかいぎじどうまえ','ok','0-5'],
+  ['marunouchi','国会議事堂前','ko','곳카이기지도마에','ok','0-5'],
+  ['marunouchi','国会議事堂前','ko','국회의사당','meaning','0-5'],
+  ['yurakucho','銀座一丁目','ko','긴자잇초메','ok','0-5'],
+  ['yurakucho','銀座一丁目','ja','ぎんざいっちょうめ','ok','0-5'],
+  // 0-6 漢字は使えない
+  ['ginza','銀座','ja','銀座','banned','0-6'],
+  ['seoul1','동대문','ja','東大門','banned','0-6'],
+  ['ginza','銀座','ja','ぎんざ','ok','0-6'],
+  ['ginza','銀座','ja','ginza','ok','0-6'],
+  ['ginza','銀座','ko','ぎんざ','banned','0-6'],
+  // 0-2 長音を書いたハングル
+  ['ginza','表参道','ko','오모테산도우','ok','0-2'],
+  ['ginza','表参道','ko','오모테산도','ok','0-2'],
+  ['ginza','京橋','ko','교우바시','ok','0-2'],
+  ['marunouchi','大手町','ko','오오테마치','ok','0-2'],
+  ['marunouchi','東京','ko','도우쿄우','ok','0-2'],
+  ['yamanote','新大久保','ko','신오오쿠보','ok','0-2'],
+  ['fukuoka','大濠公園','ko','오오호리코우엔','ok','0-2'],
+  ['monorail','大井競馬場前','ko','오오이케이바조우마에','ok','0-2'],
+  ['monorail','流通センター','ko','류우쓰우센타','ok','0-2'],
+  // 0-3 数字
+  ['seoul1','종로3가','ja','ちょんのさむが','ok','0-3'],
+  ['seoul1','종로3가','ja','ちょんの3が','ok','0-3'],
+  ['seoul1','종로3가','ja','ちょんのよんが','ng','0-3'],
+  ['seoul1','종로3가','ja','ちょんのおーが','ng','0-3'],
+  ['seoul2','을지로4가','ja','うるちろさが','ok','0-3'],
+  ['seoul2','을지로4가','ja','うるちろ4が','ok','0-3'],
+  ['seoul2','을지로4가','ja','うるちろおーが','ng','0-3'],
+  ['seoul2','을지로4가','ja','うるちろさむが','ng','0-3'],
+  ['seoul2','을지로3가','ja','うるちろおーが','ng','0-3'],
+  ['seoul2','을지로4가','ko','을지로오가','ng','0-3'],
+  ['seoul2','을지로4가','ko','을지로4가','ok','0-3'],
+  ['arex','인천공항1터미널','ja','いんちょんこんはんいるとみのる','ok','0-3'],
+  ['arex','인천공항1터미널','ja','いんちょんこんはん1とみのる','ok','0-3'],
+  // 0-3b パッチムㅁ＝ン
+  ['seoul2','을지로3가','ja','うるちろさんが','ok','0-3b'],
+  ['seoul1','종로3가','ja','ちょんのさんが','ok','0-3b'],
+  ['seoul2','잠실','ja','ちゃんしる','ok','0-3b'],
+  ['seoul2','강남','ja','かんなん','ok','0-3b'],
+  ['seoul2','삼성','ja','さんそん','ok','0-3b'],
+  ['busan1','남포','ja','なんぽ','ok','0-3b'],
+  ['busan1','남포','ja','なむぽ','ok','0-3b'],
+  ['seoul3','무악재','ja','むあくちぇ','ok','0-3b'],
+  // 0-4 外来語
+  ['seoul3','고속터미널','ja','こそくたーみなる','ok','0-4'],
+  ['seoul3','고속터미널','ja','こそくとみのる','ok','0-4'],
+  ['seoul3','남부터미널','ja','なむぶとみのる','ok','0-4'],
+  ['arex','인천공항1터미널','ja','いんちょんこんはんいるたーみなる','ok','0-4'],
+  // 本当の音（B案）
+  ['seoul2','선릉','ja','そるるん','ok','音'],
+  ['seoul2','신림','ja','しるりむ','ok','音'],
+  ['seoul2','문래','ja','むるれ','ok','音'],
+  ['seoul2','잠실나루','ja','ちゃむしるらる','ok','音'],
+  ['seoul3','독립문','ja','とんにむむん','ok','音'],
+  ['seoul3','금호','ja','くも','close','音'],
+  ['seoul8','천호','ja','ちょの','close','音'],
+  ['seoul8','신흥','ja','しぬん','close','音'],
+  // つのハングル
+  ['ginza','三越前','ko','미쓰코시마에','ok','つ'],
+  ['ginza','三越前','ko','미츠코시마에','ok','つ'],
+  ['ginza','三越前','ko','미쯔코시마에','ok','つ'],
+  ['ginza','三越前','ja','みすこしまえ','close','つ'],
+  // これまでどおり
+  ['ginza','神田','ja','がんだ','near','前から'],
+  ['marunouchi','東京','ja','ときょ','close','前から'],
+  ['marunouchi','東京','ja','とーきょー','ok','前から'],
+  ['marunouchi','東京','ko','토쿄','ok','前から'],
+  ['ginza','銀座','ko','낀자','near','前から'],
+  ['yamanote','新大久保','ja','しのくぼ','near','前から'],
+  ['seoul1','동대문','ja','どんでむん','ok','前から'],
+  ['seoul1','청량리','ja','ちょんりゃんり','close','前から'],
+  ['seoul1','청량리','ja','ちょんにゃんに','ok','前から'],
+  ['seoul2','왕십리','ja','わんしむり','near','前から'],
+  ['seoul2','종합운동장','ko','종하분동장','ok','前から'],
+  ['seoul1','종로3가','ja','chongno3ga','close','前から'],
+  ['seoul1','종로3가','ja','jongro3ga','ng','前から']
+];
+const TKEY = 'ekiyomi.tests';
+let UTESTS = [];
+try { UTESTS = JSON.parse(localStorage.getItem(TKEY) || '[]') || []; } catch(e) {}
+const saveTests = () => { try { localStorage.setItem(TKEY, JSON.stringify(UTESTS)); } catch(e) {} };
+const RLABEL = { ok:'正解', meaning:'意味', close:'ほぼ正解', near:'おしい', ng:'不正解', banned:'文字NG', none:'駅なし' };
+function runTest(c) {
+  const L = LINES[c[0]], st = L && L.stations.find(x => x.name === c[1]);
+  if (!st) return 'none';
+  if (bannedScript(st, c[3], c[2])) return 'banned';
+  return E.judge(c[2], st, c[3]) || 'none';
+}
+function testBook(copyText) {
+  const sum = h('span', { class:'tbsum' }), table = h('table', { class:'tbtab' }), wrap = h('div', { class:'devwrap' }, table);
+  const lineSel = h('select', { class:'devsel' }, Object.keys(LINES).map(id => h('option', { value:id }, LINES[id].name.ja)));
+  const nameIn = h('input', { class:'devin', placeholder:'駅（表記どおり 例 종로3가・銀座）' });
+  const langSel = h('select', { class:'devsel' }, h('option', { value:'ja' }, '日'), h('option', { value:'ko' }, '韓'));
+  const ansIn = h('input', { class:'devin', placeholder:'答え' });
+  const wantSel = h('select', { class:'devsel' }, Object.keys(RLABEL).filter(k => k !== 'none').map(k => h('option', { value:k }, RLABEL[k])));
+  const pend = h('label', { class:'devchk' }, h('input', { type:'checkbox' }), ' 🕒予定');
+  let rows = [];
+  function draw() {
+    rows = TESTS.map(c => ({ c, user:false })).concat(UTESTS.map((c, i) => ({ c, user:true, i })));
+    let pass = 0, wait = 0;
+    table.replaceChildren(h('tr', null, ['', 'タグ', '路線', '駅', '版', '答え', 'はず', '結果', ''].map(x => h('th', null, x))));
+    rows.forEach(r => {
+      const got = runTest(r.c), ok = got === r.c[4], pending = r.c[6] === 'wait';
+      r.got = got; if (ok) pass++; else if (pending) wait++;
+      table.append(h('tr', { class: ok ? 'pass' : pending ? 'wait' : 'fail' },
+        h('td', null, ok ? '✓' : pending ? '🕒' : '✗'), h('td', null, r.c[5] || (r.user ? '追加' : '')),
+        h('td', null, LINES[r.c[0]] ? LINES[r.c[0]].name.ja : r.c[0]), h('td', { class:'glyph' }, r.c[1]), h('td', null, r.c[2] === 'ja' ? '日' : '韓'),
+        h('td', { class:'glyph' }, r.c[3]), h('td', null, RLABEL[r.c[4]] || r.c[4]), h('td', null, RLABEL[got] || got),
+        h('td', null, r.user ? h('button', { class:'tadd', type:'button', onclick:() => { UTESTS.splice(r.i, 1); saveTests(); draw(); } }, '消す') : '')));
+    });
+    const bad = rows.length - pass - wait;
+    sum.textContent = rows.length + '件中 ' + pass + '件OK' + (wait ? '・🕒' + wait : '') + (bad ? '・✗' + bad : '');
+    sum.className = 'tbsum ' + (bad ? 'fail' : 'pass');
+  }
+  const add = () => {
+    if (!nameIn.value.trim() || !ansIn.value.trim()) return;
+    UTESTS.push([lineSel.value, nameIn.value.trim(), langSel.value, ansIn.value.trim(), wantSel.value, '', pend.querySelector('input').checked ? 'wait' : '']);
+    saveTests(); ansIn.value = ''; draw();
+  };
+  const tsv = () => copyText([['結果', 'タグ', '路線', '駅', '版', '答え', 'はず', '判定'].join('\t')].concat(rows.map(r =>
+    [r.got === r.c[4] ? 'OK' : r.c[6] === 'wait' ? '予定' : 'NG', r.c[5] || '', r.c[0], r.c[1], r.c[2], r.c[3], r.c[4], r.got].join('\t'))).join('\n'), 'テスト帳をコピーした（' + rows.length + '件）');
+  draw();
+  return { el: h('details', { class:'devsrc' },
+      h('summary', null, '🧪 テスト帳　', sum),
+      h('div', { class:'devbar', style:'margin-top:8px' },
+        h('button', { class:'sbtn', type:'button', onclick:draw }, '▶ ぜんぶ実行'),
+        h('button', { class:'sbtn', type:'button', onclick:tsv }, 'TSVでコピー'),
+        h('span', { class:'muted', style:'font-size:.75rem' }, '組みこみ ' + TESTS.length + '件＋追加分（このブラウザに保存）')),
+      h('div', { class:'devbar' }, lineSel, nameIn, langSel, ansIn, wantSel, pend,
+        h('button', { class:'sbtn', type:'button', onclick:add }, '＋ 追加')),
+      wrap),
+    fill(line, name, a, lang, want) { lineSel.value = line; nameIn.value = name; ansIn.value = a; langSel.value = lang; if (want) wantSel.value = want; nameIn.scrollIntoView({ block:'center' }); } };
+}
+
 let devFilter = { line:'all', q:'', test:'', notes:false, src:'all' };
 const NKEY = 'ekiyomi.devnotes';
 let NOTES = { all:'', st:{} };
@@ -1967,7 +2298,8 @@ function viewDev() {
       h('div', { class:'dtex' }, h('span', { class:'dtlbl ok' }, '正解'), r.ex.ok.map(v => h('span', { class:'dex ok' }, v))),
       h('div', { class:'dtex' }, h('span', { class:'dtlbl close' }, 'おしい'), r.ex.close.length ? r.ex.close.map(v => h('span', { class:'dex close' }, v)) : h('span', { class:'muted' }, '—')),
       r.ex.meaning.length ? h('div', { class:'dtex' }, h('span', { class:'dtlbl mean' }, '意味訳'), r.ex.meaning.map(v => h('span', { class:'dex mean' }, v))) : null,
-      (rj || rk) ? h('div', { class:'dtex' }, chip(rj, '日'), chip(rk, '韓')) : null,
+      (rj || rk) ? h('div', { class:'dtex' }, chip(rj, '日'), chip(rk, '韓'),
+        h('button', { class:'tadd', type:'button', onclick:() => tb.fill(r.id, r.st.name, devFilter.test.trim(), rj ? 'ja' : 'ko', rj || rk) }, '＋テスト帳に入れる')) : null,
       note);
     return card;
   }
@@ -2001,6 +2333,7 @@ function viewDev() {
     const fallback = () => { ta.hidden = false; ta.value = txt; ta.focus(); ta.select(); msg.textContent = '下の枠を選んでコピーして'; };
     try { navigator.clipboard.writeText(txt).then(() => { ta.hidden = true; msg.textContent = okMsg; }, fallback); } catch(e) { fallback(); }
   };
+  const tb = testBook(copyText);
   const copyTsv = h('button', { class:'sbtn', type:'button', onclick:() => {
     const lines = [['路線','番号','表記','ひらがな','カタカナ','ハングル','ローマ字','正解になる例','おしいになる例','出典','メモ'].join('\t')];
     rows.forEach(r => lines.push([LINES[r.id].name.ja, r.st.code, r.st.name, r.kana, r.kata, r.st.hangul, r.st.roma, r.ex.ok.join(' / '), r.ex.close.join(' / '), r.src.map(x => SRC_ICON[x.state] + x.f + ':' + x.src + (x.off ? '（公式:' + x.off + '）' : '')).join(' / '), (NOTES.st[r.key] || '').replace(/\s+/g, ' ')].join('\t')));
@@ -2032,6 +2365,7 @@ function viewDev() {
       h('span', { class:'pline' }, '🛠 開発者ページ')),
     h('p', { class:'muted', style:'margin:0 0 10px;font-size:.85rem' }, '例はルールから作って、実際の判定で確かめたものだけ表示。「日」は日本語版、「韓」は韓国語版の判定。メモはこのブラウザだけに保存。'),
     srcSummary(),
+    tb.el,
     memoAll,
     h('div', { class:'devbar' }, sel, srcSel, q, test, onlyNotes),
     h('div', { class:'devbar' }, sum, keyBtn, freeBtn, copyNotes, copyTsv, msg),
@@ -2055,7 +2389,7 @@ function seg(label, val, opts, onpick, langAttr) {
 const HELP = {
   ja:[
     ['あそびかた', '1回60秒。駅名標の文字を読んで答える。日本の駅はハングルで、韓国の駅もハングルで出てくる。'],
-    ['答え方', '入力か4択（設定で切りかえ）。問題に出ている字では答えられない。日本の駅は かな・漢字・ローマ字、韓国の駅は かな・ローマ字で。'],
+    ['答え方', '入力か4択（設定で切りかえ）。問題に出ている字と漢字では答えられない。かな・ローマ字で答える。'],
     ['判定', '正解：ぴったり（10点）。ほぼ正解：長音ぬけ・字どおり読みなど（5点）。正解（意味訳）：意味で答えた（5点）。おしい：濁点や1字だけちがう（0点）。不正解（0点）。3連続から1問 +2点。'],
     ['路線をひらく', '最初は山手線だけ。🎫で好きな路線を1つひらける。日本の路線を全部ひらくとソウル4号線から韓国の駅へ。'],
     ['🎫と半券', '路線を初めてクリア（バッジ全部）で切符🎫1枚。50点で半券1枚、100点で2枚。半券5枚は、一覧の上の交換ボタンで切符1枚にできる（自動ではないので、ヒント用に取っておける）。4択は点数なしなので半券もなし。'],
@@ -2065,7 +2399,7 @@ const HELP = {
   ],
   ko:[
     ['하는 방법', '한 번에 60초. 역 표지판의 글자를 읽고 답해요. 한국의 역도 일본의 역도 가나로 나와요.'],
-    ['답하는 방법', '입력 또는 4지선다(설정에서 바꾸기). 문제에 나온 글자로는 답할 수 없어요. 한글 또는 로마자로 답해요.'],
+    ['답하는 방법', '입력 또는 4지선다(설정에서 바꾸기). 문제에 나온 글자와 한자로는 답할 수 없어요. 한글 또는 로마자로 답해요.'],
     ['판정', '정답: 딱 맞음(10점). 거의 정답: 발음대로 쓰기 등(5점). 정답(의미 번역): 뜻으로 답함(5점). 아깝다: 한 글자만 다름(0점). 오답(0점). 3연속부터 한 문제에 +2점.'],
     ['노선 열기', '처음에는 서울 4호선만. 🎫으로 원하는 노선 하나를 열 수 있어요. 한국 노선을 모두 열면 야마노테선부터 일본의 역으로.'],
     ['🎫과 표 조각', '노선을 처음 클리어(배지 전부)하면 표🎫 1장. 50점이면 표 조각 1개, 100점이면 2개. 표 조각 5개는 목록 위의 교환 버튼으로 표 1장으로 바꿀 수 있어요(자동이 아니라서 힌트용으로 모아 둘 수 있어요). 4지선다는 점수가 없어서 표 조각도 없어요.'],
