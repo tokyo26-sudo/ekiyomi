@@ -373,6 +373,11 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline
 .tbtab tr.fail{background:var(--ngbg)}.tbtab tr.fail td:first-child{color:var(--ng);font-weight:900}
 .tbtab tr.wait{background:var(--closebg)}
 .tbsum{font-weight:900}.tbsum.fail{color:var(--ng)}.tbsum.pass{color:var(--ok)}
+.dvtab tr.k-ok td.kd{color:var(--ok);font-weight:700}
+.dvtab tr.k-close{background:var(--closebg)}.dvtab tr.k-close td.kd{color:var(--close);font-weight:700}
+.dvtab tr.k-meaning td.kd{color:var(--accent);font-weight:700}
+.dvtab td.ln{border-left:4px solid var(--c)}
+.dvtab td.exs{font-size:.78rem;max-width:22em}
 .tadd{border:1px solid var(--rule);background:var(--panel);border-radius:999px;padding:0 8px;font-size:.72rem}
 @media (prefers-reduced-motion:no-preference){
   .sign.flip{animation:flip .3s ease}
@@ -1170,7 +1175,7 @@ const symEl = (id, extra) => h('span', { class:'sym' + (SYM[id].length > 1 ? ' t
 const RUN_MS = 60 * 1000;
 /* flags drawn as SVG (emoji flags do not show on Windows) */
 const FLAG_SRC = { jp:'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20900%20600%22%3E%3Crect%20fill%3D%22%23fff%22%20width%3D%22900%22%20height%3D%22600%22/%3E%3Ccircle%20fill%3D%22%23bc002d%22%20cx%3D%22450%22%20cy%3D%22300%22%20r%3D%22180%22/%3E%3C/svg%3E', kr:'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20xmlns%3Axlink%3D%22http%3A//www.w3.org/1999/xlink%22%20viewBox%3D%22-36%20-24%2072%2048%22%3E%3Crect%20fill%3D%22%23fff%22%20x%3D%22-36%22%20y%3D%22-24%22%20width%3D%2272%22%20height%3D%2248%22/%3E%3Cg%20transform%3D%22rotate%28-56.3099325%29%22%3E%3Cg%20id%3D%22b2%22%3E%3Cpath%20id%3D%22b%22%20d%3D%22M-6-25H6M-6-22H6M-6-19H6%22%20stroke%3D%22%23000%22%20stroke-width%3D%222%22/%3E%3Cuse%20xlink%3Ahref%3D%22%23b%22%20y%3D%2244%22/%3E%3C/g%3E%3Cpath%20stroke%3D%22%23fff%22%20stroke-width%3D%221%22%20d%3D%22M0%2C17v10%22/%3E%3Ccircle%20fill%3D%22%23cd2e3a%22%20r%3D%2212%22/%3E%3Cpath%20fill%3D%22%230047a0%22%20d%3D%22M0-12A6%2C6%200%200%200%200%2C0A6%2C6%200%200%201%200%2C12A12%2C12%200%200%2C1%200-12z%22/%3E%3C/g%3E%3Cg%20transform%3D%22rotate%28-123.6900675%29%22%3E%3Cuse%20xlink%3Ahref%3D%22%23b2%22/%3E%3Cpath%20stroke%3D%22%23fff%22%20stroke-width%3D%221%22%20d%3D%22M0-23.5v3M0%2C17v3.5M0%2C23.5v3%22/%3E%3C/g%3E%3C/svg%3E' };
-const APP_VERSION = 'v0.43';  // shown after the logo; bump with every release
+const APP_VERSION = 'v0.44';  // shown after the logo; bump with every release
 const APP_ICON = 'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Cdefs%3E%3CclipPath%20id%3D%22r%22%3E%3Crect%20x%3D%222%22%20y%3D%222%22%20width%3D%2260%22%20height%3D%2260%22%20rx%3D%2212%22/%3E%3C/clipPath%3E%3C/defs%3E%3Cg%20clip-path%3D%22url%28%23r%29%22%3E%3Crect%20x%3D%220%22%20y%3D%220%22%20width%3D%2232%22%20height%3D%2264%22%20fill%3D%22%23F39700%22/%3E%3Crect%20x%3D%2232%22%20y%3D%220%22%20width%3D%2232%22%20height%3D%2264%22%20fill%3D%22%2300A84D%22/%3E%3C/g%3E%3Cpath%20d%3D%22M9%209H25M17%209V24M8%2024H26%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%224.5%22%20stroke-linecap%3D%22round%22/%3E%3Cpath%20d%3D%22M8%2037H26M7%2047H27M15%2031L19%2057%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%224.5%22%20stroke-linecap%3D%22round%22/%3E%3Ccircle%20cx%3D%2241.5%22%20cy%3D%2217%22%20r%3D%226.5%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%224.5%22/%3E%3Cpath%20d%3D%22M57%209V35M49%2016H57M49%2028H57%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%224.5%22%20stroke-linecap%3D%22round%22/%3E%3Cpath%20d%3D%22M37%2043H57V57%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%224.5%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22/%3E%3C/svg%3E';
 const flag = c => h('img', { class:'flag', src: FLAG_SRC[c === 'ja' ? 'jp' : c === 'ko' ? 'kr' : c], alt:'' });
 // learning points per letter: settled once per run (see applyTally)
@@ -2240,7 +2245,7 @@ function testBook(copyText) {
     fill(line, name, a, lang, want) { lineSel.value = line; nameIn.value = name; ansIn.value = a; langSel.value = lang; if (want) wantSel.value = want; nameIn.scrollIntoView({ block:'center' }); } };
 }
 
-let devFilter = { line:'all', q:'', test:'', notes:false, src:'all' };
+let devFilter = { line:'all', q:'', test:'', notes:false, src:'all', kind:'all' };
 const NKEY = 'ekiyomi.devnotes';
 let NOTES = { all:'', st:{} };
 try { const n = JSON.parse(localStorage.getItem(NKEY) || 'null'); if (n) NOTES = Object.assign(NOTES, n); } catch(e) {}
@@ -2267,8 +2272,55 @@ function viewDev() {
   const sum = h('div', { class:'devsum', role:'status' });
   const msg = h('span', { class:'devmsg', role:'status' });
   const grid = h('div', { class:'devgrid' });
+  const VIEWS = [['tile', '🔲 タイル'], ['st', '📋 駅ごと'], ['ex', '📝 例ごと']];
+  const view = () => VIEWS.some(v => v[0] === D.devView) ? D.devView : 'tile';
+  const viewSeg = h('div', { class:'seg', style:'flex:none' });
+  const kindSel = h('select', { id:'devK', class:'devsel' }, [['all','判定：すべて'],['ok','正解'],['close','ほぼ正解'],['meaning','意味訳']].map(([v,l]) => h('option', { value:v }, l)));
+  kindSel.value = devFilter.kind;
+  kindSel.addEventListener('change', () => { devFilter.kind = kindSel.value; draw(); });
+  const KLABEL = { ok:'正解', close:'ほぼ正解', meaning:'意味訳', near:'おしい', ng:'不正解' };
+  const td = (x, a) => h('td', a || null, x);
+  // A: one row per station
+  function stTable(list, tv) {
+    const t = h('table', { class:'tbtab dvtab' }, h('tr', null,
+      ['路線', '番号', '駅', 'かな', 'ハングル', 'ローマ字', '正解の例', 'ほぼ正解の例', '意味訳', '出典'].concat(tv ? ['日', '韓'] : [], ['メモ']).map(x => h('th', null, x))));
+    list.forEach(({ r, rj, rk }) => t.append(h('tr', null,
+      td(LINES[r.id].name.ja, { class:'ln', style:'--c:' + LINES[r.id].color }), td(r.st.code || '—'),
+      td(r.st.name, { class:'glyph', lang: r.st.country === 'jp' ? 'ja' : 'ko' }), td(r.kana), td(r.st.hangul, { class:'glyph', lang:'ko' }), td(r.st.roma),
+      td(r.ex.ok.join(' / '), { class:'exs' }), td(r.ex.close.join(' / ') || '—', { class:'exs' }), td(r.ex.meaning.join(' / ') || '', { class:'exs' }),
+      td(SRC_ICON[r.srcState]), ...(tv ? [td(KLABEL[rj] || '—'), td(KLABEL[rk] || '—')] : []), td(NOTES.st[r.key] || '', { class:'exs' }))));
+    return h('div', { class:'devwrap', style:'overflow-x:auto' }, t);
+  }
+  // B: one row per example answer (like the test book)
+  function exTable(list, tv) {
+    const t = h('table', { class:'tbtab dvtab' }, h('tr', null, ['路線', '番号', '駅', '版', '答え', '判定', ''].map(x => h('th', null, x))));
+    let n = 0;
+    const row = (r, lang, a, k) => {
+      if (devFilter.kind !== 'all' && devFilter.kind !== k) return;
+      n++;
+      t.append(h('tr', { class:'k-' + k },
+        td(LINES[r.id].name.ja, { class:'ln', style:'--c:' + LINES[r.id].color }), td(r.st.code || '—'),
+        td(r.st.name, { class:'glyph', lang: r.st.country === 'jp' ? 'ja' : 'ko' }), td(lang === 'ja' ? '日' : '韓'),
+        td(a, { class:'glyph' }), td(KLABEL[k] || k, { class:'kd' }),
+        td(h('button', { class:'tadd', type:'button', onclick:() => tb.fill(r.id, r.st.name, a, lang, k) }, '＋テスト帳'))));
+    };
+    const langOf = v => /[가-힣]/.test(v) ? 'ko' : 'ja';
+    list.forEach(({ r, rj, rk }) => {
+      if (tv) { if (rj) row(r, 'ja', tv, rj); if (rk) row(r, 'ko', tv, rk); return; }
+      r.ex.ok.forEach(v => row(r, langOf(v), v, 'ok'));
+      r.ex.close.forEach(v => row(r, langOf(v), v, 'close'));
+      r.ex.meaning.forEach(v => row(r, langOf(v), v, 'meaning'));
+    });
+    return { el: h('div', { class:'devwrap', style:'overflow-x:auto' }, t), n };
+  }
+  function drawSeg() {
+    viewSeg.replaceChildren(...VIEWS.map(([v, l]) => h('button', { type:'button', 'aria-pressed': String(view() === v),
+      onclick:() => { D.devView = v; save(); drawSeg(); draw(); } }, l)));
+    kindSel.hidden = view() !== 'ex';
+  }
+  drawSeg();
   const ta = h('textarea', { class:'devta', hidden:true, readonly:true, 'aria-label':'コピー用テキスト' });
-  const chip = (r, l) => r === 'ok' ? h('span', { class:'dchip ok' }, l + ' 正解') : r === 'meaning' ? h('span', { class:'dchip mean' }, l + ' 意味訳') : r === 'close' ? h('span', { class:'dchip close' }, l + ' おしい') : null;
+  const chip = (r, l) => r === 'ok' ? h('span', { class:'dchip ok' }, l + ' 正解') : r === 'meaning' ? h('span', { class:'dchip mean' }, l + ' 意味訳') : r === 'close' ? h('span', { class:'dchip close' }, l + ' ほぼ正解') : null;
   const noteCount = () => Object.values(NOTES.st).filter(v => v && v.trim()).length;
   const memoAll = h('textarea', { id:'devMemo', class:'devmemo', placeholder:'全体メモ（駅に関係ない気づき）。書いたら自動で保存', rows:3 });
   memoAll.value = NOTES.all || '';
@@ -2296,7 +2348,7 @@ function viewDev() {
       h('div', { class:'dtsrc' }, r.src.map(x => h('div', { class:'srow ' + x.state },
         h('span', { class:'sico' }, SRC_ICON[x.state]), h('b', null, x.f), h('span', null, x.src), x.off ? h('span', { class:'soff' }, '公式：' + x.off) : null))),
       h('div', { class:'dtex' }, h('span', { class:'dtlbl ok' }, '正解'), r.ex.ok.map(v => h('span', { class:'dex ok' }, v))),
-      h('div', { class:'dtex' }, h('span', { class:'dtlbl close' }, 'おしい'), r.ex.close.length ? r.ex.close.map(v => h('span', { class:'dex close' }, v)) : h('span', { class:'muted' }, '—')),
+      h('div', { class:'dtex' }, h('span', { class:'dtlbl close' }, 'ほぼ正解'), r.ex.close.length ? r.ex.close.map(v => h('span', { class:'dex close' }, v)) : h('span', { class:'muted' }, '—')),
       r.ex.meaning.length ? h('div', { class:'dtex' }, h('span', { class:'dtlbl mean' }, '意味訳'), r.ex.meaning.map(v => h('span', { class:'dex mean' }, v))) : null,
       (rj || rk) ? h('div', { class:'dtex' }, chip(rj, '日'), chip(rk, '韓'),
         h('button', { class:'tadd', type:'button', onclick:() => tb.fill(r.id, r.st.name, devFilter.test.trim(), rj ? 'ja' : 'ko', rj || rk) }, '＋テスト帳に入れる')) : null,
@@ -2305,6 +2357,7 @@ function viewDev() {
   }
   function draw() {
     grid.replaceChildren();
+    const list = [];
     const fq = devFilter.q.trim().toLowerCase(), tv = devFilter.test.trim();
     let nOk = 0, nClose = 0, shown = 0;
     rows.forEach(r => {
@@ -2319,9 +2372,13 @@ function viewDev() {
       if (hit === 'ok') nOk++; else if (hit === 'close') nClose++;
       if (tv && !hit) return;
       shown++;
-      grid.append(tile(r, rj === 'ng' ? null : rj, rk === 'ng' ? null : rk, hit));
+      list.push({ r, rj: rj === 'ng' ? null : rj, rk: rk === 'ng' ? null : rk, hit });
     });
-    sum.textContent = (tv ? '「' + tv + '」→ 正解 ' + nOk + '駅 / おしい ' + nClose + '駅' : shown + '駅を表示中（全' + rows.length + '駅）') + ' ・ メモ ' + noteCount() + '件';
+    let extra = '';
+    if (view() === 'tile') { grid.className = 'devgrid'; list.forEach(x => grid.append(tile(x.r, x.rj, x.rk, x.hit))); }
+    else if (view() === 'st') { grid.className = ''; grid.append(stTable(list, tv)); }
+    else { grid.className = ''; const b = exTable(list, tv); grid.append(b.el); extra = ' ・ ' + b.n + '行'; }
+    sum.textContent = (tv ? '「' + tv + '」→ 正解 ' + nOk + '駅 / ほぼ正解 ' + nClose + '駅' : shown + '駅を表示中（全' + rows.length + '駅）') + extra + ' ・ メモ ' + noteCount() + '件';
   }
   sel.addEventListener('change', () => { devFilter.line = sel.value; draw(); });
   q.addEventListener('input', () => { devFilter.q = q.value; draw(); });
@@ -2335,7 +2392,7 @@ function viewDev() {
   };
   const tb = testBook(copyText);
   const copyTsv = h('button', { class:'sbtn', type:'button', onclick:() => {
-    const lines = [['路線','番号','表記','ひらがな','カタカナ','ハングル','ローマ字','正解になる例','おしいになる例','出典','メモ'].join('\t')];
+    const lines = [['路線','番号','表記','ひらがな','カタカナ','ハングル','ローマ字','正解になる例','ほぼ正解になる例','出典','メモ'].join('\t')];
     rows.forEach(r => lines.push([LINES[r.id].name.ja, r.st.code, r.st.name, r.kana, r.kata, r.st.hangul, r.st.roma, r.ex.ok.join(' / '), r.ex.close.join(' / '), r.src.map(x => SRC_ICON[x.state] + x.f + ':' + x.src + (x.off ? '（公式:' + x.off + '）' : '')).join(' / '), (NOTES.st[r.key] || '').replace(/\s+/g, ' ')].join('\t')));
     copyText(lines.join('\n'), '一覧をコピーした（' + rows.length + '駅）');
   } }, '一覧をコピー（TSV）');
@@ -2367,7 +2424,7 @@ function viewDev() {
     srcSummary(),
     tb.el,
     memoAll,
-    h('div', { class:'devbar' }, sel, srcSel, q, test, onlyNotes),
+    h('div', { class:'devbar' }, viewSeg, kindSel, sel, srcSel, q, test, onlyNotes),
     h('div', { class:'devbar' }, sum, keyBtn, freeBtn, copyNotes, copyTsv, msg),
     ta, grid);
   draw();
