@@ -666,6 +666,18 @@ const JP = {
   fukuoka: { name:{ja:'福岡 空港線',ko:'후쿠오카 공항선'}, color:'#F07D1F', country:'jp', prefix:'K', start:1, sections:[{ st:[
     ['姪浜','めいのはま'],['室見','むろみ'],['藤崎','ふじさき'],['西新','にしじん'],['唐人町','とうじんまち'],['大濠公園','おおほりこうえん'],
     ['赤坂','あかさか'],['天神','てんじん'],['中洲川端','なかすかわばた'],['祇園','ぎおん'],['博多','はかた'],['東比恵','ひがしひえ'],['福岡空港','ふくおかくうこう'] ]}]},
+  oedo: { name:{ja:'都営大江戸線',ko:'도에이 오에도선'}, color:'#CE045B', country:'jp', prefix:'E', start:1, sections:[{ st:[
+    ['新宿西口','しんじゅくにしぐち'],['東新宿','ひがししんじゅく'],['若松河田','わかまつかわだ'],['牛込柳町','うしごめやなぎちょう'],['牛込神楽坂','うしごめかぐらざか'],
+    ['飯田橋','いいだばし'],['春日','かすが'],['本郷三丁目','ほんごうさんちょうめ'],['上野御徒町','うえのおかちまち'],['新御徒町','しんおかちまち'],
+    ['蔵前','くらまえ'],['両国','りょうごく'],['森下','もりした'],['清澄白河','きよすみしらかわ'],['門前仲町','もんぜんなかちょう'],['月島','つきしま'],
+    ['勝どき','かちどき'],['築地市場','つきじしじょう'],['汐留','しおどめ'],['大門','だいもん'],['赤羽橋','あかばねばし'],['麻布十番','あざぶじゅうばん'],
+    ['六本木','ろっぽんぎ'],['青山一丁目','あおやまいっちょうめ'],['国立競技場','こくりつきょうぎじょう'],['代々木','よよぎ'],['新宿','しんじゅく'],
+    ['都庁前','とちょうまえ'],['西新宿五丁目','にししんじゅくごちょうめ'],['中野坂上','なかのさかうえ'],['東中野','ひがしなかの'],['中井','なかい'],
+    ['落合南長崎','おちあいみなみながさき'],['新江古田','しんえごた'],['練馬','ねりま'],['豊島園','としまえん'],['練馬春日町','ねりまかすがちょう'],['光が丘','ひかりがおか'] ]}]},
+  karasuma: { name:{ja:'京都 烏丸線',ko:'교토 가라스마선'}, color:'#1E9A4E', country:'jp', prefix:'K', start:1, sections:[{ st:[
+    ['国際会館','こくさいかいかん'],['松ヶ崎','まつがさき'],['北山','きたやま'],['北大路','きたおおじ'],['鞍馬口','くらまぐち'],['今出川','いまでがわ'],
+    ['丸太町','まるたまち'],['烏丸御池','からすまおいけ'],['四条','しじょう'],['五条','ごじょう'],['京都','きょうと'],['九条','くじょう'],
+    ['十条','じゅうじょう'],['くいな橋','くいなばし'],['竹田','たけだ'] ]}]},
   monorail: { name:{ja:'東京モノレール',ko:'도쿄 모노레일'}, color:'#0072BC', country:'jp', prefix:'MO', start:1, sections:[{ st:[
     ['モノレール浜松町','ものれーるはままつちょう','浜松町'],['天王洲アイル','てんのうずあいる'],['大井競馬場前','おおいけいばじょうまえ'],['流通センター','りゅうつうせんたー'],
     ['昭和島','しょうわじま'],['整備場','せいびじょう'],['天空橋','てんくうばし'],['羽田空港第3ターミナル','はねだくうこうだいさんたーみなる'],
@@ -729,6 +741,30 @@ const KR = {
     ['서면','ソミョン','seomyeon'],['부전','プジョン','bujeon'],['양정','ヤンジョン','yangjeong'],['시청','シチョン','sicheong'],['연산','ヨンサン','yeonsan'],
     ['교대','キョデ','gyodae'],['동래','トンネ','dongnae'],['명륜','ミョンニュン','myeongnyun'],['온천장','オンチョンジャン','oncheonjang'],['부산대','プサンデ','busandae'],
     ['장전','チャンジョン','jangjeon'],['구서','クソ','guseo'],['두실','トゥシル','dusil'],['남산','ナムサン','namsan'],['범어사','ポモサ','beomeosa'],['노포','ノポ','nopo'] ]}]},
+  sillim: { name:{ja:'ソウル新林線',ko:'서울 신림선'}, color:'#6789CA', country:'kr', prefix:'S', start:401, sections:[{ st:[
+    ['샛강','セッカン','saetgang'],['대방','テバン','daebang'],['서울지방병무청','ソウルチバンビョンムチョン','seouljibangbyeongmucheong'],['보라매','ポラメ','boramae'],
+    ['보라매공원','ポラメコンウォン','boramaegongwon'],['보라매병원','ポラメビョンウォン','boramaebyeongwon'],['당곡','タンゴク','danggok'],['신림','シルリム','sillim'],
+    ['서원','ソウォン','seowon'],['서울대벤처타운','ソウルデベンチャータウン','seouldaebencheotaun',{ kata:['ソウルデベンチョタウン'] }],['관악산','クァナクサン','gwanaksan'] ]}]},
+  daegu1: { name:{ja:'大邱1号線',ko:'대구 1호선'}, color:'#D93F5C', country:'kr', prefix:'', start:115, sections:[{ st:[
+    ['설화명곡','ソルファミョンゴク','seolhwamyeonggok'],['화원','ファウォン','hwawon'],['대곡','テゴク','daegok'],['진천','チンチョン','jincheon'],['월배','ウォルベ','wolbae'],
+    ['상인','サンイン','sangin'],['월촌','ウォルチョン','wolchon'],['송현','ソンヒョン','songhyeon'],['서부정류장','ソブジョンニュジャン','seobujeongnyujang'],['대명','テミョン','daemyeong'],
+    ['안지랑','アンジラン','anjirang'],['현충로','ヒョンチュンノ','hyeonchungno'],['영대병원','ヨンデビョンウォン','yeongdaebyeongwon',{ kata:['ニョンデビョンウォン'] }],['교대','キョデ','gyodae'],
+    ['명덕','ミョンドク','myeongdeok'],['반월당','パヌォルタン','banwoldang',{ kata:['パヌォルダン','パノダン'] }],['중앙로','チュンアンノ','jungangno'],['대구역','テグヨク','daeguyeok'],
+    ['칠성시장','チルソンシジャン','chilseongsijang'],['신천','シンチョン','sincheon'],['동대구역','トンテグヨク','dongdaeguyeok'],['동구청','トングチョン','donggucheong'],
+    ['아양교','アヤンギョ','ayanggyo'],['동촌','トンチョン','dongchon'],['해안','ヘアン','haean'],['방촌','パンチョン','bangchon'],['용계','ヨンゲ','yonggye'],
+    ['율하','ユラ','yulha'],['신기','シンギ','singi'],['반야월','パニャウォル','banyawol'],['각산','カクサン','gaksan'],['안심','アンシム','ansim'],
+    ['대구한의대병원','テグハニデビョンウォン','daeguhanuidaebyeongwon'],['부호','プホ','buho'],['하양','ハヤン','hayang'] ]}]},
+  incheon1: { name:{ja:'仁川1号線',ko:'인천 1호선'}, color:'#7CA8D5', country:'kr', prefix:'I', start:107, sections:[{ st:[
+    ['검단호수공원','コムダンホスゴンウォン','geomdanhosugongwon'],['신검단중앙','シンゴムダンジュンアン','singeomdanjungang'],['아라','アラ','ara'],['계양','ケヤン','gyeyang'],
+    ['귤현','キュルチョン','gyulhyeon'],['박촌','パクチョン','bakchon'],['임학','イムハク','imhak'],['계산','ケサン','gyesan'],
+    ['경인교대입구','キョンインギョデイック','gyeongingyodaeipgu'],['작전','チャクチョン','jakjeon'],['갈산','カルサン','galsan'],['부평구청','プピョングチョン','bupyeonggucheong'],
+    ['부평시장','プピョンシジャン','bupyeongsijang'],['부평','プピョン','bupyeong'],['동수','トンス','dongsu'],['부평삼거리','プピョンサムゴリ','bupyeongsamgeori'],
+    ['간석오거리','ガンソク・オゴリ','ganseogogeori'],['인천시청','インチョンシチョン','incheonsicheong'],['예술회관','イエスルフェグァン','yesulhoegwan',{ kata:['イェスルフェグァン'] }],
+    ['인천터미널','インチョンターミナル','incheonteomineol'],['문학경기장','ムンハク・キョンギジャン','munhakgyeonggijang'],['선학','ソンハク','seonhak'],
+    ['신연수','シニョンス','sinyeonsu'],['원인재','ウォニンジェ','woninjae'],['동춘','トンチュン','dongchun'],['동막','トンマク','dongmak'],
+    ['캠퍼스타운','キャンパスタウン','kaempeoseutaun'],['테크노파크','テクノパーク','tekeunopakeu'],['지식정보단지','チシク・チョンボダンジ','jisikjeongbodanji'],
+    ['인천대입구','インチョンテイック','incheondaeipgu'],['센트럴파크','セントラルパーク','senteureolpakeu'],['국제업무지구','ククチェオプムジグ','gukjeeommujigu'],
+    ['송도달빛축제공원','ソンドダルビッチュクチェゴンウォン','songdodalbitchukjegongwon'] ]}]},
   arex: { name:{ja:'空港鉄道',ko:'공항철도'}, color:'#0090D2', country:'kr', prefix:'', start:1, sections:[{
     codes:['A01','A02','A03','A04','A042','A05','A06','A07','A071','A072','A08','A09','A10','A11'], st:[
     ['서울역','ソウルヨク','seoulyeok'],['공덕','コンドク','gongdeok'],['홍대입구','ホンデイプク','hongdaeipgu'],['디지털미디어시티','ディジトルミディオシティ','dijiteolmidieositi'],
@@ -785,7 +821,22 @@ const MEANING_KR = {  // Korean station -> Japanese kanji / meaning (official Ja
 /* hanja shown under Korean station names on the Japanese screen (Korean mixed script, traditional forms).
    Seoul: Seoul Metro CSV hanja column; others written by Claude (unverified) */
 const HANJA_SEOUL = {"서울역": "서울驛", "시청": "市廳", "종각": "鐘閣", "종로3가": "鍾路3街", "종로5가": "鍾路5街", "동대문": "東大門", "동묘앞": "東廟앞", "신설동": "新設洞", "제기동": "祭基洞", "청량리": "淸凉里", "을지로입구": "乙支路入口", "을지로3가": "乙支路3街", "을지로4가": "乙支路4街", "동대문역사문화공원": "東大門歷史文化公園", "신당": "新堂", "상왕십리": "上往十里", "왕십리": "往十里", "한양대": "漢陽大", "성수": "聖水", "건대입구": "建大入口", "구의": "九宜", "강변": "江邊", "잠실나루": "蠶室나루", "잠실": "蠶室", "종합운동장": "綜合運動場", "삼성": "三成", "선릉": "宣陵", "역삼": "驛三", "강남": "江南", "교대": "敎大", "서초": "瑞草", "방배": "方背", "사당": "舍堂", "낙성대": "落星垈", "서울대입구": "서울大入口", "봉천": "奉天", "신림": "新林", "신대방": "新大方", "구로디지털단지": "九老디지털團地", "대림": "大林", "신도림": "新道林", "문래": "文來", "영등포구청": "永登浦區廳", "당산": "堂山", "합정": "合井", "홍대입구": "弘大入口", "신촌": "新村", "이대": "梨大", "아현": "阿峴", "충정로": "忠正路", "용답": "龍踏", "신답": "新踏", "용두": "龍頭", "도림천": "道林川", "양천구청": "陽川區廳", "신정네거리": "新亭네거리", "까치산": "까치山", "지축": "紙杻", "구파발": "舊把撥", "불광": "佛光", "녹번": "碌磻", "홍제": "弘濟", "무악재": "毋岳재", "독립문": "獨立門", "경복궁": "景福宮", "안국": "安國", "충무로": "忠武路", "동대입구": "東大入口", "약수": "藥水", "금호": "金湖", "옥수": "玉水", "압구정": "狎鷗亭", "신사": "新沙", "잠원": "蠶院", "고속터미널": "高速터미널", "남부터미널": "南部터미널", "양재": "良才", "도곡": "道谷", "대치": "大峙", "학여울": "鶴여울", "일원": "逸院", "수서": "水西", "가락시장": "可樂市場", "경찰병원": "警察病院", "오금": "梧琴", "불암산": "佛巖山", "상계": "上溪", "노원": "蘆原", "창동": "倉洞", "쌍문": "雙門", "수유": "水踰", "미아": "彌阿", "미아사거리": "彌阿사거리", "길음": "吉音", "성신여대입구": "誠信女大入口", "한성대입구": "漢城大入口", "혜화": "惠化", "명동": "明洞", "회현": "會賢", "숙대입구": "淑大入口", "삼각지": "三角地", "신용산": "新龍山", "이촌": "二村", "동작": "銅雀", "총신대입구": "總神大入口", "남태령": "南泰嶺", "암사": "岩寺", "천호": "千戶", "강동구청": "江東區廳", "몽촌토성": "夢村土城", "석촌": "石村", "송파": "松坡", "문정": "文井", "장지": "長旨", "복정": "福井", "남위례": "南慰禮", "산성": "山城", "남한산성입구": "南漢山城入口", "단대오거리": "丹垈오거리", "신흥": "新興", "수진": "壽進", "모란": "牡丹", "암사역사공원": "岩寺歷史公園"};
-const HANJA_OTHER = {"다대포해수욕장": "多大浦海水浴場", "다대포항": "多大浦港", "신장림": "新長林", "장림": "長林", "동매": "東梅", "신평": "新平", "하단": "下端", "당리": "堂里", "사하": "沙下", "괴정": "槐亭", "대티": "大峙", "서대신": "西大新", "동대신": "東大新", "토성": "土城", "남포": "南浦", "중앙": "中央", "부산역": "釜山驛", "초량": "草梁", "부산진": "釜山鎭", "좌천": "佐川", "범일": "凡一", "범내골": "凡내골", "서면": "西面", "부전": "釜田", "양정": "楊亭", "연산": "蓮山", "동래": "東萊", "명륜": "明倫", "온천장": "溫泉場", "부산대": "釜山大", "장전": "長箭", "구서": "久瑞", "두실": "斗實", "남산": "南山", "범어사": "梵魚寺", "노포": "老圃", "공덕": "孔德", "마곡나루": "麻谷나루", "김포공항": "金浦空港", "계양": "桂陽", "검암": "黔岩", "청라국제도시": "靑羅國際都市", "영종": "永宗", "운서": "雲西", "공항화물청사": "空港貨物廳舍", "인천공항1터미널": "仁川空港1터미널", "인천공항2터미널": "仁川空港2터미널", "광명": "光明", "천안아산": "天安牙山", "오송": "五松", "대전": "大田", "김천(구미)": "金泉(龜尾)", "서대구": "西大邱", "동대구": "東大邱", "경주": "慶州", "울산": "蔚山", "부산": "釜山"};
+const HANJA_OTHER = {"다대포해수욕장": "多大浦海水浴場", "다대포항": "多大浦港", "신장림": "新長林", "장림": "長林", "동매": "東梅", "신평": "新平", "하단": "下端", "당리": "堂里", "사하": "沙下", "괴정": "槐亭", "대티": "大峙", "서대신": "西大新", "동대신": "東大新", "토성": "土城", "남포": "南浦", "중앙": "中央", "부산역": "釜山驛", "초량": "草梁", "부산진": "釜山鎭", "좌천": "佐川", "범일": "凡一", "범내골": "凡내골", "서면": "西面", "부전": "釜田", "양정": "楊亭", "연산": "蓮山", "동래": "東萊", "명륜": "明倫", "온천장": "溫泉場", "부산대": "釜山大", "장전": "長箭", "구서": "久瑞", "두실": "斗實", "남산": "南山", "범어사": "梵魚寺", "노포": "老圃", "공덕": "孔德", "마곡나루": "麻谷나루", "김포공항": "金浦空港", "계양": "桂陽", "검암": "黔岩", "청라국제도시": "靑羅國際都市", "영종": "永宗", "운서": "雲西", "공항화물청사": "空港貨物廳舍", "인천공항1터미널": "仁川空港1터미널", "인천공항2터미널": "仁川空港2터미널", "광명": "光明", "천안아산": "天安牙山", "오송": "五松", "대전": "大田", "김천(구미)": "金泉(龜尾)", "서대구": "西大邱", "동대구": "東大邱", "경주": "慶州", "울산": "蔚山", "부산": "釜山",
+  "검단호수공원": "黔丹湖水公園", "신검단중앙": "新黔丹中央", "귤현": "橘峴", "박촌": "朴村", "임학": "林鶴", "계산": "桂山", "경인교대입구": "京仁敎大入口",
+  "작전": "鵲田", "갈산": "葛山", "부평구청": "富平區廳", "부평시장": "富平市場", "부평": "富平", "동수": "東樹", "부평삼거리": "富平삼거리", "간석오거리": "間石五거리",
+  "인천시청": "仁川市廳", "예술회관": "藝術會館", "인천터미널": "仁川터미널", "문학경기장": "文鶴競技場", "선학": "仙鶴", "신연수": "新延壽", "원인재": "元仁齋",
+  "동춘": "東春", "동막": "東幕", "지식정보단지": "知識情報團地", "인천대입구": "仁川大入口", "국제업무지구": "國際業務地區", "송도달빛축제공원": "松島달빛祝祭公園",
+  "대방": "大方", "서울지방병무청": "서울地方兵務庁", "보라매공원": "보라매公園", "보라매병원": "보라매病院", "당곡": "堂谷", "신림": "新林", "서원": "書院",
+  "서울대벤처타운": "서울大벤처타운", "관악산": "冠岳山",
+  "설화명곡": "舌化椧谷", "화원": "花園", "대곡": "大谷", "진천": "辰泉", "월배": "月背", "상인": "上仁", "월촌": "月村", "송현": "松峴", "서부정류장": "西部停留場",
+  "대명": "大明", "현충로": "顕忠路", "영대병원": "嶺大病院", "교대": "教大", "명덕": "明徳", "반월당": "半月堂", "중앙로": "中央路", "대구역": "大邱駅",
+  "칠성시장": "七星市場", "신천": "新川", "동대구역": "東大邱駅", "동구청": "東区庁", "아양교": "峨洋橋", "동촌": "東村", "해안": "解顔", "방촌": "芳村",
+  "용계": "龍渓", "율하": "栗下", "신기": "新基", "반야월": "半夜月", "각산": "角山", "안심": "安心", "대구한의대병원": "大邱韓医大病院", "부호": "釜湖", "하양": "河陽"};
+/* sub-names for one line only ('line:station'); null = none (the same name on another line has one) */
+const SUB_KR_LINE = { 'sillim:대방':'성애병원', 'sillim:보라매병원':'전문건설회관', 'sillim:관악산':'서울대',
+  'daegu1:대곡':'정부대구청사', 'daegu1:서부정류장':'관문시장', 'daegu1:명덕':'2·28민주운동기념회관', 'daegu1:신천':'경북대입구', 'daegu1:동구청':'큰고개',
+  'daegu1:아양교':'대구국제공항입구', 'daegu1:동촌':'동촌유원지', 'daegu1:안심':'혁신도시·첨복단지', 'daegu1:부호':'경일대·호산대', 'daegu1:하양':'대구가톨릭대',
+  'daegu1:교대':null, 'sillim:신림':null };
 const SUB_KR = { '수유':'강북구청','미아':'서울사이버대학','성신여대입구':'돈암','한성대입구':'삼선교','회현':'남대문시장','숙대입구':'갈월',
   '이촌':'국립중앙박물관','동작':'현충원','총신대입구':'이수','청량리':'서울시립대입구','왕십리':'성동구청','구의':'광진구청','강변':'동서울터미널',
   '잠실':'송파구청','삼성':'무역센터','교대':'법원·검찰청','낙성대':'강감찬','서울대입구':'관악구청','대림':'구로구청','신촌':'지하','충정로':'경기대입구','용두':'동대문구청', '울산':'통도사',
@@ -795,10 +846,10 @@ const SUB_KR = { '수유':'강북구청','미아':'서울사이버대학','성�
 const SUB_JP = {
   '銀座':['松屋・三越前','마쓰야·미쓰코시 앞'], '京橋':['明治屋前','메이지야 앞'], '日本橋':['高島屋前','다카시마야 앞'],
   '上野広小路':['松坂屋前','마쓰자카야 앞'], '西新宿':['東京医大病院前','도쿄의대병원 앞'], '新宿三丁目':['伊勢丹前','이세탄 앞'],
-  '大手町':['サンケイ前','산케이 앞'], '新宿御苑前':['新宿御苑','신주쿠 교엔'], '国会議事堂前':['国会議事堂','국회의사당']
+  '大手町':['サンケイ前','산케이 앞'], '新宿御苑前':['新宿御苑','신주쿠 교엔'], '国会議事堂前':['国会議事堂','국회의사당'], '都庁前':['東京都庁','도쿄도청']
 };
 /* Hangul as written by Korean Wikipedia where the rule conversion differs */
-const HANGUL_JP = { '飯田橋':'이다바시' };
+const HANGUL_JP = { '飯田橋':'이다바시', '上野御徒町':'우에노오카치마치' };
 /* Japanese screen: these stations are asked in their Korean (meaning) form.
    Reading that Hangul as Korean = correct, the Japanese name = meaning, letter-by-letter = close.
    k: how the Hangul sounds, in hiragana (Claude's knowledge, unverified) */
@@ -872,7 +923,7 @@ function buildLines() {
           s = { country:'kr', name:ko, kata: off || kata, kataAlt: (off ? [kata] : []).concat(extra.kata || []), koAlt, rrAlt, hangul: ko,
                 roma: rr.charAt(0).toUpperCase() + rr.slice(1),
                 hanja: (id.startsWith('seoul') ? HANJA_SEOUL[ko] : HANJA_OTHER[ko]) || '', hanjaOfficial: id.startsWith('seoul') && !!HANJA_SEOUL[ko], meaning: MEANING_KR[ko] || [], official: !!off,
-                sub: SUB_KR[ko] ? [null, SUB_KR[ko]] : null };
+                sub: (k => k ? [null, k] : null)((id + ':' + ko) in SUB_KR_LINE ? SUB_KR_LINE[id + ':' + ko] : SUB_KR[ko]) };
         }
         s.code = code; s.section = si; s.idx = stations.length;
         stations.push(s);
@@ -1163,11 +1214,12 @@ G.EKI = { voicedHead, loanVariants, LOAN_H, LOAN_K, mVariants, soundKana, loanTy
 'use strict';
 const E = window.EKI;
 const LINES = E.buildLines();
-const ORDER = { ja:['yamanote','ginza','marunouchi','yurakucho','midosuji','higashiyama','fukuoka','monorail','tokaido','seoul4','seoul1','seoul2','seoul3','seoul8','busan1','arex','ktx'], ko:['seoul4','seoul1','seoul2','seoul3','seoul8','busan1','arex','ktx','yamanote','ginza','marunouchi','yurakucho','midosuji','higashiyama','fukuoka','monorail','tokaido'] };
-const SYM = { ginza:'G', marunouchi:'M', yurakucho:'Y', midosuji:'M', higashiyama:'H', fukuoka:'K', monorail:'MO', seoul1:'1', seoul2:'2', seoul3:'3', seoul4:'4', seoul8:'8', busan1:'1', daegu1:'1', arex:'A', yamanote:'JY', tokaido:'新', ktx:'K' };
+const ORDER = { ja:['yamanote','ginza','marunouchi','yurakucho','oedo','midosuji','karasuma','higashiyama','fukuoka','monorail','tokaido','seoul4','seoul1','seoul2','seoul3','seoul8','sillim','busan1','daegu1','incheon1','arex','ktx'],
+                ko:['seoul4','seoul1','seoul2','seoul3','seoul8','sillim','busan1','daegu1','incheon1','arex','ktx','yamanote','ginza','marunouchi','yurakucho','oedo','midosuji','karasuma','higashiyama','fukuoka','monorail','tokaido'] };
+const SYM = { ginza:'G', marunouchi:'M', yurakucho:'Y', midosuji:'M', higashiyama:'H', fukuoka:'K', monorail:'MO', seoul1:'1', seoul2:'2', seoul3:'3', seoul4:'4', seoul8:'8', busan1:'1', daegu1:'1', arex:'A', yamanote:'JY', tokaido:'新', ktx:'K', oedo:'E', karasuma:'K', incheon1:'I1', sillim:'S' };
 /* lines under construction: shown greyed out, not playable yet.
    Daegu 1: 115 설화명곡 – 149 하양 (35 stations, 하양 opened 2024-12-21); katakana to be taken from namu.wiki station pages */
-const COMING = [ { id:'daegu1', country:'kr', color:'#D93F5C', name:{ ja:'大邱1号線', ko:'대구 1호선' } } ];
+const COMING = [];
 /* station-number mark: round like the metro signs, rounded square for JR (Yamanote) */
 function stationMark(L, st, o = {}) {
   const shape = L.id === 'yamanote' ? ' sq' : '';
@@ -1189,7 +1241,7 @@ const symEl = (id, extra) => h('span', { class:'sym' + (SYM[id].length > 1 ? ' t
 const RUN_MS = 60 * 1000;
 /* flags drawn as SVG (emoji flags do not show on Windows) */
 const FLAG_SRC = { jp:'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20900%20600%22%3E%3Crect%20fill%3D%22%23fff%22%20width%3D%22900%22%20height%3D%22600%22/%3E%3Ccircle%20fill%3D%22%23bc002d%22%20cx%3D%22450%22%20cy%3D%22300%22%20r%3D%22180%22/%3E%3C/svg%3E', kr:'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20xmlns%3Axlink%3D%22http%3A//www.w3.org/1999/xlink%22%20viewBox%3D%22-36%20-24%2072%2048%22%3E%3Crect%20fill%3D%22%23fff%22%20x%3D%22-36%22%20y%3D%22-24%22%20width%3D%2272%22%20height%3D%2248%22/%3E%3Cg%20transform%3D%22rotate%28-56.3099325%29%22%3E%3Cg%20id%3D%22b2%22%3E%3Cpath%20id%3D%22b%22%20d%3D%22M-6-25H6M-6-22H6M-6-19H6%22%20stroke%3D%22%23000%22%20stroke-width%3D%222%22/%3E%3Cuse%20xlink%3Ahref%3D%22%23b%22%20y%3D%2244%22/%3E%3C/g%3E%3Cpath%20stroke%3D%22%23fff%22%20stroke-width%3D%221%22%20d%3D%22M0%2C17v10%22/%3E%3Ccircle%20fill%3D%22%23cd2e3a%22%20r%3D%2212%22/%3E%3Cpath%20fill%3D%22%230047a0%22%20d%3D%22M0-12A6%2C6%200%200%200%200%2C0A6%2C6%200%200%201%200%2C12A12%2C12%200%200%2C1%200-12z%22/%3E%3C/g%3E%3Cg%20transform%3D%22rotate%28-123.6900675%29%22%3E%3Cuse%20xlink%3Ahref%3D%22%23b2%22/%3E%3Cpath%20stroke%3D%22%23fff%22%20stroke-width%3D%221%22%20d%3D%22M0-23.5v3M0%2C17v3.5M0%2C23.5v3%22/%3E%3C/g%3E%3C/svg%3E' };
-const APP_VERSION = 'v0.49';  // shown after the logo; bump with every release
+const APP_VERSION = 'v0.51';  // shown after the logo; bump with every release
 const APP_ICON = 'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Cdefs%3E%3CclipPath%20id%3D%22r%22%3E%3Crect%20x%3D%222%22%20y%3D%222%22%20width%3D%2260%22%20height%3D%2260%22%20rx%3D%2212%22/%3E%3C/clipPath%3E%3C/defs%3E%3Cg%20clip-path%3D%22url%28%23r%29%22%3E%3Crect%20x%3D%220%22%20y%3D%220%22%20width%3D%2232%22%20height%3D%2264%22%20fill%3D%22%23F39700%22/%3E%3Crect%20x%3D%2232%22%20y%3D%220%22%20width%3D%2232%22%20height%3D%2264%22%20fill%3D%22%2300A84D%22/%3E%3C/g%3E%3Cpath%20d%3D%22M9%209H25M17%209V24M8%2024H26%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%224.5%22%20stroke-linecap%3D%22round%22/%3E%3Cpath%20d%3D%22M8%2037H26M7%2047H27M15%2031L19%2057%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%224.5%22%20stroke-linecap%3D%22round%22/%3E%3Ccircle%20cx%3D%2241.5%22%20cy%3D%2217%22%20r%3D%226.5%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%224.5%22/%3E%3Cpath%20d%3D%22M57%209V35M49%2016H57M49%2028H57%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%224.5%22%20stroke-linecap%3D%22round%22/%3E%3Cpath%20d%3D%22M37%2043H57V57%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%224.5%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22/%3E%3C/svg%3E';
 const flag = c => h('img', { class:'flag', src: FLAG_SRC[c === 'ja' ? 'jp' : c === 'ko' ? 'kr' : c], alt:'' });
 // learning points per letter: settled once per run (see applyTally)
@@ -2083,7 +2135,7 @@ function srcOf(id, st) {
   const out = [];
   const add = (f, state, src, off) => out.push({ f, state, src, off });
   if (st.country === 'jp') {
-    const wiki = { ginza:'韓国語版Wikipedia', marunouchi:'韓国語版Wikipedia＋公式韓国語路線図', yurakucho:'韓国語版Wikipedia', higashiyama:'韓国語版Wikipedia', fukuoka:'韓国語版Wikipedia', midosuji:'韓国語版Wikipedia', monorail:'韓国語版Wikipedia' }[id];
+    const wiki = { ginza:'韓国語版Wikipedia', marunouchi:'韓国語版Wikipedia＋公式韓国語路線図', yurakucho:'韓国語版Wikipedia', higashiyama:'韓国語版Wikipedia', fukuoka:'韓国語版Wikipedia', midosuji:'韓国語版Wikipedia', monorail:'韓国語版Wikipedia', oedo:'韓国語版Wikipedia＋公式韓国語路線図', karasuma:'韓国語版Wikipedia' }[id];
     if (!wiki) {  // lines added without a checked source yet (Yamanote, Tokaido-Sanyo Shinkansen)
       add('駅リスト', 'unk', KNOW);
       add('かな', 'unk', KNOW);
@@ -2103,6 +2155,23 @@ function srcOf(id, st) {
       add('駅リスト', 'ok', 'Wikipedia（韓国語版、2023年に신경주→경주）');
       add('ハングル', 'ok', 'ナムウィキ（各駅ページ）');
       add('カタカナ', 'ok', 'ナムウィキ（各駅ページ）');
+      add('ローマ字', 'unk', KNOW + '（RR式、未確認）');
+      if (st.hanja) add('漢字', 'unk', KNOW + '（旧字体、未確認）');
+      return out;
+    }
+    if (id === 'sillim' || id === 'daegu1') {
+      add('駅リスト', 'ok', '日本語版Wikipedia（西村提供）');
+      add('ハングル', 'ok', '日本語版Wikipedia（西村提供）');
+      const fix = { '보라매병원':'（ポラメビョウォン を直した）', '영대병원':'（ニョンデビョンウォン を直した、元も正解）', '반월당':'（パノダン → ナムウィキのパヌォルタン、どれも正解）', '율하':'（表の「律下 / ユラ」から）' }[st.name] || '';
+      add('カタカナ', st.name === '서울대벤처타운' ? 'unk' : 'ok', st.name === '서울대벤처타운' ? '日本語名「ソウル大ベンチャータウン」から（ハングルどおりのベンチョも正解）' : '日本語版Wikipedia（西村提供）' + fix);
+      add('ローマ字', 'unk', KNOW + '（RR式、未確認）');
+      if (st.hanja) add('漢字', 'ok', '日本語版Wikipedia（西村提供）');
+      return out;
+    }
+    if (id === 'incheon1') {
+      add('駅リスト', 'ok', '仁川交通公社 日本語路線図（2025年6月 검단延長後、I107〜I139）');
+      add('ハングル', 'unk', KNOW);
+      add('カタカナ', 'ok', '仁川交通公社 日本語路線図 ictr.or.kr/foreign/jpn/map/incheon.jsp' + (st.kataAlt.length ? '（' + st.kataAlt[0] + ' も正解）' : ''));
       add('ローマ字', 'unk', KNOW + '（RR式、未確認）');
       if (st.hanja) add('漢字', 'unk', KNOW + '（旧字体、未確認）');
       return out;
@@ -2253,7 +2322,44 @@ const TESTS = [
   ['seoul2','왕십리','ja','わんしむり','near','前から'],
   ['seoul2','종합운동장','ko','종하분동장','ok','前から'],
   ['seoul1','종로3가','ja','chongno3ga','close','前から'],
-  ['seoul1','종로3가','ja','jongro3ga','ng','前から']
+  ['seoul1','종로3가','ja','jongro3ga','ng','前から'],
+  ['oedo','上野御徒町','ko','우에노오카치마치','ok','v0.50'],
+  ['oedo','上野御徒町','ja','うえのおかちまち','ok','v0.50'],
+  ['oedo','本郷三丁目','ko','혼고산초메','ok','v0.50'],
+  ['oedo','国立競技場','ko','고쿠리쓰쿄기조','ok','v0.50'],
+  ['oedo','都庁前','ja','とちょうまえ','ok','v0.50'],
+  ['oedo','都庁前','ko','도초마에','ok','v0.50'],
+  ['oedo','光が丘','ja','ひかりがおか','ok','v0.50'],
+  ['karasuma','四条','ja','しじょう','ok','v0.50'],
+  ['karasuma','九条','ko','구조','ok','v0.50'],
+  ['karasuma','十条','ko','주조','ok','v0.50'],
+  ['karasuma','烏丸御池','ja','からすまおいけ','ok','v0.50'],
+  ['karasuma','くいな橋','ko','구이나바시','ok','v0.50'],
+  ['incheon1','간석오거리','ja','がんそくおごり','ok','v0.50'],
+  ['incheon1','간석오거리','ja','かんそくおごり','ok','v0.50'],
+  ['incheon1','간석오거리','ja','ガンソク・オゴリ','ok','v0.50'],
+  ['incheon1','문학경기장','ja','むんはくきょんぎじゃん','ok','v0.50'],
+  ['incheon1','예술회관','ja','いえするふぇぐぁん','ok','v0.50'],
+  ['incheon1','예술회관','ja','いぇするふぇぐぁん','ok','v0.50'],
+  ['incheon1','인천터미널','ja','いんちょんとみのる','ok','v0.50'],
+  ['incheon1','인천터미널','ja','いんちょんたーみなる','ok','v0.50'],
+  ['incheon1','인천대입구','ja','いんちょんていっく','ok','v0.50'],
+  ['incheon1','송도달빛축제공원','ko','송도달빛축제공원','ok','v0.50'],
+  ['incheon1','아라','ja','あら','ok','v0.50'],
+  ['incheon1','계양','ja','けやん','ok','v0.50'],
+  ['sillim','서울대벤처타운','ja','そうるでべんちゃーたうん','ok','v0.51'],
+  ['sillim','서울대벤처타운','ja','そうるでべんちょたうん','ok','v0.51'],
+  ['sillim','보라매병원','ja','ぽらめびょんうぉん','ok','v0.51'],
+  ['sillim','샛강','ja','せっかん','ok','v0.51'],
+  ['sillim','관악산','ja','くぁなくさん','ok','v0.51'],
+  ['daegu1','영대병원','ja','よんでびょんうぉん','ok','v0.51'],
+  ['daegu1','영대병원','ja','にょんでびょんうぉん','ok','v0.51'],
+  ['daegu1','반월당','ja','ぱぬぉるたん','ok','v0.51'],
+  ['daegu1','반월당','ja','ぱぬぉるだん','ok','v0.51'],
+  ['daegu1','반월당','ja','ぱのだん','ok','v0.51'],
+  ['daegu1','율하','ja','ゆら','ok','v0.51'],
+  ['daegu1','설화명곡','ko','설화명곡','ok','v0.51'],
+  ['daegu1','교대','ja','きょで','ok','v0.51']
 ];
 const TKEY = 'ekiyomi.tests';
 let UTESTS = [];
