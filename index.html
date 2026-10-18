@@ -674,6 +674,11 @@ const JP = {
     ['六本木','ろっぽんぎ'],['青山一丁目','あおやまいっちょうめ'],['国立競技場','こくりつきょうぎじょう'],['代々木','よよぎ'],['新宿','しんじゅく'],
     ['都庁前','とちょうまえ'],['西新宿五丁目','にししんじゅくごちょうめ'],['中野坂上','なかのさかうえ'],['東中野','ひがしなかの'],['中井','なかい'],
     ['落合南長崎','おちあいみなみながさき'],['新江古田','しんえごた'],['練馬','ねりま'],['豊島園','としまえん'],['練馬春日町','ねりまかすがちょう'],['光が丘','ひかりがおか'] ]}]},
+  osakaloop: { name:{ja:'大阪環状線',ko:'오사카 순환선'}, color:'#E8442C', country:'jp', prefix:'O', start:1, sections:[{
+    codes:['O11','O12','O13','O14','O15','O16','O17','O18','O19','O01','O02','O03','O04','O05','O06','O07','O08','O09','O10'], st:[
+    ['大阪','おおさか'],['福島','ふくしま'],['野田','のだ'],['西九条','にしくじょう'],['弁天町','べんてんちょう'],['大正','たいしょう'],['芦原橋','あしはらばし'],
+    ['今宮','いまみや'],['新今宮','しんいまみや'],['天王寺','てんのうじ'],['寺田町','てらだちょう'],['桃谷','ももだに'],['鶴橋','つるはし'],['玉造','たまつくり'],
+    ['森ノ宮','もりのみや'],['大阪城公園','おおさかじょうこうえん'],['京橋','きょうばし'],['桜ノ宮','さくらのみや'],['天満','てんま'] ]}]},
   karasuma: { name:{ja:'京都 烏丸線',ko:'교토 가라스마선'}, color:'#1E9A4E', country:'jp', prefix:'K', start:1, sections:[{ st:[
     ['国際会館','こくさいかいかん'],['松ヶ崎','まつがさき'],['北山','きたやま'],['北大路','きたおおじ'],['鞍馬口','くらまぐち'],['今出川','いまでがわ'],
     ['丸太町','まるたまち'],['烏丸御池','からすまおいけ'],['四条','しじょう'],['五条','ごじょう'],['京都','きょうと'],['九条','くじょう'],
@@ -745,11 +750,16 @@ const KR = {
     ['샛강','セッカン','saetgang'],['대방','テバン','daebang'],['서울지방병무청','ソウルチバンビョンムチョン','seouljibangbyeongmucheong'],['보라매','ポラメ','boramae'],
     ['보라매공원','ポラメコンウォン','boramaegongwon'],['보라매병원','ポラメビョンウォン','boramaebyeongwon'],['당곡','タンゴク','danggok'],['신림','シルリム','sillim'],
     ['서원','ソウォン','seowon'],['서울대벤처타운','ソウルデベンチャータウン','seouldaebencheotaun',{ kata:['ソウルデベンチョタウン'] }],['관악산','クァナクサン','gwanaksan'] ]}]},
+  busan3: { name:{ja:'釜山3号線',ko:'부산 3호선'}, color:'#BB8C00', country:'kr', prefix:'', start:301, sections:[{ st:[
+    ['수영','スヨン','suyeong'],['망미','マンミ','mangmi'],['배산','ペサン','baesan'],['물만골','ムルマンゴル','mulmangol'],['연산','ヨンサン','yeonsan'],
+    ['거제','コジェ','geoje'],['종합운동장','チョンハブンドンジャン','jonghapundongjang',{ kata:['チョンハプウンドンジャン'] }],['사직','サジク','sajik'],['미남','ミナム','minam'],
+    ['만덕','マンドク','mandeok'],['남산정','ナムサンジョン','namsanjeong'],['숙등','スクトゥン','sukdeung'],['덕천','トクチョン','deokcheon'],['구포','クポ','gupo'],
+    ['강서구청','カンソグチョン','gangseogucheong'],['체육공원','チェユッコンウォン','cheyukgongwon'],['대저','テジョ','daejeo'] ]}]},
   daegu1: { name:{ja:'大邱1号線',ko:'대구 1호선'}, color:'#D93F5C', country:'kr', prefix:'', start:115, sections:[{ st:[
     ['설화명곡','ソルファミョンゴク','seolhwamyeonggok'],['화원','ファウォン','hwawon'],['대곡','テゴク','daegok'],['진천','チンチョン','jincheon'],['월배','ウォルベ','wolbae'],
     ['상인','サンイン','sangin'],['월촌','ウォルチョン','wolchon'],['송현','ソンヒョン','songhyeon'],['서부정류장','ソブジョンニュジャン','seobujeongnyujang'],['대명','テミョン','daemyeong'],
     ['안지랑','アンジラン','anjirang'],['현충로','ヒョンチュンノ','hyeonchungno'],['영대병원','ヨンデビョンウォン','yeongdaebyeongwon',{ kata:['ニョンデビョンウォン'] }],['교대','キョデ','gyodae'],
-    ['명덕','ミョンドク','myeongdeok'],['반월당','パヌォルタン','banwoldang',{ kata:['パヌォルダン','パノダン'] }],['중앙로','チュンアンノ','jungangno'],['대구역','テグヨク','daeguyeok'],
+    ['명덕','ミョンドク','myeongdeok'],['반월당','パヌォルタン','banwoldang',{ kata:['パヌォルダン','パノダン','パノルダン'] }],['중앙로','チュンアンノ','jungangno'],['대구역','テグヨク','daeguyeok'],
     ['칠성시장','チルソンシジャン','chilseongsijang'],['신천','シンチョン','sincheon'],['동대구역','トンテグヨク','dongdaeguyeok'],['동구청','トングチョン','donggucheong'],
     ['아양교','アヤンギョ','ayanggyo'],['동촌','トンチョン','dongchon'],['해안','ヘアン','haean'],['방촌','パンチョン','bangchon'],['용계','ヨンゲ','yonggye'],
     ['율하','ユラ','yulha'],['신기','シンギ','singi'],['반야월','パニャウォル','banyawol'],['각산','カクサン','gaksan'],['안심','アンシム','ansim'],
@@ -826,6 +836,8 @@ const HANJA_OTHER = {"다대포해수욕장": "多大浦海水浴場", "다대�
   "작전": "鵲田", "갈산": "葛山", "부평구청": "富平區廳", "부평시장": "富平市場", "부평": "富平", "동수": "東樹", "부평삼거리": "富平삼거리", "간석오거리": "間石五거리",
   "인천시청": "仁川市廳", "예술회관": "藝術會館", "인천터미널": "仁川터미널", "문학경기장": "文鶴競技場", "선학": "仙鶴", "신연수": "新延壽", "원인재": "元仁齋",
   "동춘": "東春", "동막": "東幕", "지식정보단지": "知識情報團地", "인천대입구": "仁川大入口", "국제업무지구": "國際業務地區", "송도달빛축제공원": "松島달빛祝祭公園",
+  "수영": "水営", "망미": "望美", "배산": "盃山", "연산": "蓮山", "거제": "巨堤", "종합운동장": "総合運動場", "사직": "社稷", "미남": "美南", "만덕": "万徳", "남산정": "南山亭",
+  "숙등": "淑嶝", "덕천": "徳川", "구포": "亀浦", "강서구청": "江西区庁", "체육공원": "体育公園", "대저": "大渚",
   "대방": "大方", "서울지방병무청": "서울地方兵務庁", "보라매공원": "보라매公園", "보라매병원": "보라매病院", "당곡": "堂谷", "신림": "新林", "서원": "書院",
   "서울대벤처타운": "서울大벤처타운", "관악산": "冠岳山",
   "설화명곡": "舌化椧谷", "화원": "花園", "대곡": "大谷", "진천": "辰泉", "월배": "月背", "상인": "上仁", "월촌": "月村", "송현": "松峴", "서부정류장": "西部停留場",
@@ -1214,9 +1226,9 @@ G.EKI = { voicedHead, loanVariants, LOAN_H, LOAN_K, mVariants, soundKana, loanTy
 'use strict';
 const E = window.EKI;
 const LINES = E.buildLines();
-const ORDER = { ja:['yamanote','ginza','marunouchi','yurakucho','oedo','midosuji','karasuma','higashiyama','fukuoka','monorail','tokaido','seoul4','seoul1','seoul2','seoul3','seoul8','sillim','busan1','daegu1','incheon1','arex','ktx'],
-                ko:['seoul4','seoul1','seoul2','seoul3','seoul8','sillim','busan1','daegu1','incheon1','arex','ktx','yamanote','ginza','marunouchi','yurakucho','oedo','midosuji','karasuma','higashiyama','fukuoka','monorail','tokaido'] };
-const SYM = { ginza:'G', marunouchi:'M', yurakucho:'Y', midosuji:'M', higashiyama:'H', fukuoka:'K', monorail:'MO', seoul1:'1', seoul2:'2', seoul3:'3', seoul4:'4', seoul8:'8', busan1:'1', daegu1:'1', arex:'A', yamanote:'JY', tokaido:'新', ktx:'K', oedo:'E', karasuma:'K', incheon1:'I1', sillim:'S' };
+const ORDER = { ja:['yamanote','ginza','marunouchi','yurakucho','oedo','midosuji','osakaloop','karasuma','higashiyama','fukuoka','monorail','tokaido','seoul4','seoul1','seoul2','seoul3','seoul8','sillim','busan1','busan3','daegu1','incheon1','arex','ktx'],
+                ko:['seoul4','seoul1','seoul2','seoul3','seoul8','sillim','busan1','busan3','daegu1','incheon1','arex','ktx','yamanote','ginza','marunouchi','yurakucho','oedo','midosuji','osakaloop','karasuma','higashiyama','fukuoka','monorail','tokaido'] };
+const SYM = { ginza:'G', marunouchi:'M', yurakucho:'Y', midosuji:'M', higashiyama:'H', fukuoka:'K', monorail:'MO', seoul1:'1', seoul2:'2', seoul3:'3', seoul4:'4', seoul8:'8', busan1:'1', daegu1:'1', arex:'A', yamanote:'JY', tokaido:'新', ktx:'K', oedo:'E', karasuma:'K', incheon1:'I1', sillim:'S', osakaloop:'O', busan3:'3' };
 /* lines under construction: shown greyed out, not playable yet.
    Daegu 1: 115 설화명곡 – 149 하양 (35 stations, 하양 opened 2024-12-21); katakana to be taken from namu.wiki station pages */
 const COMING = [];
@@ -1241,7 +1253,7 @@ const symEl = (id, extra) => h('span', { class:'sym' + (SYM[id].length > 1 ? ' t
 const RUN_MS = 60 * 1000;
 /* flags drawn as SVG (emoji flags do not show on Windows) */
 const FLAG_SRC = { jp:'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20900%20600%22%3E%3Crect%20fill%3D%22%23fff%22%20width%3D%22900%22%20height%3D%22600%22/%3E%3Ccircle%20fill%3D%22%23bc002d%22%20cx%3D%22450%22%20cy%3D%22300%22%20r%3D%22180%22/%3E%3C/svg%3E', kr:'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20xmlns%3Axlink%3D%22http%3A//www.w3.org/1999/xlink%22%20viewBox%3D%22-36%20-24%2072%2048%22%3E%3Crect%20fill%3D%22%23fff%22%20x%3D%22-36%22%20y%3D%22-24%22%20width%3D%2272%22%20height%3D%2248%22/%3E%3Cg%20transform%3D%22rotate%28-56.3099325%29%22%3E%3Cg%20id%3D%22b2%22%3E%3Cpath%20id%3D%22b%22%20d%3D%22M-6-25H6M-6-22H6M-6-19H6%22%20stroke%3D%22%23000%22%20stroke-width%3D%222%22/%3E%3Cuse%20xlink%3Ahref%3D%22%23b%22%20y%3D%2244%22/%3E%3C/g%3E%3Cpath%20stroke%3D%22%23fff%22%20stroke-width%3D%221%22%20d%3D%22M0%2C17v10%22/%3E%3Ccircle%20fill%3D%22%23cd2e3a%22%20r%3D%2212%22/%3E%3Cpath%20fill%3D%22%230047a0%22%20d%3D%22M0-12A6%2C6%200%200%200%200%2C0A6%2C6%200%200%201%200%2C12A12%2C12%200%200%2C1%200-12z%22/%3E%3C/g%3E%3Cg%20transform%3D%22rotate%28-123.6900675%29%22%3E%3Cuse%20xlink%3Ahref%3D%22%23b2%22/%3E%3Cpath%20stroke%3D%22%23fff%22%20stroke-width%3D%221%22%20d%3D%22M0-23.5v3M0%2C17v3.5M0%2C23.5v3%22/%3E%3C/g%3E%3C/svg%3E' };
-const APP_VERSION = 'v0.51';  // shown after the logo; bump with every release
+const APP_VERSION = 'v0.52';  // shown after the logo; bump with every release
 const APP_ICON = 'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Cdefs%3E%3CclipPath%20id%3D%22r%22%3E%3Crect%20x%3D%222%22%20y%3D%222%22%20width%3D%2260%22%20height%3D%2260%22%20rx%3D%2212%22/%3E%3C/clipPath%3E%3C/defs%3E%3Cg%20clip-path%3D%22url%28%23r%29%22%3E%3Crect%20x%3D%220%22%20y%3D%220%22%20width%3D%2232%22%20height%3D%2264%22%20fill%3D%22%23F39700%22/%3E%3Crect%20x%3D%2232%22%20y%3D%220%22%20width%3D%2232%22%20height%3D%2264%22%20fill%3D%22%2300A84D%22/%3E%3C/g%3E%3Cpath%20d%3D%22M9%209H25M17%209V24M8%2024H26%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%224.5%22%20stroke-linecap%3D%22round%22/%3E%3Cpath%20d%3D%22M8%2037H26M7%2047H27M15%2031L19%2057%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%224.5%22%20stroke-linecap%3D%22round%22/%3E%3Ccircle%20cx%3D%2241.5%22%20cy%3D%2217%22%20r%3D%226.5%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%224.5%22/%3E%3Cpath%20d%3D%22M57%209V35M49%2016H57M49%2028H57%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%224.5%22%20stroke-linecap%3D%22round%22/%3E%3Cpath%20d%3D%22M37%2043H57V57%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%224.5%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22/%3E%3C/svg%3E';
 const flag = c => h('img', { class:'flag', src: FLAG_SRC[c === 'ja' ? 'jp' : c === 'ko' ? 'kr' : c], alt:'' });
 // learning points per letter: settled once per run (see applyTally)
@@ -2135,7 +2147,7 @@ function srcOf(id, st) {
   const out = [];
   const add = (f, state, src, off) => out.push({ f, state, src, off });
   if (st.country === 'jp') {
-    const wiki = { ginza:'韓国語版Wikipedia', marunouchi:'韓国語版Wikipedia＋公式韓国語路線図', yurakucho:'韓国語版Wikipedia', higashiyama:'韓国語版Wikipedia', fukuoka:'韓国語版Wikipedia', midosuji:'韓国語版Wikipedia', monorail:'韓国語版Wikipedia', oedo:'韓国語版Wikipedia＋公式韓国語路線図', karasuma:'韓国語版Wikipedia' }[id];
+    const wiki = { ginza:'韓国語版Wikipedia', marunouchi:'韓国語版Wikipedia＋公式韓国語路線図', yurakucho:'韓国語版Wikipedia', higashiyama:'韓国語版Wikipedia', fukuoka:'韓国語版Wikipedia', midosuji:'韓国語版Wikipedia', monorail:'韓国語版Wikipedia', oedo:'韓国語版Wikipedia＋公式韓国語路線図', karasuma:'韓国語版Wikipedia', osakaloop:'韓国語版Wikipedia' }[id];
     if (!wiki) {  // lines added without a checked source yet (Yamanote, Tokaido-Sanyo Shinkansen)
       add('駅リスト', 'unk', KNOW);
       add('かな', 'unk', KNOW);
@@ -2159,10 +2171,19 @@ function srcOf(id, st) {
       if (st.hanja) add('漢字', 'unk', KNOW + '（旧字体、未確認）');
       return out;
     }
+    if (id === 'busan3') {
+      const fixed = st.name === '배산' || st.name === '물만골';
+      add('駅リスト', 'unk', '日本語版Wikipedia（西村提供）。表がくずれていたので、抜けていた 배산・물만골 を ' + KNOW + 'で足し、最後の重複2行を消した（未確認）');
+      add('ハングル', fixed ? 'unk' : 'ok', fixed ? KNOW : '日本語版Wikipedia（西村提供）');
+      add('カタカナ', fixed || st.name === '숙등' ? 'unk' : 'ok', fixed ? KNOW : st.name === '숙등' ? '表の文字化けから読みとり（スクトゥン）' : '日本語版Wikipedia（西村提供）' + (st.kataAlt.length ? '（' + st.kataAlt[0] + ' も正解）' : ''));
+      add('ローマ字', 'unk', KNOW + '（RR式、未確認）');
+      if (st.hanja) add('漢字', fixed || st.name === '숙등' || st.name === '망미' ? 'unk' : 'ok', fixed || st.name === '숙등' ? KNOW : st.name === '망미' ? '表は「芒美」、地名の 望美洞 に合わせた' : '日本語版Wikipedia（西村提供）');
+      return out;
+    }
     if (id === 'sillim' || id === 'daegu1') {
       add('駅リスト', 'ok', '日本語版Wikipedia（西村提供）');
       add('ハングル', 'ok', '日本語版Wikipedia（西村提供）');
-      const fix = { '보라매병원':'（ポラメビョウォン を直した）', '영대병원':'（ニョンデビョンウォン を直した、元も正解）', '반월당':'（パノダン → ナムウィキのパヌォルタン、どれも正解）', '율하':'（表の「律下 / ユラ」から）' }[st.name] || '';
+      const fix = { '보라매병원':'（ポラメビョウォン を直した）', '영대병원':'（ニョンデビョンウォン を直した、元も正解）', '반월당':'（パノダン → ナムウィキのパヌォルタン。パヌォルダン・パノダン・パノルダンも正解）', '율하':'（表の「律下 / ユラ」から）' }[st.name] || '';
       add('カタカナ', st.name === '서울대벤처타운' ? 'unk' : 'ok', st.name === '서울대벤처타운' ? '日本語名「ソウル大ベンチャータウン」から（ハングルどおりのベンチョも正解）' : '日本語版Wikipedia（西村提供）' + fix);
       add('ローマ字', 'unk', KNOW + '（RR式、未確認）');
       if (st.hanja) add('漢字', 'ok', '日本語版Wikipedia（西村提供）');
@@ -2359,7 +2380,18 @@ const TESTS = [
   ['daegu1','반월당','ja','ぱのだん','ok','v0.51'],
   ['daegu1','율하','ja','ゆら','ok','v0.51'],
   ['daegu1','설화명곡','ko','설화명곡','ok','v0.51'],
-  ['daegu1','교대','ja','きょで','ok','v0.51']
+  ['daegu1','교대','ja','きょで','ok','v0.51'],
+  ['daegu1','반월당','ja','ぱのるだん','ok','v0.52'],
+  ['osakaloop','天王寺','ja','てんのうじ','ok','v0.52'],
+  ['osakaloop','大阪城公園','ko','오사카조코엔','ok','v0.52'],
+  ['osakaloop','鶴橋','ko','쓰루하시','ok','v0.52'],
+  ['osakaloop','森ノ宮','ja','もりのみや','ok','v0.52'],
+  ['busan3','종합운동장','ja','ちょんはぶんどんじゃん','ok','v0.52'],
+  ['busan3','종합운동장','ja','ちょんはぷうんどんじゃん','ok','v0.52'],
+  ['busan3','숙등','ja','すくとぅん','ok','v0.52'],
+  ['busan3','물만골','ja','むるまんごる','ok','v0.52'],
+  ['busan3','체육공원','ja','ちぇゆっこんうぉん','ok','v0.52'],
+  ['busan3','대저','ko','대저','ok','v0.52']
 ];
 const TKEY = 'ekiyomi.tests';
 let UTESTS = [];
