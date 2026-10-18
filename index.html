@@ -1189,7 +1189,7 @@ const symEl = (id, extra) => h('span', { class:'sym' + (SYM[id].length > 1 ? ' t
 const RUN_MS = 60 * 1000;
 /* flags drawn as SVG (emoji flags do not show on Windows) */
 const FLAG_SRC = { jp:'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20900%20600%22%3E%3Crect%20fill%3D%22%23fff%22%20width%3D%22900%22%20height%3D%22600%22/%3E%3Ccircle%20fill%3D%22%23bc002d%22%20cx%3D%22450%22%20cy%3D%22300%22%20r%3D%22180%22/%3E%3C/svg%3E', kr:'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20xmlns%3Axlink%3D%22http%3A//www.w3.org/1999/xlink%22%20viewBox%3D%22-36%20-24%2072%2048%22%3E%3Crect%20fill%3D%22%23fff%22%20x%3D%22-36%22%20y%3D%22-24%22%20width%3D%2272%22%20height%3D%2248%22/%3E%3Cg%20transform%3D%22rotate%28-56.3099325%29%22%3E%3Cg%20id%3D%22b2%22%3E%3Cpath%20id%3D%22b%22%20d%3D%22M-6-25H6M-6-22H6M-6-19H6%22%20stroke%3D%22%23000%22%20stroke-width%3D%222%22/%3E%3Cuse%20xlink%3Ahref%3D%22%23b%22%20y%3D%2244%22/%3E%3C/g%3E%3Cpath%20stroke%3D%22%23fff%22%20stroke-width%3D%221%22%20d%3D%22M0%2C17v10%22/%3E%3Ccircle%20fill%3D%22%23cd2e3a%22%20r%3D%2212%22/%3E%3Cpath%20fill%3D%22%230047a0%22%20d%3D%22M0-12A6%2C6%200%200%200%200%2C0A6%2C6%200%200%201%200%2C12A12%2C12%200%200%2C1%200-12z%22/%3E%3C/g%3E%3Cg%20transform%3D%22rotate%28-123.6900675%29%22%3E%3Cuse%20xlink%3Ahref%3D%22%23b2%22/%3E%3Cpath%20stroke%3D%22%23fff%22%20stroke-width%3D%221%22%20d%3D%22M0-23.5v3M0%2C17v3.5M0%2C23.5v3%22/%3E%3C/g%3E%3C/svg%3E' };
-const APP_VERSION = 'v0.48';  // shown after the logo; bump with every release
+const APP_VERSION = 'v0.49';  // shown after the logo; bump with every release
 const APP_ICON = 'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Cdefs%3E%3CclipPath%20id%3D%22r%22%3E%3Crect%20x%3D%222%22%20y%3D%222%22%20width%3D%2260%22%20height%3D%2260%22%20rx%3D%2212%22/%3E%3C/clipPath%3E%3C/defs%3E%3Cg%20clip-path%3D%22url%28%23r%29%22%3E%3Crect%20x%3D%220%22%20y%3D%220%22%20width%3D%2232%22%20height%3D%2264%22%20fill%3D%22%23F39700%22/%3E%3Crect%20x%3D%2232%22%20y%3D%220%22%20width%3D%2232%22%20height%3D%2264%22%20fill%3D%22%2300A84D%22/%3E%3C/g%3E%3Cpath%20d%3D%22M9%209H25M17%209V24M8%2024H26%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%224.5%22%20stroke-linecap%3D%22round%22/%3E%3Cpath%20d%3D%22M8%2037H26M7%2047H27M15%2031L19%2057%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%224.5%22%20stroke-linecap%3D%22round%22/%3E%3Ccircle%20cx%3D%2241.5%22%20cy%3D%2217%22%20r%3D%226.5%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%224.5%22/%3E%3Cpath%20d%3D%22M57%209V35M49%2016H57M49%2028H57%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%224.5%22%20stroke-linecap%3D%22round%22/%3E%3Cpath%20d%3D%22M37%2043H57V57%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%224.5%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22/%3E%3C/svg%3E';
 const flag = c => h('img', { class:'flag', src: FLAG_SRC[c === 'ja' ? 'jp' : c === 'ko' ? 'kr' : c], alt:'' });
 // learning points per letter: settled once per run (see applyTally)
@@ -1245,7 +1245,7 @@ const TXT = {
     lv0:'未学習', lv1:'学習済み', lv2:'覚えた', lvVoid:'まだ駅がない', tHist:'履歴', histNone:'まだ履歴がない。プレイすると最近100回ぶん残る', histMiss:'×と△だけ', histNote:'最近100プレイまで（古いものから消える）', pracName:'練習',
     gL:'子音', gV:'母音', gT:'パッチム', gRare:'レア枠',
     gBase:'清音', gDaku:'濁音・半濁音', gYoon:'拗音', gSmall:'小さいつ',
-    coming:'工事中（いずれ追加）', prac:'練習', pracSub:'やさしい駅を10問。時間制限なし・ヒントつき・点数なし', qNo:'問題', pracEnd:'練習おわり', pracScore:n=>'10問中 '+n+'問 正解', timeUp:'タイムアップ！', quitT:'おしまい', allDone:'全駅正解！', leftT:'のこり時間', newBadges:n=>'新しいバッジ '+n+'個',
+    coming:'工事中（いずれ追加）', prac:'練習', pracSub:'日本のやさしい駅を10問。時間制限なし・ヒントつき・点数なし', qNo:'問題', pracEnd:'練習おわり', pracScore:n=>'10問中 '+n+'問 正解', timeUp:'タイムアップ！', quitT:'おしまい', allDone:'全駅正解！', leftT:'のこり時間', newBadges:n=>'新しいバッジ '+n+'個',
     statOk:'正解', statClose:'ほぼ正解', statNear:'おしい', statNg:'不正解', newBest:'ベスト更新！',
     lineClear:l=>l+' クリア！', again:'もう一回', toLinesBtn:'路線をえらぶ', collBtn:'コレクション',
     master:'日韓駅名マスター', masterSub:'全路線のバッジを全部集めた！',
@@ -1282,7 +1282,7 @@ const TXT = {
     lv0:'미학습', lv1:'학습함', lv2:'외움', lvVoid:'아직 역이 없음', tHist:'이력', histNone:'아직 이력이 없어요. 플레이하면 최근 100번까지 남아요', histMiss:'×와 △만', histNote:'최근 100판까지 (오래된 것부터 지워져요)', pracName:'연습',
     gL:'자음', gV:'모음', gT:'받침', gRare:'희귀',
     gBase:'청음', gDaku:'탁음·반탁음', gYoon:'요음', gSmall:'작은 つ',
-    coming:'준비 중 (곧 추가)', prac:'연습', pracSub:'쉬운 역 10문제. 시간 제한 없음·힌트 있음·점수 없음', qNo:'문제', pracEnd:'연습 끝', pracScore:n=>'10문제 중 '+n+'개 정답', timeUp:'시간 종료!', quitT:'끝', allDone:'모든 역 정답!', leftT:'남은 시간', newBadges:n=>'새 배지 '+n+'개',
+    coming:'준비 중 (곧 추가)', prac:'연습', pracSub:'한국의 쉬운 역 10문제. 시간 제한 없음·힌트 있음·점수 없음', qNo:'문제', pracEnd:'연습 끝', pracScore:n=>'10문제 중 '+n+'개 정답', timeUp:'시간 종료!', quitT:'끝', allDone:'모든 역 정답!', leftT:'남은 시간', newBadges:n=>'새 배지 '+n+'개',
     statOk:'정답', statClose:'거의 정답', statNear:'아깝다', statNg:'오답', newBest:'최고 기록!',
     lineClear:l=>l+' 클리어!', again:'다시 하기', toLinesBtn:'노선 고르기', collBtn:'컬렉션',
     master:'한일 역 이름 마스터', masterSub:'모든 노선의 배지를 모두 모았어요!',
@@ -1543,21 +1543,23 @@ function buildQueue(excludeIdx) {
   const old = shuffle(L.stations.filter(s => got[s.idx] && s.idx !== excludeIdx).map(s => s.idx));
   return fresh.concat(old);
 }
-/* practice: easy stations from every line.
-   ja: Hangul with no final consonant, no compound vowel, no tense consonant, up to 4 blocks
-   ko: kana with no dakuten, small kana, long vowel, つずざ or ん, up to 4 morae */
+/* practice: easy stations of your own side only (ja: Japanese stations, ko: Korean stations).
+   ja: Hangul with no final consonant except ㄴ, no compound vowel, no tense consonant, up to 4 blocks
+   ko: kana with no small kana (ャュョ ッ ァィゥェォ) and no ー, up to 4 morae (dakuten and ン are fine) */
 function easyPool() {
   const seen = new Set(), out = [];
   for (const id in LINES) for (const st of LINES[id].stations) {
     let key, ok;
     if (D.lang === 'ja') {
+      if (st.country !== 'jp') continue;
       key = st.signH || st.hangul; let n = 0; ok = true;
       for (const ch of key) { const d = E.decompose(ch); if (!d) continue; n++;
-        if (d.T || [1,3,5,7,9,10,11,14,15,16,19].includes(d.V) || [1,4,8,10,13].includes(d.L)) ok = false; }
+        if ((d.T && d.T !== 4) || [1,3,5,7,9,10,11,14,15,16,19].includes(d.V) || [1,4,8,10,13].includes(d.L)) ok = false; }
       ok = ok && n > 0 && n <= 4;
     } else {
-      key = E.toHira(st.country === 'jp' ? st.kana : st.kata);
-      ok = !/[ゃゅょぁぃぅぇぉっんつずづざがぎぐげごじぜぞだぢでどばびぶべぼぱぴぷぺぽー]/.test(key) && E.collapseKana(key) === key && E.morae(key).length <= 4;
+      if (st.country !== 'kr') continue;
+      key = E.toHira(st.kata);
+      ok = !/[ぁぃぅぇぉっゃゅょゎー]/.test(key) && E.morae(key).length <= 4;
     }
     if (ok && !seen.has(key)) { seen.add(key); out.push({ id, idx: st.idx }); }
   }
@@ -2549,7 +2551,7 @@ const HELP = {
     ['路線をひらく', '最初は山手線だけ。🎫で好きな路線を1つひらける。日本の路線を全部ひらくとソウル4号線から韓国の駅へ。'],
     ['🎫と半券', '路線を初めてクリア（バッジ全部）で切符🎫1枚。50点で半券1枚、100点で2枚。半券5枚は、一覧の上の交換ボタンで切符1枚にできる（自動ではないので、ヒント用に取っておける）。4択は点数なしなので半券もなし。'],
     ['ヒント', '本番は半券1枚で、そのプレイの間ずっとヒントが使える（ヒントを見た問題は点数半分）。'],
-    ['練習', 'やさしい駅を10問。時間なし・ヒントつき・点数なし。入力で10問全部正解すると半券1枚（4択で答えた問題があるともらえない）。'],
+    ['練習', '日本語版は日本の、韓国語版は韓国のやさしい駅を10問。時間なし・ヒントつき・点数なし。入力で10問全部正解すると半券1枚（4択で答えた問題があるともらえない）。'],
     ['図鑑', 'ヒントなしで読めた字にポイント。学習済み→覚えた、と育つ。覚えた字はヒントで✓になる。']
   ],
   ko:[
@@ -2559,7 +2561,7 @@ const HELP = {
     ['노선 열기', '처음에는 서울 4호선만. 🎫으로 원하는 노선 하나를 열 수 있어요. 한국 노선을 모두 열면 야마노테선부터 일본의 역으로.'],
     ['🎫과 표 조각', '노선을 처음 클리어(배지 전부)하면 표🎫 1장. 50점이면 표 조각 1개, 100점이면 2개. 표 조각 5개는 목록 위의 교환 버튼으로 표 1장으로 바꿀 수 있어요(자동이 아니라서 힌트용으로 모아 둘 수 있어요). 4지선다는 점수가 없어서 표 조각도 없어요.'],
     ['힌트', '본 게임에서는 표 조각 1개로 그 판 동안 힌트를 쓸 수 있어요(힌트를 본 문제는 점수 절반).'],
-    ['연습', '쉬운 역 10문제. 시간 제한 없음·힌트 있음·점수 없음. 입력으로 10문제 모두 맞히면 표 조각 1개(4지선다로 답한 문제가 있으면 없어요).'],
+    ['연습', '한국어판은 한국의, 일본어판은 일본의 쉬운 역 10문제. 시간 제한 없음·힌트 있음·점수 없음. 입력으로 10문제 모두 맞히면 표 조각 1개(4지선다로 답한 문제가 있으면 없어요).'],
     ['도감', '힌트 없이 읽은 글자에 포인트. 학습함→외움 으로 자라요. 외운 글자는 힌트에서 ✓가 돼요.']
   ]
 };
