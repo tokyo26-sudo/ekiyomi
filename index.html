@@ -307,6 +307,10 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline
 .rv-ng{background:var(--ngbg)}.rv-ng .rvm,.rv-ng .rva{color:var(--ng)}
 .rv-skip .rva{color:var(--muted)}
 .rowbtns{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.sharebox{width:100%;display:grid;gap:8px;margin-top:4px}
+.sharebox img{width:100%;height:auto;border-radius:10px;border:1px solid var(--rule);background:#F5F2EA}
+.sharebox textarea{width:100%;font:inherit;font-size:.85rem;line-height:1.5;padding:8px 10px;border:1px solid var(--rule);border-radius:8px;background:var(--panel);color:var(--ink);resize:none}
+.sharebox .rowbtns .done{color:var(--ok)}
 .pbtn{border:0;border-radius:8px;background:var(--accent);color:var(--sign);font-weight:900;padding:10px 20px}
 .gbtn{border:1px solid var(--rule);border-radius:8px;background:var(--sign);font-weight:700;padding:10px 20px}
 /* developer page */
@@ -1269,7 +1273,7 @@ const symEl = (id, extra) => h('span', { class:'sym' + (SYM[id].length > 1 ? ' t
 const RUN_MS = 60 * 1000;
 /* flags drawn as SVG (emoji flags do not show on Windows) */
 const FLAG_SRC = { jp:'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20900%20600%22%3E%3Crect%20fill%3D%22%23fff%22%20width%3D%22900%22%20height%3D%22600%22/%3E%3Ccircle%20fill%3D%22%23bc002d%22%20cx%3D%22450%22%20cy%3D%22300%22%20r%3D%22180%22/%3E%3C/svg%3E', kr:'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20xmlns%3Axlink%3D%22http%3A//www.w3.org/1999/xlink%22%20viewBox%3D%22-36%20-24%2072%2048%22%3E%3Crect%20fill%3D%22%23fff%22%20x%3D%22-36%22%20y%3D%22-24%22%20width%3D%2272%22%20height%3D%2248%22/%3E%3Cg%20transform%3D%22rotate%28-56.3099325%29%22%3E%3Cg%20id%3D%22b2%22%3E%3Cpath%20id%3D%22b%22%20d%3D%22M-6-25H6M-6-22H6M-6-19H6%22%20stroke%3D%22%23000%22%20stroke-width%3D%222%22/%3E%3Cuse%20xlink%3Ahref%3D%22%23b%22%20y%3D%2244%22/%3E%3C/g%3E%3Cpath%20stroke%3D%22%23fff%22%20stroke-width%3D%221%22%20d%3D%22M0%2C17v10%22/%3E%3Ccircle%20fill%3D%22%23cd2e3a%22%20r%3D%2212%22/%3E%3Cpath%20fill%3D%22%230047a0%22%20d%3D%22M0-12A6%2C6%200%200%200%200%2C0A6%2C6%200%200%201%200%2C12A12%2C12%200%200%2C1%200-12z%22/%3E%3C/g%3E%3Cg%20transform%3D%22rotate%28-123.6900675%29%22%3E%3Cuse%20xlink%3Ahref%3D%22%23b2%22/%3E%3Cpath%20stroke%3D%22%23fff%22%20stroke-width%3D%221%22%20d%3D%22M0-23.5v3M0%2C17v3.5M0%2C23.5v3%22/%3E%3C/g%3E%3C/svg%3E' };
-const APP_VERSION = 'v0.53';  // shown after the logo; bump with every release
+const APP_VERSION = 'v0.54';  // shown after the logo; bump with every release
 const APP_ICON = 'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Cdefs%3E%3CclipPath%20id%3D%22r%22%3E%3Crect%20x%3D%222%22%20y%3D%222%22%20width%3D%2260%22%20height%3D%2260%22%20rx%3D%2212%22/%3E%3C/clipPath%3E%3C/defs%3E%3Cg%20clip-path%3D%22url%28%23r%29%22%3E%3Crect%20x%3D%220%22%20y%3D%220%22%20width%3D%2232%22%20height%3D%2264%22%20fill%3D%22%23F39700%22/%3E%3Crect%20x%3D%2232%22%20y%3D%220%22%20width%3D%2232%22%20height%3D%2264%22%20fill%3D%22%2300A84D%22/%3E%3C/g%3E%3Cpath%20d%3D%22M9%209H25M17%209V24M8%2024H26%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%224.5%22%20stroke-linecap%3D%22round%22/%3E%3Cpath%20d%3D%22M8%2037H26M7%2047H27M15%2031L19%2057%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%224.5%22%20stroke-linecap%3D%22round%22/%3E%3Ccircle%20cx%3D%2241.5%22%20cy%3D%2217%22%20r%3D%226.5%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%224.5%22/%3E%3Cpath%20d%3D%22M57%209V35M49%2016H57M49%2028H57%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%224.5%22%20stroke-linecap%3D%22round%22/%3E%3Cpath%20d%3D%22M37%2043H57V57%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%224.5%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22/%3E%3C/svg%3E';
 const flag = c => h('img', { class:'flag', src: FLAG_SRC[c === 'ja' ? 'jp' : c === 'ko' ? 'kr' : c], alt:'' });
 // learning points per letter: settled once per run (see applyTally)
@@ -1327,7 +1331,9 @@ const TXT = {
     gBase:'清音', gDaku:'濁音・半濁音', gYoon:'拗音', gSmall:'小さいつ',
     coming:'工事中（いずれ追加）', prac:'練習', pracSub:'日本のやさしい駅を10問。時間制限なし・ヒントつき・点数なし', qNo:'問題', pracEnd:'練習おわり', pracScore:n=>'10問中 '+n+'問 正解', timeUp:'タイムアップ！', quitT:'おしまい', allDone:'全駅正解！', leftT:'のこり時間', newBadges:n=>'新しいバッジ '+n+'個',
     statOk:'正解', statClose:'ほぼ正解', statNear:'おしい', statNg:'不正解', newBest:'ベスト更新！',
-    lineClear:l=>l+' クリア！', again:'もう一回', toLinesBtn:'路線をえらぶ', collBtn:'コレクション',
+    lineClear:l=>l+' クリア！', again:'もう一回', share:'📸 シェア', shareGo:'共有する', shareSave:'画像を保存', shareCopy:'テキストをコピー', copied:'コピーした！',
+    shareTxt:(line,n,sc,all)=>'えきよみ 역읽기 🚉 '+line+'\n'+(all==='all'?'全'+n+'駅 読めた！🎉':all==='time'?'60秒で '+n+'駅 読めた！':n+'駅 読めた！')+(sc!=null?' '+sc+'点':''),
+    sharePrac:(n,q)=>'えきよみ 역읽기 🔰 練習\n'+q+'問中 '+n+'問 読めた！', shareTags:'#えきよみ #ハングル', toLinesBtn:'路線をえらぶ', collBtn:'コレクション',
     master:'日韓駅名マスター', masterSub:'全路線のバッジを全部集めた！',
     unlock:'ステージ2がひらいた！韓国の駅、読んでみよう',
     howTitle:'あそびかた',
@@ -1364,7 +1370,9 @@ const TXT = {
     gBase:'청음', gDaku:'탁음·반탁음', gYoon:'요음', gSmall:'작은 つ',
     coming:'준비 중 (곧 추가)', prac:'연습', pracSub:'한국의 쉬운 역 10문제. 시간 제한 없음·힌트 있음·점수 없음', qNo:'문제', pracEnd:'연습 끝', pracScore:n=>'10문제 중 '+n+'개 정답', timeUp:'시간 종료!', quitT:'끝', allDone:'모든 역 정답!', leftT:'남은 시간', newBadges:n=>'새 배지 '+n+'개',
     statOk:'정답', statClose:'거의 정답', statNear:'아깝다', statNg:'오답', newBest:'최고 기록!',
-    lineClear:l=>l+' 클리어!', again:'다시 하기', toLinesBtn:'노선 고르기', collBtn:'컬렉션',
+    lineClear:l=>l+' 클리어!', again:'다시 하기', share:'📸 공유', shareGo:'공유하기', shareSave:'이미지 저장', shareCopy:'텍스트 복사', copied:'복사했어요!',
+    shareTxt:(line,n,sc,all)=>'역읽기 えきよみ 🚉 '+line+'\n'+(all==='all'?'전 '+n+'역 읽었다!🎉':all==='time'?'60초에 '+n+'역 읽었다!':n+'역 읽었다!')+(sc!=null?' '+sc+'점':''),
+    sharePrac:(n,q)=>'역읽기 えきよみ 🔰 연습\n'+q+'문제 중 '+n+'개 읽었다!', shareTags:'#역읽기 #일본어', toLinesBtn:'노선 고르기', collBtn:'컬렉션',
     master:'한일 역 이름 마스터', masterSub:'모든 노선의 배지를 모두 모았어요!',
     unlock:'2단계가 열렸어요! 일본의 역을 읽어 봐요',
     howTitle:'하는 방법',
@@ -1960,7 +1968,7 @@ function skip() { S.streak = 0; if (!S.done && S.cur) logQ(S.cur, 'skip', ''); n
 function logQ(st, r, mine) {
   if (!S.log) return;
   const q = question(st);
-  S.log.push({ q:q.text, ql:q.lang, mine, ans:answerText(st), al: D.lang === 'ja' ? 'ja' : 'ko', r });
+  S.log.push({ q:q.text, ql:q.lang, mine, ans:answerText(st), al: D.lang === 'ja' ? 'ja' : 'ko', r, code: st.code || '', c: LINES[S.line].color, key: S.line + ':' + st.idx });
 }
 const RV_MARK = { ok:'◎', meaning:'◎', close:'○', near:'△', ng:'×', skip:'—' };
 const glyphLang = s => /[가-힣ㄱ-ㅣ]/.test(s || '') ? 'ko' : 'ja';
@@ -2000,6 +2008,86 @@ document.addEventListener('keydown', e => {
   }
 });
 
+/* ---------- share: an image of the stations read + a text for SNS ---------- */
+const SHARE_URL = 'https://tokyo26-sudo.github.io/ekiyomi/';
+const SQ = { ok:'🟩', meaning:'🟩', close:'🟨', near:'🟧', ng:'🟥', skip:'⬜' };
+function shareData(why) {
+  const T = t(), log = S.log || [], seen = new Set(), read = [];
+  log.forEach(x => { if (['ok', 'meaning', 'close'].includes(x.r) && !seen.has(x.key)) { seen.add(x.key); read.push(x); } });
+  const head = S.practice ? T.sharePrac(log.filter(x => ['ok', 'meaning', 'close'].includes(x.r)).length, S.pq.length)
+                          : T.shareTxt(lineName(S.line), read.length, S.usedChoice ? null : S.score, why);
+  const text = head + '\n' + log.map(x => SQ[x.r] || '⬜').join('') + '\n' + T.shareTags + '\n' + SHARE_URL;
+  return { read, text, practice: !!S.practice, line: S.practice ? null : S.line };
+}
+async function drawShare(sd) {
+  const ko = D.lang === 'ko', W = 1080, P = 56, cols = 3, gap = 18, th = 150, rows = Math.max(1, Math.ceil(sd.read.length / cols));
+  const H = P + 60 + 26 + 84 + 40 + rows * th + (rows - 1) * gap + P;
+  const FAM = ko ? '"Noto Sans KR","Noto Sans JP",sans-serif' : '"Noto Sans JP","Noto Sans KR",sans-serif';
+  const F = (w, z) => w + ' ' + z + 'px ' + FAM;
+  try { await Promise.all([document.fonts.load(F('900', 40), 'えきよみ역읽기'), document.fonts.load(F('700', 30), 'えきよみ역읽기')]); } catch (e) {}
+  const cv = document.createElement('canvas'); cv.width = W; cv.height = H;
+  const x = cv.getContext('2d');
+  const rr = (X, Y, w, h0, r0) => { x.beginPath(); if (x.roundRect) x.roundRect(X, Y, w, h0, r0); else x.rect(X, Y, w, h0); };
+  x.fillStyle = '#F5F2EA'; x.fillRect(0, 0, W, H);
+  const logo = ko ? ['역읽기', 'えきよみ'] : ['えきよみ', '역읽기'];
+  x.fillStyle = '#1B1B1B'; x.font = F('900', 48); x.fillText(logo[0], P, P + 44);
+  const lw = x.measureText(logo[0]).width;
+  x.fillStyle = '#6B6B6B'; x.font = F('700', 30); x.fillText(logo[1], P + lw + 14, P + 44);
+  const color = sd.practice ? '#1F5FA8' : LINES[sd.line].color;
+  const sym = sd.practice ? '🔰' : (SYM[sd.line] || ''), name = sd.practice ? t().prac : lineName(sd.line);
+  let y = P + 60 + 26;
+  x.fillStyle = color; rr(P, y, W - 2 * P, 84, 14); x.fill();
+  const cr = 30, cy = y + 42;
+  x.fillStyle = '#fff'; x.beginPath(); x.arc(P + 22 + cr, cy, cr, 0, 7); x.fill();
+  x.fillStyle = color; x.font = F('900', sym.length > 1 ? 26 : 34); x.textAlign = 'center'; x.fillText(sym, P + 22 + cr, cy + 11);
+  x.textAlign = 'left'; x.fillStyle = '#fff'; x.font = F('900', 42); x.fillText(name, P + 22 + cr * 2 + 18, cy + 15);
+  y += 84 + 40;
+  const tw = (W - 2 * P - gap * (cols - 1)) / cols;
+  sd.read.forEach((s0, i) => {
+    const X = P + (i % cols) * (tw + gap), Y = y + Math.floor(i / cols) * (th + gap);
+    x.fillStyle = 'rgba(0,0,0,.08)'; rr(X + 2, Y + 4, tw, th, 12); x.fill();
+    x.fillStyle = '#fff'; rr(X, Y, tw, th, 12); x.fill();
+    x.save(); rr(X, Y, tw, th, 12); x.clip(); x.fillStyle = s0.c || color; x.fillRect(X, Y, tw, 14); x.restore();
+    if (s0.code) { x.fillStyle = '#9A958A'; x.font = F('700', 20); x.fillText(s0.code, X + 12, Y + 40); }
+    const fam = s0.ql === 'ko' ? '"Noto Sans KR","Noto Sans JP",sans-serif' : '"Noto Sans JP","Noto Sans KR",sans-serif';
+    let fs = 56; x.font = '900 ' + fs + 'px ' + fam;
+    while (x.measureText(s0.q).width > tw - 24 && fs > 16) { fs -= 2; x.font = '900 ' + fs + 'px ' + fam; }
+    x.fillStyle = '#1B1B1B'; x.textAlign = 'center'; x.fillText(s0.q, X + tw / 2, Y + th / 2 + fs * 0.42 + 8); x.textAlign = 'left';
+  });
+  return new Promise(res => cv.toBlob(b => res(b), 'image/png'));
+}
+function copyPlain(txt) {
+  if (navigator.clipboard && navigator.clipboard.writeText) return navigator.clipboard.writeText(txt).catch(() => fallbackCopy(txt));
+  fallbackCopy(txt); return Promise.resolve();
+}
+function fallbackCopy(txt) { const ta = h('textarea', { style:'position:fixed;opacity:0' }); ta.value = txt; document.body.append(ta); ta.select(); try { document.execCommand('copy'); } catch (e) {} ta.remove(); }
+/* the share button: the image is made as soon as the result opens, so the tap can share at once (iPhone needs that) */
+function shareEl(why) {
+  const T = t(), sd = shareData(why), box = h('div', { class:'sharebox', hidden:true });
+  if (!sd.read.length) return ['', ''];  // nothing read: nothing to share
+  let blob = null, file = null, url = '';
+  const ready = drawShare(sd).then(b => { blob = b; if (!b) return;
+    file = new File([b], 'ekiyomi.png', { type:'image/png' }); url = URL.createObjectURL(b); });
+  const flash = (btn, label) => { btn.textContent = T.copied; btn.classList.add('done'); setTimeout(() => { btn.textContent = label; btn.classList.remove('done'); }, 1600); };
+  const open = () => {
+    if (!box.hidden) { box.hidden = true; return; }
+    box.hidden = false; box.replaceChildren();
+    const ta = h('textarea', { rows: 5, readonly: true }); ta.value = sd.text;
+    const copyB = h('button', { class:'gbtn', type:'button', onclick:() => copyPlain(sd.text).then(() => flash(copyB, T.shareCopy)) }, T.shareCopy);
+    const btns = h('div', { class:'rowbtns' });
+    if (file && navigator.canShare && navigator.canShare({ files:[file] })) {
+      btns.append(h('button', { class:'pbtn', type:'button', onclick:() => {
+        copyPlain(sd.text);
+        navigator.share({ files:[file], text: sd.text }).catch(() => {}); } }, T.shareGo));
+    }
+    if (url) btns.append(h('a', { class:'gbtn', href:url, download:'ekiyomi.png', style:'text-decoration:none;color:var(--ink);display:inline-flex;align-items:center' }, T.shareSave));
+    btns.append(copyB);
+    box.append(url ? h('img', { src:url, alt:'' }) : '', btns, ta);
+  };
+  const btn = h('button', { class:'pbtn', type:'button', onclick:() => { if (file || blob === null) ready.then(open); else open(); } }, T.share);
+  return [btn, box];
+}
+
 function endRun(why) {
   if (S.over) return;
   if (S.practice) {
@@ -2016,6 +2104,7 @@ function endRun(why) {
         h('span', null, T.statClose + ' ', h('b', null, S.stats.close)),
         h('span', null, T.statNear + ' ', h('b', null, S.stats.near)), h('span', null, T.statNg + ' ', h('b', null, S.stats.ng))),
       reviewEl() || '',
+      ...(([b, box]) => b ? [h('div', { class:'rowbtns' }, b), box] : [])(shareEl('quit')),
       h('div', { class:'rowbtns' },
         h('button', { class:'pbtn', type:'button', onclick:() => { closeOv(); startPractice(); } }, T.again),
         h('button', { class:'gbtn', type:'button', onclick:() => { closeOv(); showColl(); } }, T.collBtn),
@@ -2058,6 +2147,7 @@ function endRun(why) {
   if (all && nowCleared) sh.append(h('div', { class:'cert' }, h('div', { class:'ttl' }, '🏅 ' + T.master), h('div', { class:'sub' }, T.masterSub)));
   else if (unlocked) sh.append(h('div', { class:'fb ok', style:'width:100%' }, h('div', { class:'v', style:'font-size:1rem' }, T.newTicket)));
   const rv = reviewEl(); if (rv) sh.append(rv);
+  const [shB, shBox] = shareEl(why); if (shB) sh.append(h('div', { class:'rowbtns' }, shB), shBox);
   sh.append(h('div', { class:'rowbtns' },
     h('button', { class:'pbtn', type:'button', onclick:() => { closeOv(); startRun(id); } }, T.again),
     h('button', { class:'gbtn', type:'button', onclick:() => { closeOv(); showColl(); } }, T.collBtn),
