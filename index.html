@@ -52,6 +52,7 @@
 [hidden]{display:none!important}
 .flag{display:inline-block;height:.95em;width:auto;aspect-ratio:3/2;vertical-align:-.12em;border:1px solid var(--rule);border-radius:2px;margin-right:.35em;background:#fff}
 .sign-foot .flag{margin-right:-.6em}
+.flag.kp{aspect-ratio:2/1}
 html{-webkit-text-size-adjust:100%}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-ja);line-height:1.6;font-size:15px}
 :lang(ko){font-family:var(--f-ko)}
@@ -759,10 +760,10 @@ const KR = {
     ['대곡','テゴク','daegok'],['곡산','コクサン','goksan'],['백마','ペンマ','baengma'],['풍산','プンサン','pungsan'],['일산','イルサン','ilsan'],['탄현','タニョン','tanhyeon'],
     ['야당','ヤダン','yadang'],['운정','ウンジョン','unjeong'],['금릉','クムヌン','geumneung'],['금촌','クムチョン','geumchon'],['월롱','ウォルロン','wollong'],
     ['파주','パジュ','paju'],['문산','ムンサン','munsan'],['운천','ウンチョン','uncheon'],['임진강','イムジンガン','imjingang'],['도라산','トラサン','dorasan'] ]}]},
-  pyongyang1: { name:{ja:'平壌 千里馬線',ko:'평양 천리마선'}, color:'#C8102E', country:'kr', prefix:'', start:0, sections:[{ nocode:true, st:[
+  pyongyang1: { name:{ja:'平壌 千里馬線',ko:'평양 천리마선'}, color:'#C8102E', country:'kr', flag:'kp', prefix:'', start:0, sections:[{ nocode:true, st:[
     ['부흥','プフン','buheung'],['영광','ヨングァン','yeonggwang'],['봉화','ボンファ','bonghwa'],['승리','スンリ','seungni'],['모란봉','モランボン','moranbong'],
     ['개선','ケソン','gaeseon'],['전우','チョヌ','jeonu'],['붉은별','プルグンビョル','bulgeunbyeol'] ]}]},
-  pyongyang2: { name:{ja:'平壌 革新線',ko:'평양 혁신선'}, color:'#2E8B57', country:'kr', prefix:'', start:0, sections:[{ nocode:true, st:[
+  pyongyang2: { name:{ja:'平壌 革新線',ko:'평양 혁신선'}, color:'#2E8B57', country:'kr', flag:'kp', prefix:'', start:0, sections:[{ nocode:true, st:[
     ['광복','クァンボク','gwangbok'],['건국','コングク','geonguk'],['황금벌','ファングムボル','hwanggeumbeol'],['건설','コンソル','geonseol'],['혁신','ヒョクシン','hyeoksin'],
     ['전승','チョンスン','jeonseung'],['삼흥','サムフン','samheung'],['광명','クァンミョン','gwangmyeong'],['락원','ラグウォン','ragwon',{ ko:['낙원'], kata:['ラグォン'], rr:['nagwon'] }] ]}]},
   ktx: { name:{ja:'KTX京釜線',ko:'KTX 경부선'}, color:'#1B3F94', country:'kr', prefix:'', start:0, sections:[{ nocode:true, st:[
@@ -986,7 +987,7 @@ function buildLines() {
         stations.push(s);
       });
     });
-    lines[id] = { id, name: src.name, color: src.color, country: src.country,
+    lines[id] = { id, name: src.name, color: src.color, country: src.country, flag: src.flag || src.country,
       sections: src.sections.map(s => s.label || null), stations };
   }
   return lines;
@@ -1301,10 +1302,10 @@ const stationBadge = (L, st, got) => h('div', { class:'sb' + (got ? '' : ' no') 
 const symEl = (id, extra) => h('span', { class:'sym' + (SYM[id].length > 1 ? ' two' : '') + (extra || ''), style: extra ? null : null }, SYM[id]);
 const RUN_MS = 60 * 1000;
 /* flags drawn as SVG (emoji flags do not show on Windows) */
-const FLAG_SRC = { jp:'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20900%20600%22%3E%3Crect%20fill%3D%22%23fff%22%20width%3D%22900%22%20height%3D%22600%22/%3E%3Ccircle%20fill%3D%22%23bc002d%22%20cx%3D%22450%22%20cy%3D%22300%22%20r%3D%22180%22/%3E%3C/svg%3E', kr:'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20xmlns%3Axlink%3D%22http%3A//www.w3.org/1999/xlink%22%20viewBox%3D%22-36%20-24%2072%2048%22%3E%3Crect%20fill%3D%22%23fff%22%20x%3D%22-36%22%20y%3D%22-24%22%20width%3D%2272%22%20height%3D%2248%22/%3E%3Cg%20transform%3D%22rotate%28-56.3099325%29%22%3E%3Cg%20id%3D%22b2%22%3E%3Cpath%20id%3D%22b%22%20d%3D%22M-6-25H6M-6-22H6M-6-19H6%22%20stroke%3D%22%23000%22%20stroke-width%3D%222%22/%3E%3Cuse%20xlink%3Ahref%3D%22%23b%22%20y%3D%2244%22/%3E%3C/g%3E%3Cpath%20stroke%3D%22%23fff%22%20stroke-width%3D%221%22%20d%3D%22M0%2C17v10%22/%3E%3Ccircle%20fill%3D%22%23cd2e3a%22%20r%3D%2212%22/%3E%3Cpath%20fill%3D%22%230047a0%22%20d%3D%22M0-12A6%2C6%200%200%200%200%2C0A6%2C6%200%200%201%200%2C12A12%2C12%200%200%2C1%200-12z%22/%3E%3C/g%3E%3Cg%20transform%3D%22rotate%28-123.6900675%29%22%3E%3Cuse%20xlink%3Ahref%3D%22%23b2%22/%3E%3Cpath%20stroke%3D%22%23fff%22%20stroke-width%3D%221%22%20d%3D%22M0-23.5v3M0%2C17v3.5M0%2C23.5v3%22/%3E%3C/g%3E%3C/svg%3E' };
-const APP_VERSION = 'v0.55';  // shown after the logo; bump with every release
+const FLAG_SRC = { kp:'data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%2072%2036%22%3E%3Crect%20fill=%22%23024FA2%22%20width=%2272%22%20height=%2236%22/%3E%3Crect%20fill=%22%23fff%22%20y=%226%22%20width=%2272%22%20height=%2224%22/%3E%3Crect%20fill=%22%23ED1C27%22%20y=%227%22%20width=%2272%22%20height=%2222%22/%3E%3Ccircle%20fill=%22%23fff%22%20cx=%2224%22%20cy=%2218%22%20r=%228.5%22/%3E%3Cpath%20fill=%22%23ED1C27%22%20d=%22M24,10%20L25.8,15.5%20L31.6,15.5%20L26.9,18.9%20L28.7,24.5%20L24,21.1%20L19.3,24.5%20L21.1,18.9%20L16.4,15.5%20L22.2,15.5Z%22/%3E%3C/svg%3E', jp:'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20900%20600%22%3E%3Crect%20fill%3D%22%23fff%22%20width%3D%22900%22%20height%3D%22600%22/%3E%3Ccircle%20fill%3D%22%23bc002d%22%20cx%3D%22450%22%20cy%3D%22300%22%20r%3D%22180%22/%3E%3C/svg%3E', kr:'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20xmlns%3Axlink%3D%22http%3A//www.w3.org/1999/xlink%22%20viewBox%3D%22-36%20-24%2072%2048%22%3E%3Crect%20fill%3D%22%23fff%22%20x%3D%22-36%22%20y%3D%22-24%22%20width%3D%2272%22%20height%3D%2248%22/%3E%3Cg%20transform%3D%22rotate%28-56.3099325%29%22%3E%3Cg%20id%3D%22b2%22%3E%3Cpath%20id%3D%22b%22%20d%3D%22M-6-25H6M-6-22H6M-6-19H6%22%20stroke%3D%22%23000%22%20stroke-width%3D%222%22/%3E%3Cuse%20xlink%3Ahref%3D%22%23b%22%20y%3D%2244%22/%3E%3C/g%3E%3Cpath%20stroke%3D%22%23fff%22%20stroke-width%3D%221%22%20d%3D%22M0%2C17v10%22/%3E%3Ccircle%20fill%3D%22%23cd2e3a%22%20r%3D%2212%22/%3E%3Cpath%20fill%3D%22%230047a0%22%20d%3D%22M0-12A6%2C6%200%200%200%200%2C0A6%2C6%200%200%201%200%2C12A12%2C12%200%200%2C1%200-12z%22/%3E%3C/g%3E%3Cg%20transform%3D%22rotate%28-123.6900675%29%22%3E%3Cuse%20xlink%3Ahref%3D%22%23b2%22/%3E%3Cpath%20stroke%3D%22%23fff%22%20stroke-width%3D%221%22%20d%3D%22M0-23.5v3M0%2C17v3.5M0%2C23.5v3%22/%3E%3C/g%3E%3C/svg%3E' };
+const APP_VERSION = 'v0.56';  // shown after the logo; bump with every release
 const APP_ICON = 'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Cdefs%3E%3CclipPath%20id%3D%22r%22%3E%3Crect%20x%3D%222%22%20y%3D%222%22%20width%3D%2260%22%20height%3D%2260%22%20rx%3D%2212%22/%3E%3C/clipPath%3E%3C/defs%3E%3Cg%20clip-path%3D%22url%28%23r%29%22%3E%3Crect%20x%3D%220%22%20y%3D%220%22%20width%3D%2232%22%20height%3D%2264%22%20fill%3D%22%23F39700%22/%3E%3Crect%20x%3D%2232%22%20y%3D%220%22%20width%3D%2232%22%20height%3D%2264%22%20fill%3D%22%2300A84D%22/%3E%3C/g%3E%3Cpath%20d%3D%22M9%209H25M17%209V24M8%2024H26%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%224.5%22%20stroke-linecap%3D%22round%22/%3E%3Cpath%20d%3D%22M8%2037H26M7%2047H27M15%2031L19%2057%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%224.5%22%20stroke-linecap%3D%22round%22/%3E%3Ccircle%20cx%3D%2241.5%22%20cy%3D%2217%22%20r%3D%226.5%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%224.5%22/%3E%3Cpath%20d%3D%22M57%209V35M49%2016H57M49%2028H57%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%224.5%22%20stroke-linecap%3D%22round%22/%3E%3Cpath%20d%3D%22M37%2043H57V57%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%224.5%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22/%3E%3C/svg%3E';
-const flag = c => h('img', { class:'flag', src: FLAG_SRC[c === 'ja' ? 'jp' : c === 'ko' ? 'kr' : c], alt:'' });
+const flag = c => h('img', { class:'flag' + (c === 'kp' ? ' kp' : ''), src: FLAG_SRC[c === 'ja' ? 'jp' : c === 'ko' ? 'kr' : c], alt:'' });
 // learning points per letter: settled once per run (see applyTally)
 const PTS = { input:3, choice:2, practice:1, drop:3, learned:2, mastered:15 };
 
@@ -1636,7 +1637,7 @@ function viewLines(flash) {
       list.append(h('button', { type:'button', class:'lcard', style:'--c:' + L.color, disabled: !op && !canPick, onclick:() => op ? startRun(id) : pickLine(id) },
         symEl(id),
         h('span', { style:'min-width:0' },
-          h('span', { class:'lname' }, flag(L.country), lineName(id)),
+          h('span', { class:'lname' }, flag(L.flag), lineName(id)),
           h('span', { class:'lsub' }, ' ' + T.badges + ' ' + c + '/' + n),
           h('span', { class:'meter' }, h('i', { style:'width:' + (c / n * 100) + '%' }))),
         !op ? h('span', { class:'lstat' }, canPick ? T.pickL : '🔒') :
@@ -1661,7 +1662,7 @@ function viewLines(flash) {
         list.append(h('button', { type:'button', class:'lcard', style:'--c:' + L.color, onclick:() => startRun(id) },
           symEl(id),
           h('span', { style:'min-width:0' },
-            h('span', { class:'lname' }, flag(L.country), lineName(id)),
+            h('span', { class:'lname' }, flag(L.flag), lineName(id)),
             h('span', { class:'lsub' }, ' ' + T.badges + ' ' + c + '/' + n),
             h('span', { class:'meter' }, h('i', { style:'width:' + (c / n * 100) + '%' }))),
           h('span', { class:'lstat' }, c >= n ? h('span', { class:'done-badge' }, '✓ ' + T.cleared) : c + '/' + n,
@@ -1825,7 +1826,7 @@ function renderPlay() {
   const foot = h('div', { class:'sign-foot' });
   if (S.done) {
     if (st.country === 'jp') foot.append(flag('jp'), h('span', { class:'k glyph', lang:'ja' }, st.name), h('span', { class:'s glyph', lang:'ja' }, D.lang === 'ja' ? st.kana : kanaDisp(st.kana)), flag('kr'), h('span', { class:'s glyph', lang:'ko' }, st.signH && D.lang === 'ja' ? st.signH : st.hangul));
-    else foot.append(flag('kr'), h('span', { class:'k glyph', lang:'ko' }, st.name), flag('jp'), h('span', { class:'s glyph', lang:'ja' }, D.lang === 'ja' ? E.toKata(st.kata) : kanaDisp(st.kata)));
+    else foot.append(flag(L.flag), h('span', { class:'k glyph', lang:'ko' }, st.name), flag('jp'), h('span', { class:'s glyph', lang:'ja' }, D.lang === 'ja' ? E.toKata(st.kata) : kanaDisp(st.kata)));
     foot.append(h('span', { class:'r' }, st.roma));
     if (st.sub) foot.append(h('span', { class:'s sub' }, (S.line === 'sanko' ? T.nickL : T.subL) + '：', st.sub[0] ? [h('span', { class:'glyph', lang:'ja' }, st.sub[0]), ' ／ '] : null, h('span', { class:'glyph', lang:'ko' }, st.sub[1])));
   } else foot.append(h('span', { class:'hidden' }, '・・・'));
