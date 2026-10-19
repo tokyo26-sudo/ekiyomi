@@ -653,6 +653,16 @@ const JP = {
     ['一ノ関','いちのせき'],['水沢江刺','みずさわえさし'],['北上','きたかみ'],['新花巻','しんはなまき'],['盛岡','もりおか'],['いわて沼宮内','いわてぬまくない'],
     ['二戸','にのへ'],['八戸','はちのへ'],['七戸十和田','しちのへとわだ'],['新青森','しんあおもり'],
     ['奥津軽いまべつ','おくつがるいまべつ'],['木古内','きこない'],['新函館北斗','しんはこだてほくと'] ]}]},
+  hiroo: { name:{ja:'国鉄 広尾線',ko:'국철 히로오선'}, color:'#8B6B3D', country:'jp', prefix:'', start:0, sections:[{ nocode:true, st:[
+    ['帯広','おびひろ'],['依田','よだ'],['北愛国','きたあいこく'],['愛国','あいこく'],['大正','たいしょう'],['幸福','こうふく'],['中札内','なかさつない'],
+    ['更別','さらべつ'],['上更別','かみさらべつ'],['忠類','ちゅうるい'],['十勝東和','とかちとうわ'],['大樹','たいき'],['石坂','いしざか'],['豊似','とよに'],
+    ['野塚','のつか'],['新生','しんせい'],['広尾','ひろお'] ]}]},
+  sanko: { name:{ja:'JR 三江線',ko:'JR 산코선'}, color:'#3A7D9C', country:'jp', prefix:'', start:0, sections:[{ nocode:true, st:[
+    ['江津','ごうつ'],['江津本町','ごうつほんまち'],['千金','ちがね'],['川平','かわひら'],['川戸','かわど'],['田津','たづ'],['石見川越','いわみかわごえ'],
+    ['鹿賀','しかが'],['因原','いんばら'],['石見川本','いわみかわもと'],['木路原','きじはら'],['竹','たけ'],['乙原','おんばら'],['石見簗瀬','いわみやなせ'],
+    ['明塚','あかつか'],['粕淵','かすぶち'],['浜原','はまはら'],['沢谷','さわだに'],['潮','うしお'],['石見松原','いわみまつばら'],['石見都賀','いわみつが'],
+    ['宇都井','うづい'],['伊賀和志','いかわし'],['口羽','くちば'],['江平','ごうびら'],['作木口','さくぎぐち'],['香淀','こうよど'],['式敷','しきじき'],
+    ['信木','のぶき'],['所木','ところぎ'],['船佐','ふなさ'],['長谷','ながたに'],['粟屋','あわや'],['尾関山','おぜきやま'],['三次','みよし'] ]}]},
   tokaido: { name:{ja:'東海道・山陽新幹線',ko:'도카이도·산요 신칸센'}, color:'#1A5CA8', country:'jp', prefix:'', start:0, sections:[
     { label:{ja:'東海道新幹線',ko:'도카이도 신칸센'}, nocode:true, st:[
     ['東京','とうきょう'],['品川','しながわ'],['新横浜','しんよこはま'],['小田原','おだわら'],['熱海','あたみ'],['三島','みしま'],
@@ -749,6 +759,12 @@ const KR = {
     ['대곡','テゴク','daegok'],['곡산','コクサン','goksan'],['백마','ペンマ','baengma'],['풍산','プンサン','pungsan'],['일산','イルサン','ilsan'],['탄현','タニョン','tanhyeon'],
     ['야당','ヤダン','yadang'],['운정','ウンジョン','unjeong'],['금릉','クムヌン','geumneung'],['금촌','クムチョン','geumchon'],['월롱','ウォルロン','wollong'],
     ['파주','パジュ','paju'],['문산','ムンサン','munsan'],['운천','ウンチョン','uncheon'],['임진강','イムジンガン','imjingang'],['도라산','トラサン','dorasan'] ]}]},
+  pyongyang1: { name:{ja:'平壌 千里馬線',ko:'평양 천리마선'}, color:'#C8102E', country:'kr', prefix:'', start:0, sections:[{ nocode:true, st:[
+    ['부흥','プフン','buheung'],['영광','ヨングァン','yeonggwang'],['봉화','ボンファ','bonghwa'],['승리','スンリ','seungni'],['모란봉','モランボン','moranbong'],
+    ['개선','ケソン','gaeseon'],['전우','チョヌ','jeonu'],['붉은별','プルグンビョル','bulgeunbyeol'] ]}]},
+  pyongyang2: { name:{ja:'平壌 革新線',ko:'평양 혁신선'}, color:'#2E8B57', country:'kr', prefix:'', start:0, sections:[{ nocode:true, st:[
+    ['광복','クァンボク','gwangbok'],['건국','コングク','geonguk'],['황금벌','ファングムボル','hwanggeumbeol'],['건설','コンソル','geonseol'],['혁신','ヒョクシン','hyeoksin'],
+    ['전승','チョンスン','jeonseung'],['삼흥','サムフン','samheung'],['광명','クァンミョン','gwangmyeong'],['락원','ラグウォン','ragwon',{ ko:['낙원'], kata:['ラグォン'], rr:['nagwon'] }] ]}]},
   ktx: { name:{ja:'KTX京釜線',ko:'KTX 경부선'}, color:'#1B3F94', country:'kr', prefix:'', start:0, sections:[{ nocode:true, st:[
     ['서울','ソウル','seoul',{ ko:['서울역'], kata:['ソウルヨク'] }],['광명','クァンミョン','gwangmyeong'],['천안아산','チョナンアサン','cheonanasan'],
     ['오송','オソン','osong'],['대전','テジョン','daejeon'],['김천(구미)','キムチョン(クミ)','gimcheon(gumi)',{ ko:['김천'], kata:['キムチョン'], rr:['gimcheon'] }],
@@ -858,6 +874,8 @@ const HANJA_OTHER = {"다대포해수욕장": "多大浦海水浴場", "다대�
   "서울역": "서울駅", "신촌": "新村", "가좌": "加佐", "수색": "水色", "한국항공대": "韓国航空大", "강매": "江梅", "행신": "幸信", "능곡": "陵谷",
   "곡산": "谷山", "백마": "白馬", "풍산": "楓山", "일산": "一山", "탄현": "炭峴", "야당": "野塘", "운정": "雲井", "금릉": "金陵", "금촌": "金村",
   "월롱": "月籠", "파주": "坡州", "문산": "文山", "운천": "雲泉", "임진강": "臨津江", "도라산": "都羅山",
+  "부흥": "復興", "영광": "栄光", "봉화": "烽火", "승리": "勝利", "모란봉": "牡丹峰", "개선": "凱旋", "전우": "戦友",
+  "광복": "光復", "건국": "建国", "황금벌": "黄金벌", "건설": "建設", "혁신": "革新", "전승": "戦勝", "삼흥": "三興", "락원": "楽園",
   "대방": "大方", "서울지방병무청": "서울地方兵務庁", "보라매공원": "보라매公園", "보라매병원": "보라매病院", "당곡": "堂谷", "신림": "新林", "서원": "書院",
   "서울대벤처타운": "서울大벤처타운", "관악산": "冠岳山",
   "설화명곡": "舌化椧谷", "화원": "花園", "대곡": "大谷", "진천": "辰泉", "월배": "月背", "상인": "上仁", "월촌": "月村", "송현": "松峴", "서부정류장": "西部停留場",
@@ -878,10 +896,17 @@ const SUB_KR = { '수유':'강북구청','미아':'서울사이버대학','성�
 const SUB_JP = {
   '銀座':['松屋・三越前','마쓰야·미쓰코시 앞'], '京橋':['明治屋前','메이지야 앞'], '日本橋':['高島屋前','다카시마야 앞'],
   '上野広小路':['松坂屋前','마쓰자카야 앞'], '西新宿':['東京医大病院前','도쿄의대병원 앞'], '新宿三丁目':['伊勢丹前','이세탄 앞'],
-  '大手町':['サンケイ前','산케이 앞'], '新宿御苑前':['新宿御苑','신주쿠 교엔'], '国会議事堂前':['国会議事堂','국회의사당'], '都庁前':['東京都庁','도쿄도청']
+  '大手町':['サンケイ前','산케이 앞'], '新宿御苑前':['新宿御苑','신주쿠 교엔'], '国会議事堂前':['国会議事堂','국회의사당'],
+  '江津':['八十神','야소가미'], '江津本町':['恵比寿','에비스'], '千金':['日本武尊','야마토타케루노미코토'], '川平':['大江山','오에야마'], '川戸':['鈴鹿山','스즈카야마'],
+  '田津':['羯鼓・切目','갓코·기리메'], '石見川越':['頼政','요리마사'], '鹿賀':['道返し','지가에시'], '因原':['剣舞','겐마이'], '石見川本':['八幡','하치만'],
+  '木路原':['天神','덴진'], '竹':['鹿島（国譲り）','가시마'], '乙原':['帯舞','오비마이'], '石見簗瀬':['岩戸','이와토'], '明塚':['黒塚','구로즈카'],
+  '粕淵':['神武','진무'], '浜原':['大蛇','오로치'], '沢谷':['猿丸太夫','사루마루다유'], '潮':['潮払い','시오하라이'], '石見松原':['戻り橋','모도리바시'],
+  '石見都賀':['髪掛けの松','가미카케노마쓰'], '宇都井':['塵倫','진린'], '伊賀和志':['鈴合せ','스즈아와세'], '口羽':['神降し','가미오로시'], '江平':['五龍王','고류오'],
+  '作木口':['胴の口','도노쿠치'], '香淀':['羅生門','라쇼몬'], '式敷':['滝夜叉姫','다키야샤히메'], '信木':['子持山姥','고모치야만바'], '所木':['玉藻の前','다마모노마에'],
+  '船佐':['悪狐伝','앗코덴'], '長谷':['鍾馗','쇼키'], '粟屋':['曽我兄弟','소가쿄다이'], '尾関山':['紅葉狩','모미지가리'], '三次':['土蜘蛛','쓰치구모'], '都庁前':['東京都庁','도쿄도청']
 };
 /* Hangul as written by Korean Wikipedia where the rule conversion differs */
-const HANGUL_JP = { '飯田橋':'이다바시', '上野御徒町':'우에노오카치마치', 'くりこま高原':'구리코마 코겐' };
+const HANGUL_JP = { '飯田橋':'이다바시', '上野御徒町':'우에노오카치마치', 'くりこま高原':'구리코마 코겐', '広尾':'히로오' };
 /* Japanese screen: these stations are asked in their Korean (meaning) form.
    Reading that Hangul as Korean = correct, the Japanese name = meaning, letter-by-letter = close.
    k: how the Hangul sounds, in hiragana (Claude's knowledge, unverified) */
@@ -1248,7 +1273,11 @@ const E = window.EKI;
 const LINES = E.buildLines();
 const ORDER = { ja:['yamanote','ginza','marunouchi','yurakucho','oedo','midosuji','osakaloop','karasuma','higashiyama','fukuoka','monorail','tokaido','tohoku','seoul4','seoul1','seoul2','seoul3','seoul8','sillim','busan1','busan3','daegu1','incheon1','arex','gyeongui','ktx'],
                 ko:['seoul4','seoul1','seoul2','seoul3','seoul8','sillim','busan1','busan3','daegu1','incheon1','arex','gyeongui','ktx','yamanote','ginza','marunouchi','yurakucho','oedo','midosuji','osakaloop','karasuma','higashiyama','fukuoka','monorail','tokaido','tohoku'] };
-const SYM = { ginza:'G', marunouchi:'M', yurakucho:'Y', midosuji:'M', higashiyama:'H', fukuoka:'K', monorail:'MO', seoul1:'1', seoul2:'2', seoul3:'3', seoul4:'4', seoul8:'8', busan1:'1', daegu1:'1', arex:'A', yamanote:'JY', tokaido:'新', ktx:'K', oedo:'E', karasuma:'K', incheon1:'I1', sillim:'S', osakaloop:'O', busan3:'3', tohoku:'東', gyeongui:'京' };
+const SYM = { ginza:'G', marunouchi:'M', yurakucho:'Y', midosuji:'M', higashiyama:'H', fukuoka:'K', monorail:'MO', seoul1:'1', seoul2:'2', seoul3:'3', seoul4:'4', seoul8:'8', busan1:'1', daegu1:'1', arex:'A', yamanote:'JY', tokaido:'新', ktx:'K', oedo:'E', karasuma:'K', incheon1:'I1', sillim:'S', osakaloop:'O', busan3:'3', tohoku:'東', gyeongui:'京', hiroo:'広', sanko:'三', pyongyang1:'千', pyongyang2:'革' };
+/* hidden stage: appears once every line of this version (ORDER) is cleared */
+const HIDDEN = { ja:['pyongyang1','pyongyang2','hiroo','sanko'], ko:['hiroo','sanko','pyongyang1','pyongyang2'] };
+const HIDDEN_SET = new Set(HIDDEN.ja);
+const hiddenOpen = () => D.openAll || ORDER[D.lang].every(isCleared);
 /* lines under construction: shown greyed out, not playable yet.
    Daegu 1: 115 설화명곡 – 149 하양 (35 stations, 하양 opened 2024-12-21); katakana to be taken from namu.wiki station pages */
 const COMING = [];
@@ -1273,7 +1302,7 @@ const symEl = (id, extra) => h('span', { class:'sym' + (SYM[id].length > 1 ? ' t
 const RUN_MS = 60 * 1000;
 /* flags drawn as SVG (emoji flags do not show on Windows) */
 const FLAG_SRC = { jp:'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20900%20600%22%3E%3Crect%20fill%3D%22%23fff%22%20width%3D%22900%22%20height%3D%22600%22/%3E%3Ccircle%20fill%3D%22%23bc002d%22%20cx%3D%22450%22%20cy%3D%22300%22%20r%3D%22180%22/%3E%3C/svg%3E', kr:'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20xmlns%3Axlink%3D%22http%3A//www.w3.org/1999/xlink%22%20viewBox%3D%22-36%20-24%2072%2048%22%3E%3Crect%20fill%3D%22%23fff%22%20x%3D%22-36%22%20y%3D%22-24%22%20width%3D%2272%22%20height%3D%2248%22/%3E%3Cg%20transform%3D%22rotate%28-56.3099325%29%22%3E%3Cg%20id%3D%22b2%22%3E%3Cpath%20id%3D%22b%22%20d%3D%22M-6-25H6M-6-22H6M-6-19H6%22%20stroke%3D%22%23000%22%20stroke-width%3D%222%22/%3E%3Cuse%20xlink%3Ahref%3D%22%23b%22%20y%3D%2244%22/%3E%3C/g%3E%3Cpath%20stroke%3D%22%23fff%22%20stroke-width%3D%221%22%20d%3D%22M0%2C17v10%22/%3E%3Ccircle%20fill%3D%22%23cd2e3a%22%20r%3D%2212%22/%3E%3Cpath%20fill%3D%22%230047a0%22%20d%3D%22M0-12A6%2C6%200%200%200%200%2C0A6%2C6%200%200%201%200%2C12A12%2C12%200%200%2C1%200-12z%22/%3E%3C/g%3E%3Cg%20transform%3D%22rotate%28-123.6900675%29%22%3E%3Cuse%20xlink%3Ahref%3D%22%23b2%22/%3E%3Cpath%20stroke%3D%22%23fff%22%20stroke-width%3D%221%22%20d%3D%22M0-23.5v3M0%2C17v3.5M0%2C23.5v3%22/%3E%3C/g%3E%3C/svg%3E' };
-const APP_VERSION = 'v0.54';  // shown after the logo; bump with every release
+const APP_VERSION = 'v0.55';  // shown after the logo; bump with every release
 const APP_ICON = 'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Cdefs%3E%3CclipPath%20id%3D%22r%22%3E%3Crect%20x%3D%222%22%20y%3D%222%22%20width%3D%2260%22%20height%3D%2260%22%20rx%3D%2212%22/%3E%3C/clipPath%3E%3C/defs%3E%3Cg%20clip-path%3D%22url%28%23r%29%22%3E%3Crect%20x%3D%220%22%20y%3D%220%22%20width%3D%2232%22%20height%3D%2264%22%20fill%3D%22%23F39700%22/%3E%3Crect%20x%3D%2232%22%20y%3D%220%22%20width%3D%2232%22%20height%3D%2264%22%20fill%3D%22%2300A84D%22/%3E%3C/g%3E%3Cpath%20d%3D%22M9%209H25M17%209V24M8%2024H26%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%224.5%22%20stroke-linecap%3D%22round%22/%3E%3Cpath%20d%3D%22M8%2037H26M7%2047H27M15%2031L19%2057%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%224.5%22%20stroke-linecap%3D%22round%22/%3E%3Ccircle%20cx%3D%2241.5%22%20cy%3D%2217%22%20r%3D%226.5%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%224.5%22/%3E%3Cpath%20d%3D%22M57%209V35M49%2016H57M49%2028H57%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%224.5%22%20stroke-linecap%3D%22round%22/%3E%3Cpath%20d%3D%22M37%2043H57V57%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%224.5%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22/%3E%3C/svg%3E';
 const flag = c => h('img', { class:'flag', src: FLAG_SRC[c === 'ja' ? 'jp' : c === 'ko' ? 'kr' : c], alt:'' });
 // learning points per letter: settled once per run (see applyTally)
@@ -1313,7 +1342,7 @@ const TXT = {
     enter:'Enterでも進む',
     ok:'正解！', close:'ほぼ正解！', near:'おしい！', ng:'不正解', meaning:'正解！（意味訳）', nearPre:'あと一歩！ 答えは', linkMsg:'ハングルはパッチムのㄴが次の母音とつながって「ノ」のように聞こえる（連音）。でも日本の駅名は「ン」と「オ」を分けて読むよ。', banned:a=>'その文字では答えられない（問題に出ている字だから）。'+a+'答えてね', noKanji:'漢字は使えないよ。かな・ローマ字で答えてね', headMsg:'語頭の ㄱ・ㄷ・ㅈ は、日本語の カ・タ・チャ行 を書くのにも使うよ',
     longMsg:a=>'', loanKata:a=>'カタカナ語で書いても正解！ ハングルどおりに読むと「'+a+'」。', loanKor:a=>'ハングルどおりに読めてる！ 駅の表記はカタカナ語で「'+a+'」。',
-    meaningMsg:a=>'意味で読めた。音で読むと「'+a+'」。', subL:'副駅名',
+    meaningMsg:a=>'意味で読めた。音で読むと「'+a+'」。', subL:'副駅名', nickL:'愛称', hidNew:'隠しステージが出てきた！ 路線一覧のいちばん下を見てね', hidT:'隠しステージ', hidSub:'もう乗れない路線、ふつうは行けない路線', hidLock:'？？？ ― この版の全路線をクリアすると出てくる',
     literalMsg:a=>'字どおりに読めてる！ でもハングルは、となりの音で発音が変わることがある（ㅇ・ㄴ・ㅁの後のㄹ→ㄴ、ㄱ・ㅂの後のㅅ→ッ など）。駅名は「'+a+'」。',
     closeMsg:a=>'読みは合ってる。駅名は「'+a+'」。', ngMsg:a=>'答えは「'+a+'」。',
     hintNote:'青＝子音 緑＝母音 黄＝パッチム ／ ✓は覚えた部品',
@@ -1352,7 +1381,7 @@ const TXT = {
     enter:'Enter로도 넘어가요',
     ok:'정답!', close:'거의 정답!', near:'아깝다!', ng:'오답', meaning:'정답! (의미 번역)', nearPre:'한 끗 차이! 정답은', linkMsg:'', banned:a=>'그 글자로는 답할 수 없어요 (문제에 나온 글자예요). '+a+' 답해 주세요', noKanji:'한자는 쓸 수 없어요. 한글이나 로마자로 답해 주세요', headMsg:'',
     longMsg:a=>'표기법에서는 장음을 쓰지 않아요 → 「'+a+'」', loanKata:a=>'', loanKor:a=>'',
-    meaningMsg:a=>'뜻으로 읽었어요. 소리대로는 「'+a+'」.', subL:'부역명',
+    meaningMsg:a=>'뜻으로 읽었어요. 소리대로는 「'+a+'」.', subL:'부역명', nickL:'애칭', hidNew:'히든 스테이지가 나타났어요! 노선 목록 맨 아래를 보세요', hidT:'히든 스테이지', hidSub:'이제는 탈 수 없는 노선, 쉽게 갈 수 없는 노선', hidLock:'??? ― 이 판의 모든 노선을 클리어하면 나타나요',
     literalMsg:a=>'글자대로 읽었어요. 실제 발음은 「'+a+'」.',
     closeMsg:a=>'읽기는 맞았어요. 표기는 「'+a+'」.', ngMsg:a=>'정답은 「'+a+'」.',
     hintNote:'일본어 장음(ー, う)은 한글로 쓰지 않아요. 작은 tsu(ッ)는 받침 ㅅ, N(ン)은 받침 ㄴ. ✓는 외운 글자',
@@ -1466,7 +1495,7 @@ function openList(l) {
   if (own.every(id => D.open[l].includes(id)) && !D.open[l].includes(START2[l])) D.open[l].push(START2[l]);
   return D.open[l];
 }
-const isOpen = id => D.openAll || openList(D.lang).includes(id);
+const isOpen = id => D.openAll || (HIDDEN_SET.has(id) ? hiddenOpen() : openList(D.lang).includes(id));
 const ownAllOpen = () => ORDER[D.lang].filter(id => stageOf(id) === 1).every(id => openList(D.lang).includes(id));
 /* half tickets: 3 make a ticket */
 function addStubs(n) {
@@ -1622,6 +1651,26 @@ function viewLines(flash) {
         h('span', { class:'lstat' }, '🚧'))));
     sec.append(list); m.append(sec);
   });
+  {
+    const op = hiddenOpen();
+    const sec = h('section', { class:'stage' }, h('h2', null, '🗝️ ', T.hidT), h('p', { class:'lock' }, op ? T.hidSub : '🔒 ' + T.hidLock));
+    if (op) {
+      const list = h('div', { class:'lines' });
+      HIDDEN[D.lang].forEach(id => {
+        const L = LINES[id], n = L.stations.length, c = badgeCount(id), b = D.best[D.lang][id];
+        list.append(h('button', { type:'button', class:'lcard', style:'--c:' + L.color, onclick:() => startRun(id) },
+          symEl(id),
+          h('span', { style:'min-width:0' },
+            h('span', { class:'lname' }, flag(L.country), lineName(id)),
+            h('span', { class:'lsub' }, ' ' + T.badges + ' ' + c + '/' + n),
+            h('span', { class:'meter' }, h('i', { style:'width:' + (c / n * 100) + '%' }))),
+          h('span', { class:'lstat' }, c >= n ? h('span', { class:'done-badge' }, '✓ ' + T.cleared) : c + '/' + n,
+            b != null ? h('small', null, T.best + ' ' + b + T.pt) : null)));
+      });
+      sec.append(list);
+    }
+    m.append(sec);
+  }
 }
 
 /* ---------- run ---------- */
@@ -1637,6 +1686,7 @@ function buildQueue(excludeIdx) {
 function easyPool() {
   const seen = new Set(), out = [];
   for (const id in LINES) for (const st of LINES[id].stations) {
+    if (HIDDEN_SET.has(id)) continue;
     let key, ok;
     if (D.lang === 'ja') {
       if (st.country !== 'jp') continue;
@@ -1777,7 +1827,7 @@ function renderPlay() {
     if (st.country === 'jp') foot.append(flag('jp'), h('span', { class:'k glyph', lang:'ja' }, st.name), h('span', { class:'s glyph', lang:'ja' }, D.lang === 'ja' ? st.kana : kanaDisp(st.kana)), flag('kr'), h('span', { class:'s glyph', lang:'ko' }, st.signH && D.lang === 'ja' ? st.signH : st.hangul));
     else foot.append(flag('kr'), h('span', { class:'k glyph', lang:'ko' }, st.name), flag('jp'), h('span', { class:'s glyph', lang:'ja' }, D.lang === 'ja' ? E.toKata(st.kata) : kanaDisp(st.kata)));
     foot.append(h('span', { class:'r' }, st.roma));
-    if (st.sub) foot.append(h('span', { class:'s sub' }, T.subL + '：', st.sub[0] ? [h('span', { class:'glyph', lang:'ja' }, st.sub[0]), ' ／ '] : null, h('span', { class:'glyph', lang:'ko' }, st.sub[1])));
+    if (st.sub) foot.append(h('span', { class:'s sub' }, (S.line === 'sanko' ? T.nickL : T.subL) + '：', st.sub[0] ? [h('span', { class:'glyph', lang:'ja' }, st.sub[0]), ' ／ '] : null, h('span', { class:'glyph', lang:'ko' }, st.sub[1])));
   } else foot.append(h('span', { class:'hidden' }, '・・・'));
   sl.sign.replaceChildren(h('div', { class:'sign flip', style:'--c:' + L.color },
     h('div', { class:'sign-band' }),
@@ -2144,7 +2194,8 @@ function endRun(why) {
   if (scored) sh.append(h('div', { class:'sub', style:'font-weight:700' }, (stubs ? T.stubGot(stubs) + '　' : '') +
     (S.score < 100 ? T.stubNext((S.score < 50 ? 50 : 100) - S.score) : '')));
   if (nowCleared) sh.append(h('div', { class:'fb ok', style:'width:100%' }, h('div', { class:'v' }, '🎉 ' + T.lineClear(lineName(id)))));
-  if (all && nowCleared) sh.append(h('div', { class:'cert' }, h('div', { class:'ttl' }, '🏅 ' + T.master), h('div', { class:'sub' }, T.masterSub)));
+  if (all && nowCleared) sh.append(h('div', { class:'cert' }, h('div', { class:'ttl' }, '🏅 ' + T.master), h('div', { class:'sub' }, T.masterSub)),
+    h('div', { class:'fb ok', style:'width:100%' }, h('div', { class:'v', style:'font-size:1rem' }, '🗝️ ' + T.hidNew)));
   else if (unlocked) sh.append(h('div', { class:'fb ok', style:'width:100%' }, h('div', { class:'v', style:'font-size:1rem' }, T.newTicket)));
   const rv = reviewEl(); if (rv) sh.append(rv);
   const [shB, shBox] = shareEl(why); if (shB) sh.append(h('div', { class:'rowbtns' }, shB), shBox);
@@ -2254,6 +2305,14 @@ function srcOf(id, st) {
   const add = (f, state, src, off) => out.push({ f, state, src, off });
   if (st.country === 'jp') {
     const wiki = { ginza:'韓国語版Wikipedia', marunouchi:'韓国語版Wikipedia＋公式韓国語路線図', yurakucho:'韓国語版Wikipedia', higashiyama:'韓国語版Wikipedia', fukuoka:'韓国語版Wikipedia', midosuji:'韓国語版Wikipedia', monorail:'韓国語版Wikipedia', oedo:'韓国語版Wikipedia＋公式韓国語路線図', karasuma:'韓国語版Wikipedia', osakaloop:'韓国語版Wikipedia', tohoku:'韓国語版Wikipedia' }[id];
+    if (id === 'hiroo' || id === 'sanko') {
+      add('駅リスト', 'ok', '日本語版Wikipedia（西村提供、廃止時点）');
+      add('かな', 'unk', KNOW);
+      add('ハングル', 'unk', 'ルール変換（未確認、韓国語版Wikipediaにページなし）');
+      add('ローマ字', 'unk', 'ルール変換（駅名標式）');
+      if (st.sub) add('愛称', 'unk', '石見神楽の演目（読みは日本語版Wikipedia「石見神楽」＋' + KNOW + '）');
+      return out;
+    }
     if (!wiki) {  // lines added without a checked source yet (Yamanote, Tokaido-Sanyo Shinkansen)
       add('駅リスト', 'unk', KNOW);
       add('かな', 'unk', KNOW);
@@ -2275,6 +2334,14 @@ function srcOf(id, st) {
       add('カタカナ', 'ok', 'ナムウィキ（各駅ページ）');
       add('ローマ字', 'unk', KNOW + '（RR式、未確認）');
       if (st.hanja) add('漢字', 'unk', KNOW + '（旧字体、未確認）');
+      return out;
+    }
+    if (id === 'pyongyang1' || id === 'pyongyang2') {
+      add('駅リスト', 'ok', '西村提供の一覧（千里馬線は万景台線と一体、光明は閉鎖中だが入れる）');
+      add('ハングル', 'ok', '西村提供の一覧' + (st.name === '락원' ? '（南の書き方 낙원 も正解）' : ''));
+      add('カタカナ', 'ok', '西村提供の一覧' + (st.kataAlt.length ? '（' + st.kataAlt.join('・') + ' も正解）' : ''));
+      add('ローマ字', 'unk', KNOW + '（南のRR式、未確認）');
+      if (st.hanja) add('漢字', 'ok', '西村提供の一覧（固有語部分はハングル）');
       return out;
     }
     if (id === 'gyeongui') {
@@ -2518,7 +2585,29 @@ const TESTS = [
   ['gyeongui','탄현','ja','たにょん','ok','v0.53'],
   ['gyeongui','금릉','ja','くむぬん','ok','v0.53'],
   ['gyeongui','도라산','ja','とらさん','ok','v0.53'],
-  ['gyeongui','서울역','ko','서울역','ok','v0.53']
+  ['gyeongui','서울역','ko','서울역','ok','v0.53'],
+  ['pyongyang1','모란봉','ja','もらんぼん','ok','v0.55'],
+  ['pyongyang1','모란봉','ja','とんいる','ng','v0.55'],
+  ['pyongyang1','봉화','ja','ぼんふぁ','ok','v0.55'],
+  ['pyongyang1','봉화','ja','ぽんふぁ','ok','v0.55'],
+  ['pyongyang1','승리','ja','すんり','ok','v0.55'],
+  ['pyongyang1','승리','ja','すんに','ok','v0.55'],
+  ['pyongyang1','붉은별','ja','ぷるぐんびょる','ok','v0.55'],
+  ['pyongyang2','락원','ja','らぐうぉん','ok','v0.55'],
+  ['pyongyang2','락원','ja','らぐぉん','ok','v0.55'],
+  ['pyongyang2','락원','ko','락원','ok','v0.55'],
+  ['pyongyang2','락원','ko','낙원','ok','v0.55'],
+  ['pyongyang2','황금벌','ja','ふぁんぐむぼる','ok','v0.55'],
+  ['hiroo','幸福','ja','こうふく','ok','v0.55'],
+  ['hiroo','幸福','ko','고후쿠','ok','v0.55'],
+  ['hiroo','愛国','ja','あいこく','ok','v0.55'],
+  ['hiroo','広尾','ko','히로오','ok','v0.55'],
+  ['hiroo','中札内','ko','나카사쓰나이','ok','v0.55'],
+  ['hiroo','中札内','ko','나카사츠나이','ok','v0.55'],
+  ['sanko','宇都井','ja','うづい','ok','v0.55'],
+  ['sanko','江津','ko','고쓰','ok','v0.55'],
+  ['sanko','三次','ja','みよし','ok','v0.55'],
+  ['sanko','式敷','ko','시키지키','ok','v0.55']
 ];
 const TKEY = 'ekiyomi.tests';
 let UTESTS = [];
