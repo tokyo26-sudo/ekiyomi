@@ -181,6 +181,28 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline
 .ansrow input{flex:1;min-width:0;width:0;font:inherit;font-size:1.25rem;padding:10px 14px;border:2px solid var(--rule);border-radius:8px;background:var(--sign);color:var(--ink)}
 .ansrow input:focus{border-color:var(--accent);outline:none}
 .go{border:0;border-radius:8px;background:var(--accent);color:var(--sign);font-weight:900;padding:0 16px;flex:none;white-space:nowrap}
+/* on-screen keypad (⌨) */
+.padbtn{flex:none;border:2px solid var(--rule);border-radius:8px;background:var(--panel);color:var(--ink);font-size:1.2rem;padding:0 10px}
+.padbtn[aria-pressed="true"]{border-color:var(--accent);background:var(--accent);color:var(--sign)}
+.padtip{margin:4px 0 0;font-size:.75rem;color:var(--muted)}
+.pad{margin-top:8px;padding:8px;border-radius:12px;background:var(--panel);border:1px solid var(--rule);display:grid;gap:6px;user-select:none;-webkit-user-select:none;touch-action:manipulation}
+.pad .prow{display:grid;gap:4px}
+.pad button{font:inherit;font-weight:700;font-size:1.15rem;min-height:42px;padding:0;border:1px solid var(--rule);border-radius:7px;background:var(--sign);color:var(--ink);box-shadow:0 1px 0 var(--rule)}
+.pad button:active{transform:translateY(1px);background:var(--rule)}
+.pad button.fn{font-size:.85rem;background:var(--panel)}
+.pad button.on{background:var(--accent);color:var(--sign);border-color:var(--accent)}
+.pad button.ok{background:var(--accent);color:var(--sign);border-color:var(--accent);font-size:1rem}
+.pad button.gap{visibility:hidden}
+.pad button.dk{font-size:1rem}
+body.padon .play .s-act{scroll-margin-bottom:calc(var(--padh,320px) + 12px)}
+body.padon .play .s-form{scroll-margin-top:8px}
+.pad.kana button{font-size:1.05rem;min-height:38px}
+@media (max-width:600px){
+  .pad{position:fixed;left:0;right:0;bottom:0;z-index:30;margin:0;border-radius:14px 14px 0 0;padding:8px 6px calc(8px + env(safe-area-inset-bottom));box-shadow:0 -4px 16px rgba(0,0,0,.15)}
+  body.padon main{padding-bottom:calc(var(--padh,320px) + 16px)}
+  .pad button{min-height:40px;font-size:1.05rem}
+  .pad.kana button{min-height:34px;font-size:.98rem}
+}
 .choices{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .choices button{border:2px solid var(--rule);background:var(--sign);border-radius:8px;padding:12px 8px;font-size:1.25rem;font-weight:700;overflow-wrap:anywhere}
 .choices button:hover:not(:disabled){border-color:var(--accent)}
@@ -1303,7 +1325,7 @@ const symEl = (id, extra) => h('span', { class:'sym' + (SYM[id].length > 1 ? ' t
 const RUN_MS = 60 * 1000;
 /* flags drawn as SVG (emoji flags do not show on Windows) */
 const FLAG_SRC = { kp:'data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%2072%2036%22%3E%3Crect%20fill=%22%23024FA2%22%20width=%2272%22%20height=%2236%22/%3E%3Crect%20fill=%22%23fff%22%20y=%226%22%20width=%2272%22%20height=%2224%22/%3E%3Crect%20fill=%22%23ED1C27%22%20y=%227%22%20width=%2272%22%20height=%2222%22/%3E%3Ccircle%20fill=%22%23fff%22%20cx=%2224%22%20cy=%2218%22%20r=%228.5%22/%3E%3Cpath%20fill=%22%23ED1C27%22%20d=%22M24,10%20L25.8,15.5%20L31.6,15.5%20L26.9,18.9%20L28.7,24.5%20L24,21.1%20L19.3,24.5%20L21.1,18.9%20L16.4,15.5%20L22.2,15.5Z%22/%3E%3C/svg%3E', jp:'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20900%20600%22%3E%3Crect%20fill%3D%22%23fff%22%20width%3D%22900%22%20height%3D%22600%22/%3E%3Ccircle%20fill%3D%22%23bc002d%22%20cx%3D%22450%22%20cy%3D%22300%22%20r%3D%22180%22/%3E%3C/svg%3E', kr:'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20xmlns%3Axlink%3D%22http%3A//www.w3.org/1999/xlink%22%20viewBox%3D%22-36%20-24%2072%2048%22%3E%3Crect%20fill%3D%22%23fff%22%20x%3D%22-36%22%20y%3D%22-24%22%20width%3D%2272%22%20height%3D%2248%22/%3E%3Cg%20transform%3D%22rotate%28-56.3099325%29%22%3E%3Cg%20id%3D%22b2%22%3E%3Cpath%20id%3D%22b%22%20d%3D%22M-6-25H6M-6-22H6M-6-19H6%22%20stroke%3D%22%23000%22%20stroke-width%3D%222%22/%3E%3Cuse%20xlink%3Ahref%3D%22%23b%22%20y%3D%2244%22/%3E%3C/g%3E%3Cpath%20stroke%3D%22%23fff%22%20stroke-width%3D%221%22%20d%3D%22M0%2C17v10%22/%3E%3Ccircle%20fill%3D%22%23cd2e3a%22%20r%3D%2212%22/%3E%3Cpath%20fill%3D%22%230047a0%22%20d%3D%22M0-12A6%2C6%200%200%200%200%2C0A6%2C6%200%200%201%200%2C12A12%2C12%200%200%2C1%200-12z%22/%3E%3C/g%3E%3Cg%20transform%3D%22rotate%28-123.6900675%29%22%3E%3Cuse%20xlink%3Ahref%3D%22%23b2%22/%3E%3Cpath%20stroke%3D%22%23fff%22%20stroke-width%3D%221%22%20d%3D%22M0-23.5v3M0%2C17v3.5M0%2C23.5v3%22/%3E%3C/g%3E%3C/svg%3E' };
-const APP_VERSION = 'v0.56';  // shown after the logo; bump with every release
+const APP_VERSION = 'v0.57';  // shown after the logo; bump with every release
 const APP_ICON = 'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Cdefs%3E%3CclipPath%20id%3D%22r%22%3E%3Crect%20x%3D%222%22%20y%3D%222%22%20width%3D%2260%22%20height%3D%2260%22%20rx%3D%2212%22/%3E%3C/clipPath%3E%3C/defs%3E%3Cg%20clip-path%3D%22url%28%23r%29%22%3E%3Crect%20x%3D%220%22%20y%3D%220%22%20width%3D%2232%22%20height%3D%2264%22%20fill%3D%22%23F39700%22/%3E%3Crect%20x%3D%2232%22%20y%3D%220%22%20width%3D%2232%22%20height%3D%2264%22%20fill%3D%22%2300A84D%22/%3E%3C/g%3E%3Cpath%20d%3D%22M9%209H25M17%209V24M8%2024H26%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%224.5%22%20stroke-linecap%3D%22round%22/%3E%3Cpath%20d%3D%22M8%2037H26M7%2047H27M15%2031L19%2057%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%224.5%22%20stroke-linecap%3D%22round%22/%3E%3Ccircle%20cx%3D%2241.5%22%20cy%3D%2217%22%20r%3D%226.5%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%224.5%22/%3E%3Cpath%20d%3D%22M57%209V35M49%2016H57M49%2028H57%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%224.5%22%20stroke-linecap%3D%22round%22/%3E%3Cpath%20d%3D%22M37%2043H57V57%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%224.5%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22/%3E%3C/svg%3E';
 const flag = c => h('img', { class:'flag' + (c === 'kp' ? ' kp' : ''), src: FLAG_SRC[c === 'ja' ? 'jp' : c === 'ko' ? 'kr' : c], alt:'' });
 // learning points per letter: settled once per run (see applyTally)
@@ -1338,7 +1360,7 @@ const TXT = {
     impAsk:(n,d)=>(n?n+' の':'')+'記録（'+d+'）を読みこむ？ 今の記録は上書きされる', impBad:'えきよみの記録ファイルではないので読みこめない', impDone:'記録を読みこんだ', undoDone:'1つ前の記録にもどした', recNote:'うまく保存できない時は Safari や Chrome で開いてね', stubN:'半券', ticketN:'切符', exch:'半券5枚 → 切符に交換', yourAns:'あなたの答え', review:'ふりかえり', rvSkip:'スキップ', pracNoStub:'4択で答えた問題があるので半券はなし（入力で全問正解ならもらえる）', stubGot:n=>'半券 +'+n, stubNext:p=>'あと '+p+' 点で半券もう1枚', stubToTicket:'半券5枚で🎫1枚になった！', hintCost:'ヒント　半券 −1', pracStub:'全問正解！ 半券 +1',
     badges:'バッジ', best:'ベスト', cleared:'クリア', pt:'点',
     time:'のこり', score:'スコア', correctN:'正解数', qUnit:'問', practice:'4択は練習モード（スコアなし）', streak:'連続', got:'バッジ',
-    prompt:'この駅名、なんて読む？', ph:'かな・ローマ字で', go:'答える',
+    prompt:'この駅名、なんて読む？', ph:'かな・ローマ字で', go:'答える', padTip:'キーボードがなければ ⌨', padKana:['カナ','かな'], padSmall:'小',
     hintBtn:'ヒント', hintClose:'ヒントをとじる', cut:'2つ消す', skip:'スキップ', next:'次へ', quit:'やめる', toLines:'路線',
     enter:'Enterでも進む',
     ok:'正解！', close:'ほぼ正解！', near:'おしい！', ng:'不正解', meaning:'正解！（意味訳）', nearPre:'あと一歩！ 答えは', linkMsg:'ハングルはパッチムのㄴが次の母音とつながって「ノ」のように聞こえる（連音）。でも日本の駅名は「ン」と「オ」を分けて読むよ。', banned:a=>'その文字では答えられない（問題に出ている字だから）。'+a+'答えてね', noKanji:'漢字は使えないよ。かな・ローマ字で答えてね', headMsg:'語頭の ㄱ・ㄷ・ㅈ は、日本語の カ・タ・チャ行 を書くのにも使うよ',
@@ -1377,7 +1399,7 @@ const TXT = {
     impAsk:(n,d)=>(n?n+'의 ':'')+'기록('+d+')을 불러올까요? 지금 기록은 덮어써져요', impBad:'역읽기 기록 파일이 아니라서 불러올 수 없어요', impDone:'기록을 불러왔어요', undoDone:'이전 기록으로 되돌렸어요', recNote:'저장이 잘 안 되면 Safari나 Chrome에서 열어 주세요', stubN:'표 조각', ticketN:'표', exch:'표 조각 5개 → 표로 교환', yourAns:'내 답', review:'돌아보기', rvSkip:'건너뜀', pracNoStub:'4지선다로 답한 문제가 있어서 표 조각은 없어요 (입력으로 모두 맞히면 받아요)', stubGot:n=>'표 조각 +'+n, stubNext:p=>p+'점 더 받으면 표 조각 1개 더', stubToTicket:'표 조각 5개가 🎫 1장이 됐어요!', hintCost:'힌트　표 조각 −1', pracStub:'모두 정답! 표 조각 +1',
     badges:'배지', best:'최고', cleared:'클리어', pt:'점',
     time:'남은 시간', score:'점수', correctN:'맞힌 수', qUnit:'문제', practice:'4지선다는 연습 모드 (점수 없음)', streak:'연속', got:'배지',
-    prompt:'이 역 이름, 어떻게 읽을까요?', ph:'한글 또는 로마자로', go:'확인',
+    prompt:'이 역 이름, 어떻게 읽을까요?', ph:'한글 또는 로마자로', go:'확인', padTip:'한글 키보드가 없으면 ⌨', padKana:['カナ','かな'], padSmall:'小',
     hintBtn:'힌트', hintClose:'힌트 닫기', cut:'2개 지우기', skip:'건너뛰기', next:'다음', quit:'그만하기', toLines:'노선',
     enter:'Enter로도 넘어가요',
     ok:'정답!', close:'거의 정답!', near:'아깝다!', ng:'오답', meaning:'정답! (의미 번역)', nearPre:'한 끗 차이! 정답은', linkMsg:'', banned:a=>'그 글자로는 답할 수 없어요 (문제에 나온 글자예요). '+a+' 답해 주세요', noKanji:'한자는 쓸 수 없어요. 한글이나 로마자로 답해 주세요', headMsg:'',
@@ -1760,6 +1782,104 @@ function playSlots() {
   $('main').replaceChildren(sl.root);
   S.slots = sl; return sl;
 }
+/* ---------- on-screen keypad ---------- */
+const CJ = 'ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ', VJ = 'ㅏㅐㅑㅒㅓㅔㅕㅖㅗㅘㅙㅚㅛㅜㅝㅞㅟㅠㅡㅢㅣ';
+const TJ = ['', 'ㄱ','ㄲ','ㄳ','ㄴ','ㄵ','ㄶ','ㄷ','ㄹ','ㄺ','ㄻ','ㄼ','ㄽ','ㄾ','ㄿ','ㅀ','ㅁ','ㅂ','ㅄ','ㅅ','ㅆ','ㅇ','ㅈ','ㅊ','ㅋ','ㅌ','ㅍ','ㅎ'];
+const VCMB = { 'ㅗㅏ':'ㅘ','ㅗㅐ':'ㅙ','ㅗㅣ':'ㅚ','ㅜㅓ':'ㅝ','ㅜㅔ':'ㅞ','ㅜㅣ':'ㅟ','ㅡㅣ':'ㅢ' };
+const TCMB = { 'ㄱㅅ':'ㄳ','ㄴㅈ':'ㄵ','ㄴㅎ':'ㄶ','ㄹㄱ':'ㄺ','ㄹㅁ':'ㄻ','ㄹㅂ':'ㄼ','ㄹㅅ':'ㄽ','ㄹㅌ':'ㄾ','ㄹㅍ':'ㄿ','ㄹㅎ':'ㅀ','ㅂㅅ':'ㅄ' };
+const TSPLIT = Object.fromEntries(Object.entries(TCMB).map(([k, v]) => [v, [k[0], k[1]]]));
+/* 2-set Hangul: a list of jamo -> syllables (ㄱ ㅏ ㄴ -> 간, ㄱ ㅏ ㄴ ㅏ -> 가나) */
+function composeJamo(seq) {
+  let out = '', cur = null;  // cur: { L, V, T } as jamo strings
+  const flush = () => { if (!cur) return;
+    if (cur.L && cur.V) out += String.fromCharCode(0xAC00 + (CJ.indexOf(cur.L) * 21 + VJ.indexOf(cur.V)) * 28 + TJ.indexOf(cur.T || ''));
+    else out += cur.L || cur.V; cur = null; };
+  for (const j of seq) {
+    if (CJ.includes(j)) {
+      if (cur && cur.L && cur.V && !cur.T && TJ.includes(j)) cur.T = j;
+      else if (cur && cur.T && TCMB[cur.T + j]) cur.T = TCMB[cur.T + j];
+      else { flush(); cur = { L:j }; }
+    } else if (cur && cur.L && !cur.V) cur.V = j;
+    else if (cur && cur.V && !cur.T && VCMB[cur.V + j]) cur.V = VCMB[cur.V + j];
+    else if (cur && cur.T) {               // the last final moves to the next syllable: 간+ㅏ -> 가나, 값+ㅏ -> 갑사
+      const sp = TSPLIT[cur.T], L = sp ? sp[1] : cur.T;
+      cur.T = sp ? sp[0] : '';
+      flush(); cur = { L, V:j };
+    } else { flush(); cur = { V:j }; }
+  }
+  flush(); return out;
+}
+const KO_ROWS = [['ㅂ','ㅈ','ㄷ','ㄱ','ㅅ','ㅛ','ㅕ','ㅑ','ㅐ','ㅔ'], ['ㅁ','ㄴ','ㅇ','ㄹ','ㅎ','ㅗ','ㅓ','ㅏ','ㅣ'], ['⇧','ㅋ','ㅌ','ㅊ','ㅍ','ㅠ','ㅜ','ㅡ','⌫']];
+const KO_SHIFT = { 'ㅂ':'ㅃ','ㅈ':'ㅉ','ㄷ':'ㄸ','ㄱ':'ㄲ','ㅅ':'ㅆ','ㅐ':'ㅒ','ㅔ':'ㅖ' };
+/* 50-on table, read right to left: あ column on the right */
+const GOJUON = ['あいうえお','かきくけこ','さしすせそ','たちつてと','なにぬねの','はひふへほ','まみむめも','や ゆ よ','らりるれろ','わをんー '];
+const DAKU = { か:'が',き:'ぎ',く:'ぐ',け:'げ',こ:'ご',さ:'ざ',し:'じ',す:'ず',せ:'ぜ',そ:'ぞ',た:'だ',ち:'ぢ',つ:'づ',て:'で',と:'ど',は:'ば',ひ:'び',ふ:'ぶ',へ:'べ',ほ:'ぼ',う:'ゔ' };
+const HANDAKU = { は:'ぱ',ひ:'ぴ',ふ:'ぷ',へ:'ぺ',ほ:'ぽ' };
+const SMALL = { あ:'ぁ',い:'ぃ',う:'ぅ',え:'ぇ',お:'ぉ',つ:'っ',や:'ゃ',ゆ:'ゅ',よ:'ょ',わ:'ゎ' };
+const inv = o => Object.fromEntries(Object.entries(o).map(([a, b]) => [b, a]));
+const UNDAKU = inv(DAKU), UNHANDAKU = inv(HANDAKU), UNSMALL = inv(SMALL);
+function buildPad(Fm) {
+  const T = t(), ko = D.lang === 'ko', inp = Fm.inp;
+  const pad = noSteal(h('div', { class:'pad' + (ko ? '' : ' kana'), hidden: !D.pad }));
+  let base = '', seq = [], last = null, shift = false, kata = false;
+  const sync = () => { if (inp.value !== last) { base = inp.value; seq = []; } };
+  const put = v => { inp.value = v; last = v; inp.dispatchEvent(new Event('input')); };
+  const out = () => put(base + composeJamo(seq));
+  const back = () => { sync(); if (ko && seq.length) { seq.pop(); out(); return; } seq = []; base = [...base].slice(0, -1).join(''); put(base); };
+  const submit = () => { Fm.form.requestSubmit ? Fm.form.requestSubmit() : Fm.go.click(); };
+  const key = (label, fn, cls) => h('button', { type:'button', class: cls || '', onclick: fn }, label);
+  const okKey = () => key(S && S.done ? T.next + ' ›' : T.go + ' ↵', submit, 'ok');
+  function draw() {
+    pad.replaceChildren();
+    if (ko) {
+      KO_ROWS.forEach((row, ri) => {
+        const r0 = h('div', { class:'prow', style:'grid-template-columns:' + (ri === 2 ? '1.5fr repeat(7,1fr) 1.5fr' : 'repeat(' + row.length + ',1fr)') + (ri === 1 ? ';padding:0 5%' : '') });
+        row.forEach(k => {
+          if (k === '⇧') r0.append(key('⇧', () => { shift = !shift; draw(); }, 'fn' + (shift ? ' on' : '')));
+          else if (k === '⌫') r0.append(key('⌫', back, 'fn'));
+          else { const j = shift && KO_SHIFT[k] ? KO_SHIFT[k] : k;
+            r0.append(key(j, () => { sync(); seq.push(j); out(); if (shift) { shift = false; draw(); } })); }
+        });
+        pad.append(r0);
+      });
+      pad.append(h('div', { class:'prow', style:'grid-template-columns:1fr' }, okKey()));
+    } else {
+      const conv = c => kata ? E.toKata(c) : c;
+      for (let row = 0; row < 5; row++) {
+        const r0 = h('div', { class:'prow', style:'grid-template-columns:repeat(10,1fr)' });
+        for (let col = GOJUON.length - 1; col >= 0; col--) {
+          const c = GOJUON[col][row];
+          if (!c || c === ' ') r0.append(key('', null, 'gap'));
+          else r0.append(key(conv(c), () => { sync(); base = inp.value + conv(c); seq = []; put(base); }));
+        }
+        pad.append(r0);
+      }
+      const mod = map => () => { sync(); const a = [...inp.value]; if (!a.length) return;
+        const lastC = E.toHira(a[a.length - 1]), isK = a[a.length - 1] !== lastC, n = map(lastC);
+        if (!n) return; a[a.length - 1] = isK ? E.toKata(n) : n; base = a.join(''); put(base); };
+      pad.append(h('div', { class:'prow', style:'grid-template-columns:1fr 1fr 1fr 1.3fr 1.3fr 2.4fr' },
+        key('゛が', mod(c => DAKU[c] || UNDAKU[c] || (UNHANDAKU[c] && DAKU[UNHANDAKU[c]]))),
+        key('゜ぱ', mod(c => HANDAKU[c] || UNHANDAKU[c] || (UNDAKU[c] && HANDAKU[UNDAKU[c]]))),
+        key(T.padSmall, mod(c => SMALL[c] || UNSMALL[c]), 'fn'),
+        key(kata ? T.padKana[1] : T.padKana[0], () => { kata = !kata; draw(); }, 'fn'),
+        key('⌫', back, 'fn'),
+        okKey()));
+      pad.querySelectorAll('.prow:last-child button').forEach((b0, i) => { if (i < 2) b0.classList.add('dk'); });
+    }
+    requestAnimationFrame(() => { if (!pad.hidden) document.body.style.setProperty('--padh', pad.offsetHeight + 'px'); });
+  }
+  draw();
+  return { el: pad, draw };
+}
+function setPad(on) {
+  D.pad = on; save();
+  const Fm = S.form; if (!Fm) return;
+  Fm.pad.el.hidden = !on; Fm.padBtn.setAttribute('aria-pressed', String(on)); Fm.tip.hidden = on; if (on) Fm.pad.draw();
+  document.body.classList.toggle('padon', on);
+  Fm.inp.setAttribute('inputmode', on ? 'none' : 'text');
+  Fm.inp.blur(); Fm.inp.focus({ preventScroll:true });
+}
+
 function answerForm() {
   if (S.form) return S.form;
   const T = t();
@@ -1767,6 +1887,9 @@ function answerForm() {
     lang: D.lang === 'ja' ? 'ja' : 'ko', 'aria-label':T.prompt });
   const go = noSteal(h('button', { class:'go', type:'submit' }, T.go));
   const warn = h('p', { class:'prompt warn', role:'status' });
+  const padBtn = noSteal(h('button', { class:'padbtn', type:'button', 'aria-pressed': String(!!D.pad), title:'⌨', 'aria-label':'⌨', onclick:() => setPad(!D.pad) }, '⌨'));
+  const tip = h('p', { class:'padtip', hidden: !!D.pad }, T.padTip);
+  if (D.pad) inp.setAttribute('inputmode', 'none');
   const form = h('form', { class:'ansrow', onsubmit:e => {
       e.preventDefault();
       if (S.over) return;
@@ -1774,8 +1897,11 @@ function answerForm() {
       const v = inp.value, st = S.cur;
       if (bannedScript(st, v) && !D.devFree) { warn.textContent = HAS_KANJI.test(v) ? T.noKanji : T.banned(allowedScripts(st)); return; }
       warn.textContent = '';
-      const r = E.judge(D.lang, st, v); if (r) answer(r, v); } }, inp, go);
-  S.form = { box: h('div', null, form, warn), inp, go, warn };
+      const r = E.judge(D.lang, st, v); if (r) answer(r, v); } }, inp, padBtn, go);
+  S.form = { inp, go, warn, form, padBtn, tip };
+  S.form.pad = buildPad(S.form);
+  S.form.box = h('div', null, form, warn, tip, S.form.pad.el);
+  document.body.classList.toggle('padon', !!D.pad);
   return S.form;
 }
 /* right, but written another way: long vowels in Hangul, loanwords */
@@ -1883,13 +2009,15 @@ function renderPlay() {
     sl.form.hidden = false;
     if (Fm.box.parentNode !== sl.form) sl.form.replaceChildren(Fm.box);
     Fm.go.textContent = S.done ? T.next + ' ›' : T.go;
+    Fm.pad.draw();
     Fm.inp.placeholder = allowedScripts(st);
   }
   sl.hint.replaceChildren(...(S.hintOpen || S.done ? [renderHint(st)] : []));
 
   setTimeout(() => {
     if (S.view !== 'play' || !$('ov').hidden || S.over) return;
-    if (D.answer !== 'choice' && S.form) { if (document.activeElement !== S.form.inp) S.form.inp.focus({ preventScroll:true }); }
+    if (D.answer !== 'choice' && S.form) { if (document.activeElement !== S.form.inp) S.form.inp.focus({ preventScroll:true });
+      if (D.pad && innerWidth <= 600) { const el = document.querySelector(S.done ? '.play .s-act' : '.play .s-form'); if (el) el.scrollIntoView({ block: S.done ? 'end' : 'start' }); } }
     else if (S.done) { const b = $('nextBtn'); if (b) b.focus({ preventScroll:true }); }
   }, 30);
 }
