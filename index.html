@@ -193,7 +193,10 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline
 .pad button.on{background:var(--accent);color:var(--sign);border-color:var(--accent)}
 .pad button.ok{background:var(--accent);color:var(--sign);border-color:var(--accent);font-size:1rem}
 .pad button.gap{visibility:hidden}
-.pad button.dk{font-size:1rem}
+.pad button.dk{overflow:hidden}
+.pad .mk{display:inline-block;font-size:3.2rem;font-weight:900;line-height:1;}
+.pad .mk1{transform:translate(-.32em,.31em)}
+.pad .mk2{transform:translate(-.33em,.38em)}
 body.padon .play .s-act{scroll-margin-bottom:calc(var(--padh,320px) + 12px)}
 body.padon .play .s-form{scroll-margin-top:8px}
 .pad.kana button{font-size:1.05rem;min-height:38px}
@@ -1325,7 +1328,7 @@ const symEl = (id, extra) => h('span', { class:'sym' + (SYM[id].length > 1 ? ' t
 const RUN_MS = 60 * 1000;
 /* flags drawn as SVG (emoji flags do not show on Windows) */
 const FLAG_SRC = { kp:'data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%2072%2036%22%3E%3Crect%20fill=%22%23024FA2%22%20width=%2272%22%20height=%2236%22/%3E%3Crect%20fill=%22%23fff%22%20y=%226%22%20width=%2272%22%20height=%2224%22/%3E%3Crect%20fill=%22%23ED1C27%22%20y=%227%22%20width=%2272%22%20height=%2222%22/%3E%3Ccircle%20fill=%22%23fff%22%20cx=%2224%22%20cy=%2218%22%20r=%228.5%22/%3E%3Cpath%20fill=%22%23ED1C27%22%20d=%22M24,10%20L25.8,15.5%20L31.6,15.5%20L26.9,18.9%20L28.7,24.5%20L24,21.1%20L19.3,24.5%20L21.1,18.9%20L16.4,15.5%20L22.2,15.5Z%22/%3E%3C/svg%3E', jp:'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20900%20600%22%3E%3Crect%20fill%3D%22%23fff%22%20width%3D%22900%22%20height%3D%22600%22/%3E%3Ccircle%20fill%3D%22%23bc002d%22%20cx%3D%22450%22%20cy%3D%22300%22%20r%3D%22180%22/%3E%3C/svg%3E', kr:'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20xmlns%3Axlink%3D%22http%3A//www.w3.org/1999/xlink%22%20viewBox%3D%22-36%20-24%2072%2048%22%3E%3Crect%20fill%3D%22%23fff%22%20x%3D%22-36%22%20y%3D%22-24%22%20width%3D%2272%22%20height%3D%2248%22/%3E%3Cg%20transform%3D%22rotate%28-56.3099325%29%22%3E%3Cg%20id%3D%22b2%22%3E%3Cpath%20id%3D%22b%22%20d%3D%22M-6-25H6M-6-22H6M-6-19H6%22%20stroke%3D%22%23000%22%20stroke-width%3D%222%22/%3E%3Cuse%20xlink%3Ahref%3D%22%23b%22%20y%3D%2244%22/%3E%3C/g%3E%3Cpath%20stroke%3D%22%23fff%22%20stroke-width%3D%221%22%20d%3D%22M0%2C17v10%22/%3E%3Ccircle%20fill%3D%22%23cd2e3a%22%20r%3D%2212%22/%3E%3Cpath%20fill%3D%22%230047a0%22%20d%3D%22M0-12A6%2C6%200%200%200%200%2C0A6%2C6%200%200%201%200%2C12A12%2C12%200%200%2C1%200-12z%22/%3E%3C/g%3E%3Cg%20transform%3D%22rotate%28-123.6900675%29%22%3E%3Cuse%20xlink%3Ahref%3D%22%23b2%22/%3E%3Cpath%20stroke%3D%22%23fff%22%20stroke-width%3D%221%22%20d%3D%22M0-23.5v3M0%2C17v3.5M0%2C23.5v3%22/%3E%3C/g%3E%3C/svg%3E' };
-const APP_VERSION = 'v0.57';  // shown after the logo; bump with every release
+const APP_VERSION = 'v0.60';  // shown after the logo; bump with every release
 const APP_ICON = 'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Cdefs%3E%3CclipPath%20id%3D%22r%22%3E%3Crect%20x%3D%222%22%20y%3D%222%22%20width%3D%2260%22%20height%3D%2260%22%20rx%3D%2212%22/%3E%3C/clipPath%3E%3C/defs%3E%3Cg%20clip-path%3D%22url%28%23r%29%22%3E%3Crect%20x%3D%220%22%20y%3D%220%22%20width%3D%2232%22%20height%3D%2264%22%20fill%3D%22%23F39700%22/%3E%3Crect%20x%3D%2232%22%20y%3D%220%22%20width%3D%2232%22%20height%3D%2264%22%20fill%3D%22%2300A84D%22/%3E%3C/g%3E%3Cpath%20d%3D%22M9%209H25M17%209V24M8%2024H26%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%224.5%22%20stroke-linecap%3D%22round%22/%3E%3Cpath%20d%3D%22M8%2037H26M7%2047H27M15%2031L19%2057%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%224.5%22%20stroke-linecap%3D%22round%22/%3E%3Ccircle%20cx%3D%2241.5%22%20cy%3D%2217%22%20r%3D%226.5%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%224.5%22/%3E%3Cpath%20d%3D%22M57%209V35M49%2016H57M49%2028H57%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%224.5%22%20stroke-linecap%3D%22round%22/%3E%3Cpath%20d%3D%22M37%2043H57V57%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%224.5%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22/%3E%3C/svg%3E';
 const flag = c => h('img', { class:'flag' + (c === 'kp' ? ' kp' : ''), src: FLAG_SRC[c === 'ja' ? 'jp' : c === 'ko' ? 'kr' : c], alt:'' });
 // learning points per letter: settled once per run (see applyTally)
@@ -1857,9 +1860,9 @@ function buildPad(Fm) {
       const mod = map => () => { sync(); const a = [...inp.value]; if (!a.length) return;
         const lastC = E.toHira(a[a.length - 1]), isK = a[a.length - 1] !== lastC, n = map(lastC);
         if (!n) return; a[a.length - 1] = isK ? E.toKata(n) : n; base = a.join(''); put(base); };
-      pad.append(h('div', { class:'prow', style:'grid-template-columns:1fr 1fr 1fr 1.3fr 1.3fr 2.4fr' },
-        key('゛が', mod(c => DAKU[c] || UNDAKU[c] || (UNHANDAKU[c] && DAKU[UNHANDAKU[c]]))),
-        key('゜ぱ', mod(c => HANDAKU[c] || UNHANDAKU[c] || (UNDAKU[c] && HANDAKU[UNDAKU[c]]))),
+      pad.append(h('div', { class:'prow', style:'grid-template-columns:1fr 1fr 1fr 1.2fr 1.1fr 2.2fr' },
+        key(h('span', { class:'mk mk1' }, '゛'), mod(c => DAKU[c] || UNDAKU[c] || (UNHANDAKU[c] && DAKU[UNHANDAKU[c]]))),
+        key(h('span', { class:'mk mk2' }, '゜'), mod(c => HANDAKU[c] || UNHANDAKU[c] || (UNDAKU[c] && HANDAKU[UNDAKU[c]]))),
         key(T.padSmall, mod(c => SMALL[c] || UNSMALL[c]), 'fn'),
         key(kata ? T.padKana[1] : T.padKana[0], () => { kata = !kata; draw(); }, 'fn'),
         key('⌫', back, 'fn'),
